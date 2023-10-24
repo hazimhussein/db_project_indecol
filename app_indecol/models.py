@@ -2,14 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-keyword_choices = (
-    ('sustainibility','SUSTAINIBILITY'),
-    ('car','CAR'),
-    ('buildings', 'BUILDINGS'),
-    ('recycling', 'RECYCLING'),
-    ('materials', 'MATERIALS'),    
-)
-
 method_choices = (
     ('lca','Life Cycle Assessment'),
     ('eemrio','Environmentally Extended Multi-Regional Input-Output analysis'),
@@ -75,11 +67,7 @@ class Project(models.Model):
     end_date= models.DateField(
     )
 
-    keywords = models.CharField(
-        choices=keyword_choices,
-        max_length=14,
-        default='Choose'
-    )
+    keywords = models.CharField(max_length=50)
 
     methods = models.CharField(
         choices = method_choices,
