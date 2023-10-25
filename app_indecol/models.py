@@ -232,11 +232,10 @@ class Project(models.Model):
     ressources = models.ManyToManyField(
         Ressource 
     )
-    
+
     def __str__(self):
         return self.project_id
     
-
 
 
 
