@@ -5,10 +5,12 @@ from django.db import models
 
 group_choices = (
     ('Cherubini Group','Francesco Cherubini Group'),
+    ('Verones Group','Francesca Verones Group'),
     ('Stømman Group','Anders Strømman Group'),
     ('Hertwich Group','Edgar Hertwich Group'),
     ('Müller Group','Daniel Müller Group'),
     ('Pettersen Group','Johan Pettersen Group'),
+    ('Ottelin Group','Juudit Ottelin Group'),
     ('IEDL Group','Konstantin Stadler Group'),
 )
 
@@ -27,6 +29,7 @@ project_type_choices = (
     ('PhD','PhD Project'),
     ('PD','PostDoc Project'),
     ('O', 'Other type'),
+    ('EU','European Project')
 )
 
 partner_choices = (
@@ -39,6 +42,8 @@ partner_choices = (
     ('Government of the Netherlands','Government of the Netherlands'),
     ('Leiden University','Leiden University'),
     ('APRI','Africa Prolicy Research Institute'),
+    ('WU','Vienna University of Economics and Business'),
+    ('SGS','SGS'),
     ('No External Partners','No External Partners' )
 )
 
