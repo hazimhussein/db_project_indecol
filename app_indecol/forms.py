@@ -2,12 +2,36 @@ from django import forms
 from django.forms import ModelForm
 from .models import *
 
+
+
 keyword_choices = (
-    ('sustainibility','SUSTAINIBILITY'),
-    ('car','CAR'),
-    ('buildings', 'BUILDINGS'),
+    ('circular economy','CIRCULAR ECONOMY'),
+    ('resources','RESOURCES'),
+    ('materials', 'MATERIALS'),
     ('recycling', 'RECYCLING'),
-    ('materials', 'MATERIALS'),    
+    ('environment', 'ENVIRONMENT'),  
+    ('ecosystems','ECOSYSTEMS'),
+    ('bioresources','BIORESOURCES'),
+    ('biodiversity', 'BIODIVERSITY'),
+    ('climate', 'CLIMATE'),
+    ('bioenergy', 'BIOENERGY'),  
+    ('food','FOOD'),
+    ('biomaterials','BIOMATERIALS'),
+    ('energy', 'ENERGY'),
+    ('transport', 'TRANSPORT'),
+    ('buildings', 'BUILDINGS'),  
+    ('pollution','POLLUTION'),
+    ('transformation pathways','TRANSFORMATION PATHWAYS'),
+    ('human settlement', 'HUMAN SETTLEMENT'),
+    ('Sustainable Production','SUSTAINABLE PRODUCTION' ),
+    ('Consumption','CONSUMPTION'),  
+    ('Production','PRODUCTION'),
+    ('trade','TRADE'),
+    ('economic growth','ECONOMIC GROWTH'),
+    ('sustainability', 'SUSTAINABILITY'),
+    ('exiobase', 'EXIOBASE'),
+    ('database', 'DATABASE'),
+
 )
 
 method_choices = (
@@ -15,6 +39,7 @@ method_choices = (
     ('eemrio','Environmentally Extended Multi-Regional Input-Output analysis'),
     ('ia', 'Impact Assessment'),
     ('mfa', 'Material Flow Analysis'),
+    ('sqlite','Sqlite')
 )
 
 
@@ -34,3 +59,6 @@ class ProjectAdminForm(ModelForm):
         self.cleaned_data['methods'] = ', '.join(methods)
 
         return self.cleaned_data
+    
+
+

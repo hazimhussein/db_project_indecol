@@ -9,7 +9,7 @@ group_choices = (
     ('Hertwich Group','Edgar Hertwich Group'),
     ('Müller Group','Daniel Müller Group'),
     ('Pettersen Group','Johan Pettersen Group'),
-    ('Stadler Group','Konstantin Stadler Group'),
+    ('IEDL Group','Konstantin Stadler Group'),
 )
 
 role_choices = (
@@ -39,12 +39,14 @@ partner_choices = (
     ('Government of the Netherlands','Government of the Netherlands'),
     ('Leiden University','Leiden University'),
     ('APRI','Africa Prolicy Research Institute'),
+    ('No External Partners','No External Partners' )
 )
 
 partner_type_choices = (
     ('University','University'),
     ('Private sector','Private sector'),
     ('Industry','Industry'),
+    ('N/A','N/A')
 )
 
 ressource_type_choices = (
@@ -58,12 +60,6 @@ ressource_type_choices = (
 
 class Person(models.Model):
 
-    person_id = models.CharField(
-        unique=True,
-        null=False,
-        blank=False,
-        max_length=50
-    )
 
     first_name = models.CharField(
         unique=False,
@@ -212,7 +208,7 @@ class Project(models.Model):
         blank = True
     )
 
-    keywords = models.CharField(max_length=50)
+    keywords = models.CharField(max_length=100)
     methods = models.CharField(max_length=50)
 
     type = models.CharField(choices = project_type_choices,
