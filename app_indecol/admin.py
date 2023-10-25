@@ -11,12 +11,12 @@ from django.utils.translation import gettext_lazy as _
 
 class ProjectAdmin(admin.ModelAdmin):
     
-    # list_display = [field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
-    # form = ProjectAdminForm
+    list_display = [field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
+    form = ProjectAdminForm
     search_fields = ('methods','keywords','name','description')
-
-    list_display =[field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
     list_filter = ("keywords", "methods","type","groups")
+
+    
 # class PersonAdmin(admin.ModelAdmin):
 
 #     list_display = [field.name for field in Person._meta.get_fields()]
