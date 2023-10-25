@@ -2,12 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-method_choices = (
-    ('lca','Life Cycle Assessment'),
-    ('eemrio','Environmentally Extended Multi-Regional Input-Output analysis'),
-    ('ia', 'Impact Assessment'),
-    ('mfa', 'Material Flow Analysis'),
-)
 
 group_choices = (
     ('Cherubini Group','Francesco Cherubini Group'),
@@ -17,7 +11,6 @@ group_choices = (
     ('Müller Group','Daniel Müller Group'),
     ('Pettersen Group','Johan Pettersen Group'),
     ('Stadler Group','Konstantin Stadler Group'),
-
 )
 
 role_choices = (
@@ -36,7 +29,75 @@ partner_choices = (
     ('TK','Trondheim Kommune'),
 
 )
+class Person(models.Model):
 
+    person_id = models.CharField(
+        unique=True,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    first_name = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    middle_name = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=50
+    )
+
+    last_name = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    start_date= models.DateField(
+        null = False,
+        blank=False
+    )
+
+    end_date= models.DateField(
+        null=True,
+        blank = True
+    )
+
+    role = models.CharField(choices = role_choices,
+                            max_length=50)
+    
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
+    
+class Group(models.Model):
+
+    name = models.CharField(choices = group_choices,
+                            max_length=50)
+
+
+    start_date= models.DateField(
+        null = False,
+        blank=False
+    )
+
+    end_date= models.DateField(
+        null=True,
+        blank = True
+    )
+
+    persons = models.ManyToManyField(
+        Person
+    )
+    
+    def __str__(self):
+        return self.name
+    
 class Project(models.Model):
 
     project_id = models.CharField(
@@ -65,20 +126,18 @@ class Project(models.Model):
     )
 
     end_date= models.DateField(
+        null=True,
+        blank = True
     )
 
     keywords = models.CharField(max_length=50)
+    methods = models.CharField(max_length=50)
 
-    methods = models.CharField(
-        choices = method_choices,
-        max_length=6,
-        default='Choose'
+    persons = models.ManyToManyField(
+        Person
     )
 
+    groups = models.ManyToManyField(
+        Group
+    )
 
-
-
-
-
-
-    
