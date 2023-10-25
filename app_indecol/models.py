@@ -5,7 +5,6 @@ from django.db import models
 
 group_choices = (
     ('Cherubini Group','Francesco Cherubini Group'),
-    ('Verones Group','Francesca Verones Group'),
     ('Stømman Group','Anders Strømman Group'),
     ('Hertwich Group','Edgar Hertwich Group'),
     ('Müller Group','Daniel Müller Group'),
@@ -23,12 +22,40 @@ role_choices = (
     ('P','Professor'),
 )
 
+project_type_choices = (
+    ('M','Master Project'),
+    ('PhD','PhD Project'),
+    ('PD','PostDoc Project'),
+    ('O', 'Other type'),
+)
+
 partner_choices = (
     ('sintef','Sintef'),
     ('equinor','Equinor'),
     ('TK','Trondheim Kommune'),
-
+    ('PUCP','Pontificia Universidad Católica del Perú'),
+    ('ETH','ETH Zürich'),
+    ('SUA','Sokoine University of Agriculture'),
+    ('Government of the Netherlands','Government of the Netherlands'),
+    ('Leiden University','Leiden University'),
+    ('APRI','Africa Prolicy Research Institute'),
 )
+
+partner_type_choices = (
+    ('University','University'),
+    ('Private sector','Private sector'),
+    ('Industry','Industry'),
+)
+
+ressource_type_choices = (
+    ('Software','Software'),
+    ('Article','Article'),
+    ('Website','Website'),
+    ('Report','Report'),
+)
+
+
+
 class Person(models.Model):
 
     person_id = models.CharField(
@@ -94,9 +121,64 @@ class Group(models.Model):
     persons = models.ManyToManyField(
         Person
     )
-    
+
     def __str__(self):
         return self.name
+    
+class Partner(models.Model):
+
+
+    name= models.CharField(
+        null = False,
+        choices = partner_choices,
+        max_length=50)
+
+    description = models.TextField(
+        null = False,
+        blank= False,
+        max_length=2000
+    )
+
+    url= models.CharField(
+        null = False,
+        blank=False,
+        max_length=200
+        )
+
+    type= models.CharField(choices = partner_type_choices,
+                            max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class Ressource(models.Model):
+
+
+    full_name= models.CharField(
+        null = False,
+        blank= False,
+        max_length=100
+
+        )
+
+    description = models.TextField(
+        null = False,
+        blank= False,
+        max_length=2000
+    )
+
+    location= models.CharField(
+        null = False,
+        blank=False,
+        max_length=200
+        )
+
+    type= models.CharField(choices = ressource_type_choices,
+                            max_length=50)
+
+
+    def __str__(self):
+        return self.full_name
     
 class Project(models.Model):
 
@@ -133,6 +215,10 @@ class Project(models.Model):
     keywords = models.CharField(max_length=50)
     methods = models.CharField(max_length=50)
 
+    type = models.CharField(choices = project_type_choices,
+                            max_length=50,
+                            default='-')
+    
     persons = models.ManyToManyField(
         Person
     )
@@ -140,4 +226,21 @@ class Project(models.Model):
     groups = models.ManyToManyField(
         Group
     )
+    partners = models.ManyToManyField(
+        Partner
+    )
+    ressources = models.ManyToManyField(
+        Ressource 
+    )
+    
+    def __str__(self):
+        return self.project_id
+    
+
+
+
+
+
+
+
 

@@ -7,10 +7,11 @@ from django import forms
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Project._meta.get_fields()][:-2]
+    
+    list_display = [field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
     form = ProjectAdminForm
-
 # class PersonAdmin(admin.ModelAdmin):
+
 #     list_display = [field.name for field in Person._meta.get_fields()]
 
 # class GroupAdmin(admin.ModelAdmin):
@@ -20,3 +21,5 @@ class ProjectAdmin(admin.ModelAdmin):
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Person)
 admin.site.register(Group)
+admin.site.register(Partner)
+admin.site.register(Ressource)
