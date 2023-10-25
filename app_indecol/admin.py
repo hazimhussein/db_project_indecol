@@ -2,14 +2,21 @@ from django.contrib import admin
 from .models import *
 from .forms import *
 from django import forms
+from django.utils.translation import gettext_lazy as _
+
+
 
 # Register your models here.
 
 
 class ProjectAdmin(admin.ModelAdmin):
     
-    list_display = [field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
-    form = ProjectAdminForm
+    # list_display = [field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
+    # form = ProjectAdminForm
+    search_fields = ('methods','keywords','name','description')
+
+    list_display =[field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
+    list_filter = ("keywords", "methods","type","groups")
 # class PersonAdmin(admin.ModelAdmin):
 
 #     list_display = [field.name for field in Person._meta.get_fields()]
@@ -23,3 +30,4 @@ admin.site.register(Person)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Ressource)
+
