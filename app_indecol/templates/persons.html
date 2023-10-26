@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{%block title %}
+List of Persons involed at Indecol
+{%endblock title %}
+
+{%block content%}
+<h1>Person</h1>
+
+<ul class = "list-group">
+{%for person in persons%}
+    <a class = "list-group-item list-group-item-action" href = " {% url 'person_details' person.id %}">
+        {{person}}
+    </a>
+{%endfor%}
+</ul>
+{%endblock content%}

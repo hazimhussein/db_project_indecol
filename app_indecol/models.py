@@ -15,21 +15,21 @@ group_choices = (
 )
 
 role_choices = (
-    ('M','Master Student'),
+    ('Master Student','Master Student'),
     ('PhD','PhD'),
-    ('PD','PostDoc'),
-    ('E','Enginner'),
-    ('AP','Associate Professor'),
-    ('R','Researcher'),
-    ('P','Professor'),
+    ('PostDoc','PostDoc'),
+    ('Enginner','Enginner'),
+    ('Associate Professor','Associate Professor'),
+    ('Researcher','Researcher'),
+    ('Professor','Professor'),
 )
 
 project_type_choices = (
-    ('M','Master Project'),
-    ('PhD','PhD Project'),
-    ('PD','PostDoc Project'),
-    ('O', 'Other type'),
-    ('EU','European Project')
+    ('Master Project','Master Project'),
+    ('PhD Project','PhD Project'),
+    ('PostDoc Project','PostDoc Project'),
+    ('Other type', 'Other type'),
+    ('European Project','European Project')
 )
 
 partner_choices = (
@@ -221,7 +221,8 @@ class Project(models.Model):
                             default='-')
     
     persons = models.ManyToManyField(
-        Person
+        Person,
+        related_name='persons'
     )
 
     groups = models.ManyToManyField(

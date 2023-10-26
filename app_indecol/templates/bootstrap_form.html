@@ -1,0 +1,135 @@
+
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Filter projects</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'templates.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/">Home</a>
+              </li>
+              {% comment %} <li class="nav-item">
+                  <a class="nav-link" href="#">React</a>
+              </li> {% endcomment %}
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main" class="container" >
+
+      <h3>Filter Projects</h3>
+      <form method="GET" action="." >
+
+        <div class="form-row">
+            <div class="form-group col-12">
+                <div class="input-group">
+                    <input class="form-control py-2 border-right-0 border" type="search" name="name_contains" placeholder="Name of the project contains ..." />
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>        
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12">
+              <div class="input-group">
+                  <input class="form-control py-2 border-right-0 border" type="search" name="description_contains" placeholder="Description of the project contains ..." />
+                  <span class="input-group-append">
+                      <div class="input-group-text bg-transparent">
+                          <i class="fa fa-search"></i>
+                      </div>
+                  </span>
+              </div>
+          </div>        
+      </div>
+        <div class="form-row">
+
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="publishDateMin">Starting date minimum</label>
+            <input type="date" class="form-control" id="publishDateMin" name="date_min">
+          </div>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="publishDateMax">Starting date maximum</label>
+            <input type="date" class="form-control" id="publishDateMax" name="date_max">
+          </div>
+
+        </div>
+
+        {% comment %} il faut faire attention ici quand deux personnes ont le meme nom  de famille ca ne fonctionne pas {% endcomment %}
+        <div class="form-group col-md-4">
+          <label for="student">Author</label>
+          <select id="student" class="form-control" name="student">
+            <option selected>Choose...</option>
+            {% for student in students %}
+            <option value="{{ student }}">{{student.first_name}}  {{student.last_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+
+        {% comment %} <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="reviewed" name="reviewed">
+            <label class="form-check-label" for="reviewed">
+              Reviewed
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="notReviewed" name="notReviewed">
+            <label class="form-check-label" for="notReviewed">
+              Not reviewed
+            </label>
+          </div>
+        </div>  {% endcomment %}
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
+      <hr />
+
+      <div class="row">
+        <ul>
+          {% for project in  queryset %}
+            <li>
+             
+              <span><b>Project_id: </b>{{ project.project_id }}</span><p>
+              <span><b>Name: </b>{{ project.name }}</span><p>
+              <span><b>Start date: </b>{{ project.start_date }}</span><p>
+              <span><b>End date: </b>{{ project.end_date }}</span><p>
+              <span><b>Description : </b> {{ project.description }}</span><p>
+              <span>
+                <b>Person working on the project : </b>
+                {% for student in project.students.all  %}
+                  {{student.first_name}} {{student.last_name}},
+                {% endfor %}
+              </span><p>
+
+            </li>
+            <hr />
+          {% endfor %}
+        </ul>
+      </div> 
+
+    </main>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
