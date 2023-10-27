@@ -3,6 +3,7 @@ from . import models
 from django.views import generic
 from django.db.models import Q
 from .models import Project,Person
+from . import forms
 
 # Create your views here.
 
@@ -23,6 +24,7 @@ def persons(request):
     all_persons= models.Person.objects.all()
     return render(request,'persons.html',{'persons': all_persons})
 
+
 class ProjectDetailView(generic.DetailView):
     template_name = 'project_details.html'
     model = models.Project
@@ -38,28 +40,41 @@ class PersonDetailView(generic.DetailView):
 
 def BootstrapFilterView(request):
     qs = Project.objects.all()
-    print('qs',qs)
-    name_contains_query = request.GET.get('name_contains')
+    
+    name_or_id_contains_query = request.GET.get('name_or_id_contain')
     description_contains_query = request.GET.get('description_contains')
-    name_or_description_contains_query = request.GET.get('name_or_description_contains')
-
+    
     date_min = request.GET.get('date_min')
     date_max = request.GET.get('date_max')
-    person = request.GET.get('person')
+    pro_type = request.GET.get('pro_type')
+    keyword = request.GET.get('keyword')
     persons= Person.objects.all()
-    #print(students)
 
 
-    if name_contains_query != '' and name_contains_query is not None:
-        qs = qs.filter(name__icontains=name_contains_query )
+    person = request.GET.get('person')
+ 
+
+    categories = Project.objects.values_list('type', flat=True).distinct()
+    print(categories)
+
+   
+    if name_or_id_contains_query!= '' and name_or_id_contains_query is not None:
+        qs = qs.filter(Q(project_id__icontains=name_or_id_contains_query) | Q(name__icontains=name_or_id_contains_query)).distinct()
 
 
     elif description_contains_query != '' and description_contains_query is not None:
         qs = qs.filter(description__icontains=description_contains_query)
-   
- 
-    # elif name_or_description_contains_query != '' and name_or_description_contains_query is not None:
-    #     qs = qs.filter(Q(name__icontains=name_or_description_contains_query) | Q(description_contains_query=name_or_description_contains_query)).distinct()
+
+
+    keywords = forms.keyword_choices
+    keywords_list=[]
+
+    for a in keywords : 
+        keywords_list.append(a[0])
+    
+    keywords=keywords_list
+    print('keywords',keywords)
+    
 
     if is_valid_queryparam(date_min) :
         qs = qs.filter(start_date__gte=date_min)
@@ -67,14 +82,22 @@ def BootstrapFilterView(request):
     if is_valid_queryparam(date_max) :
         qs = qs.filter(start_date__lt=date_max)
 
+    if is_valid_queryparam(pro_type) and pro_type != 'Choose...' :
+        qs = qs.filter(type=pro_type)
+
+    if is_valid_queryparam(keyword) and keyword != 'Choose...' :
+        qs = qs.filter(keywords__icontains=keyword)
+
     if is_valid_queryparam(person) and person != 'Choose...':
-        print('author',person, persons)
-        qs = qs.filter(persons__last_name=person)
-     
-   
+        qs = qs.filter(persons__icontains=person)
+
+
+
     context = {
         'queryset' :qs,
         'persons' :persons,
+        'categories':categories,
+        'keywords' : keywords,
 
     }
 
