@@ -33,7 +33,7 @@
         <div class="form-row">
           <div class="form-group col-12">
               <div class="input-group">
-                  <input class="form-control py-2 border-right-0 border" type="search" name="name_contains" placeholder="Name of the project contains ..." />
+                  <input class="form-control py-2 border-right-0 border" type="search" name="name_or_id_contain" placeholder="Name or ID of the project contains ..." />
                   <span class="input-group-append">
                       <div class="input-group-text bg-transparent">
                           <i class="fa fa-search"></i>
@@ -54,18 +54,7 @@
             </div>
         </div>        
     </div> 
-        <div class="form-row">
-            <div class="form-group col-12">
-                <div class="input-group">
-                    <input class="form-control py-2 border-right-0 border" type="search" name="name_or_description_contains" placeholder="Name or description of the project contains ..." />
-                    <span class="input-group-append">
-                        <div class="input-group-text bg-transparent">
-                            <i class="fa fa-search"></i>
-                        </div>
-                    </span>
-                </div>
-            </div>        
-        </div>
+        
 
         <div class="form-row">
 
@@ -80,16 +69,35 @@
 
         </div>
 
-        {% comment %} il faut faire attention ici quand deux personnes ont le meme nom  de famille ca ne fonctionne pas {% endcomment %}
-        <div class="form-group col-md-4">
+        {% comment %} <div class="form-group col-md-4">
           <label for="person">Author</label>
           <select id="person" class="form-control" name="person">
             <option selected>Choose...</option>
             {% for person in persons %}
-            <option value="{{ person }}">{{person.first_name}}  {{person.last_name}}</option>
+            <option value="{{ person }}">{{ person }}</option>
+            {% endfor %}
+          </select>
+        </div> {% endcomment %}
+
+        <div class="form-group col-md-4">
+          <label for="pro_type">Project Type</label>
+          <select id="pro_type" class="form-control" name="pro_type">
+            <option selected>Choose...</option>
+            {% for type in categories %}
+            <option value="{{ type }}">{{type}}</option>
             {% endfor %}
           </select>
         </div>
+
+        <div class="form-group col-md-4">
+          <label for="keyword">Keyword</label>
+          <select id="keyword" class="form-control" name="keyword">
+            <option selected>Choose...</option>
+            {% for keyword in keywords %}
+            <option value="{{ keyword }}">{{keyword}}</option>
+            {% endfor %}
+          </select>
+        </div> 
 
 
         {% comment %} <div class="form-group">
@@ -123,6 +131,9 @@
               <span><b>Start date: </b>{{ project.start_date }}</span><p>
               <span><b>End date: </b>{{ project.end_date }}</span><p>
               <span><b>Description : </b> {{ project.description }}</span><p>
+              <span><b>Keywords : </b> {{ project.keywords }}</span><p>
+              <span><b>Type : </b> {{ project.type }}</span><p>
+
               <span>
                 <b>Person working on the project : </b>
                 {% for person in project.persons.all  %}
