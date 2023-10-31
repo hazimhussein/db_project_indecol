@@ -56,8 +56,7 @@ def BootstrapFilterView(request):
 
     categories = Project.objects.values_list('type', flat=True).distinct()
     print(categories)
-
-   
+    
     if name_or_id_contains_query!= '' and name_or_id_contains_query is not None:
         qs = qs.filter(Q(project_id__icontains=name_or_id_contains_query) | Q(name__icontains=name_or_id_contains_query)).distinct()
 
@@ -73,7 +72,6 @@ def BootstrapFilterView(request):
         keywords_list.append(a[0])
     
     keywords=keywords_list
-    print('keywords',keywords)
     
 
     if is_valid_queryparam(date_min) :
@@ -88,9 +86,9 @@ def BootstrapFilterView(request):
     if is_valid_queryparam(keyword) and keyword != 'Choose...' :
         qs = qs.filter(keywords__icontains=keyword)
 
+
     if is_valid_queryparam(person) and person != 'Choose...':
         qs = qs.filter(persons__icontains=person)
-
 
 
     context = {

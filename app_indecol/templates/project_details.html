@@ -5,15 +5,34 @@
 
 {%block content%}
 <h1>{{project}}</h1>
-<p>
+
+
+<p><b>Short name :</b>{{project.project_id}}</p>
+<p><b>Full name :</b>{{project.name}}</p>
+<p><b>Description : </b>
     {{project.description}}
 </p>
-<p>Details of {{project}}:</p>
+<p><b>Keyword(s) :</b>{{project.keywords}}</p>
+<p><b>Method(s) :</b>{{project.methods}}</p>
+<p><b>Group(s) :</b>    
+    {%for groups in project.groups.all%}
+    <a>{{groups}},</a>
+    {%endfor%}</p>
+<p><b>Type of project :</b>{{project.type}}</p>
+<p><b>Starting date:</b>{{project.start_date}}</p>
+<p><b>Endind date:</b>{{project.end_date}}</p>
+
+<p><b>External partners :</b>
+    {%for partners in project.partners.all%}
+    <a>{{partners}},</a>
+    {%endfor%}
+</p>
+
+<b>List of persons involved in the project : </b>
 <ul class ="list-group">
     {%for person in project.persons.all%}
     <a class = "list-group-item list-group-item-action" href={%url 'person_details' person.id %}>{{person}}</a>
     {%endfor%}
-
 </ul>
 
 {%endblock content%}
