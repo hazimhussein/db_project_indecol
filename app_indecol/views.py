@@ -4,6 +4,8 @@ from django.views import generic
 from django.db.models import Q
 from .models import Project,Person
 from . import forms
+from django.db.models import Value
+from django.db.models.functions import Concat
 
 # Create your views here.
 
@@ -89,7 +91,7 @@ def BootstrapFilterView(request):
         qs = qs.filter(keywords__icontains=keyword)
 
     if is_valid_queryparam(person) and person != 'Choose...':
-        qs = qs.filter(persons__icontains=person)
+        qs = qs.filter(persons__first_name__icontains=person.split(" ")[0], persons__last_name__icontains=person.split(" ")[-1])
 
 
 
