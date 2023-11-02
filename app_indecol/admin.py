@@ -11,12 +11,12 @@ from django.db.models.functions import Concat
 
 class ProjectAdmin(admin.ModelAdmin):
     
-    list_display = [field.name for field in Project._meta.get_fields() if field.name != 'description'][:-4]
+    list_display = [field.name for field in Project._meta.get_fields() if ((field.name != 'description') and (field.name != 'id'))][:-4]
     list_display.append("assigned_persons")
     form = ProjectAdminForm
     search_fields = ('methods','keywords','name','description', "persons__last_name", "persons__first_name")
     list_filter = ("keywords", "methods","type","groups")
-
+    list_display_links = ("project_id",)
     @admin.display(description='Persons')
     def assigned_persons(self, obj):
         return [person for person in obj.persons.all()]
