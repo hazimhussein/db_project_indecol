@@ -12,14 +12,18 @@ from django.utils.safestring import mark_safe
 
 class ProjectAdmin(admin.ModelAdmin):
 
-    list_display = [field.name for field in Project._meta.get_fields() if ((field.name != 'description') and (field.name !='id'))][:-4]
+    list_display = [field.name for field in Project._meta.get_fields() if ((field.name != 'description') and (field.name != 'id'))][:-4]
+
     list_display.append("assigned_persons")
     list_display.append("assigned_ressources")
     list_display.append("assigned_partners")
 
     form = ProjectAdminForm
     search_fields = ('methods','keywords','name','description', "persons__last_name", "persons__first_name")
+
     list_filter = ("keywords", "methods","type","groups","persons")
+
+
 
 
 
@@ -95,4 +99,3 @@ admin.site.register(Person)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Ressource)
-

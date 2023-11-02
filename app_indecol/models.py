@@ -194,7 +194,7 @@ class Project(models.Model):
     name= models.CharField(
         null=False,
         blank=False,
-        max_length=50
+        max_length=200
     )
 
     description = models.TextField(
@@ -226,10 +226,12 @@ class Project(models.Model):
     )
 
     groups = models.ManyToManyField(
-        Group
+        Group,
+        related_name='groups'
     )
     partners = models.ManyToManyField(
-        Partner
+        Partner,
+        related_name='partners'
     )
     ressources = models.ManyToManyField(
         Ressource 

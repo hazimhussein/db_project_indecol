@@ -4,6 +4,8 @@ from django.views import generic
 from django.db.models import Q
 from .models import Project,Person
 from . import forms
+from django.db.models import Value
+from django.db.models.functions import Concat
 
 # Create your views here.
 
@@ -56,8 +58,7 @@ def BootstrapFilterView(request):
 
     categories = Project.objects.values_list('type', flat=True).distinct()
     print(categories)
-
-   
+    
     if name_or_id_contains_query!= '' and name_or_id_contains_query is not None:
         qs = qs.filter(Q(project_id__icontains=name_or_id_contains_query) | Q(name__icontains=name_or_id_contains_query)).distinct()
 
@@ -73,7 +74,6 @@ def BootstrapFilterView(request):
         keywords_list.append(a[0])
     
     keywords=keywords_list
-    print('keywords',keywords)
     
 
     if is_valid_queryparam(date_min) :
@@ -88,9 +88,9 @@ def BootstrapFilterView(request):
     if is_valid_queryparam(keyword) and keyword != 'Choose...' :
         qs = qs.filter(keywords__icontains=keyword)
 
-    if is_valid_queryparam(person) and person != 'Choose...':
-        qs = qs.filter(persons__icontains=person)
 
+    if is_valid_queryparam(person) and person != 'Choose...':
+        qs = qs.filter(persons__first_name__icontains=person.split(" ")[0], persons__last_name__icontains=person.split(" ")[-1])
 
 
     context = {

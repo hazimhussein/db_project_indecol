@@ -7,7 +7,11 @@
 <h1>{{person}}</h1>
 <p>
 </p>
-<p>Details of {{person}}:</p>
+
+<b>Role : </b>{{person.role}}</p>
+<b>Start date : </b>{{person.start_date}}</p>
+<b>End date : </b>{{person.end_date}}</p>
+This person has also contributed to :
 <ul class ="list-group">
     {%for project in person.persons.all%}
     <a class = "list-group-item list-group-item-action" href={%url 'project_details' project.id %}>{{project}}</a>
