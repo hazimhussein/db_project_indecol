@@ -1,0 +1,22 @@
+[
+    {
+        "model": "app_indecol.ressource",
+        "pk": 11,
+        "fields": {
+            "full_name":"HiTEA code repository",
+            "description":"",
+            "location":"https://gitlab.com/hitea",
+            "type":"Repo"
+        }
+    },
+    {
+        "model": "app_indecol.ressource",
+        "pk": 12,
+        "fields": {
+            "full_name":"HiTEA project website",
+            "description":"",
+            "location":"https://hitea.iedl.no/",
+            "type":"project website"
+        }
+    }
+]

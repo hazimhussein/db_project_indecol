@@ -234,7 +234,7 @@ class Project(models.Model):
         related_name='partners'
     )
     ressources = models.ManyToManyField(
-        Ressource 
+        Ressource, blank=True
     )
 
     def __str__(self):

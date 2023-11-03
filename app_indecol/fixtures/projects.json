@@ -1,0 +1,42 @@
+[
+    {
+        "model": "app_indecol.project",
+
+        "fields": {
+            "project_id":"DESIRE",
+        "name":"DEvelopment of a System of Indicators for a Resource efficient Europe",
+        "description":"DESIRE will develop and apply an optimal set of indicators to monitor European progress towards resource-efficiency. We propose a combination of time series of environmentally extended input output data (EE IO) and the DPSIR framework to construct the indicator set. Only this approach will use a single data set that allows for consistent construction of resource efficiency indicators capturing the EU, country, sector and product group level, and the production and consumption perspective including impacts outside the EU. The project will a) improve data availability, particularly by creating EE IO time series and now-casted data (WP5). b) improve calculation methods for indicators that currently still lack scientific robustness, most notably in the field of biodiversity/ecosystem services (WP7) and critical materials (WP6). We further will develop novel reference indicators for economic success (‘Beyound GDP and Value added’, WP8). c) explicitly address the problem of indicator proliferation and limits in available data that have a ‘statistical stamp’. Via scientific analysis we will select the smallest set of indicators giving mutually independent information, and show which shortcuts in (statistical) data inventory can be made without significant loss of quality (WP8) The project comprises further Interactive policy analysis, indicator concept development via ‘brokerage activities (WP2-4), Management (WP1), and Conclusions and implementation (WP10) including a hand over ofdata and indicators to the EU’s Group of Four of EEA, Eurostat, DG ENV and DG JRC. Our team includes 4 UN Resource Panel members (WI, AAU-SEC, NTNU and LU-CML) and founders of the material flow analysis field (e.g. SERI). We further include TNO (global leader in EE IO via projects like EXIOPOL and CREEA), FFCUL (global top in biodiversity and ecosystem services) and RU (top player in sustainability impact assessment). ",
+        "start_date":"2012-09-01",
+        "end_date":"2016-02-29",
+        "keywords":["sustainability"],
+        "methods":["MRIO"],
+        "type":"EU fp7",
+        "persons":[100, 101, 102],
+        "groups":[11],
+        "partners":[4],
+        "ressources":[]
+    }
+    },
+    {
+        "model": "app_indecol.project",
+        
+        "fields": {
+
+            "project_id":"HiTEA",
+            "name":"High Throughput Environmental Assessment Pipeline",
+            "description":" The High Throughput Environmental Assessment Pipeline (HiTEA) project will build an end-user friendly tool for sophisticated sensitivity and uncertainty analysis towards reaching the Sustainable Development Goals (SDGs). HiTEA will make it simple, fast and cost-effective for researchers to perform thousands of model runs when they would previously only undertake one. The main impact will be to change the standard practice of point estimates in environmental assessments to exploration of solution spaces. By integrating life-cycle assessments and supply-chain analysis into parameterized scenarios, the likelihood of “problems” and “opportunities” can be realized, with direct benefits for better information on long-term sustainability policy design. The HiTEA architecture combines emerging digital container technologies, in memory column storage and interactive notebooks. HiTEA is planned to run on various e-infrastructure systems ranging from local multi-core servers, to HPC infrastructure at NTNU (OpenStack), Sigma2 (Nird Toolbox) and to commercial Kubernetes based cloud services like Amazon AWS and MS Azure. After reaching a mature software product, we aim to include HiTEA into the service catalogue of the EOSCHub. Case studies connected to SDGs will be conducted during the project. These run in parallel to the software development, providing the feedback needed to ensure software which thoroughly meets scientific user requirements. To do so, the project adopts industry standard Agile Software Development practices for the use in scientific software development. HiTEA embraces Open Source development. Besides maximizing outreach and exploitation, this will provide feedback on the usability and required capabilities already during the development phase. In addition, it actively encourages code contributions and usage from outside the project team to deliver a tool fully owned by the sustainability science community. ",
+            "start_date":"2020-10-01",
+            "end_date":"2026-12-31",
+            "keywords":["sustainability"],
+            "methods":["MRIO"],
+            "type":"RCN",
+            "persons":[101,103],
+            "groups":[12],
+            "partners":[4],
+            "ressources":[11, 12]
+        
+        }
+        
+    }
+
+]
