@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 # Create your models here.
 
@@ -62,7 +64,8 @@ ressource_type_choices = (
 )
 
 
-
+class User(AbstractUser):
+    pass
 class Person(models.Model):
 
 
@@ -236,6 +239,10 @@ class Project(models.Model):
     ressources = models.ManyToManyField(
         Ressource, blank=True
     )
+
+    master_projects = models.ManyToManyField("self", blank=True, null=True)
+
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.project_id

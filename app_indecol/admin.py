@@ -6,18 +6,15 @@ from django.db.models import Value
 from django.db.models.functions import Concat
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
 
 class ProjectAdmin(admin.ModelAdmin):
 
-    list_display = [field.name for field in Project._meta.get_fields() if ((field.name != 'description') and (field.name != 'id'))][:-4]
-
-    list_display.append("assigned_persons")
-    list_display.append("assigned_ressources")
-    list_display.append("assigned_partners")
-
+    list_display = ["name", "start_date", "keywords", "type", "assigned_persons", "assigned_ressources", "assigned_partners"]
+    
     form = ProjectAdminForm
     search_fields = ('methods','keywords','name','description', "persons__last_name", "persons__first_name")
 
@@ -99,3 +96,4 @@ admin.site.register(Person)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Ressource)
+admin.site.register(User, UserAdmin)
