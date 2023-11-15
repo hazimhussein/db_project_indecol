@@ -6,7 +6,8 @@
             "full_name":"HiTEA code repository",
             "description":"",
             "location":"https://gitlab.com/hitea",
-            "type":"Repo"
+            "type":"Repo",
+            "users":[1]
         }
     },
     {
@@ -16,7 +17,8 @@
             "full_name":"HiTEA project website",
             "description":"",
             "location":"https://hitea.iedl.no/",
-            "type":"project website"
+            "type":"project website",
+            "users":[1]
         }
     }
 ]

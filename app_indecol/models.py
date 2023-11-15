@@ -103,6 +103,8 @@ class Person(models.Model):
     role = models.CharField(choices = role_choices,
                             max_length=50)
     
+    users = models.ManyToManyField(User)
+    
     def __str__(self):
         return self.first_name + ' ' + self.last_name
     
@@ -125,6 +127,8 @@ class Group(models.Model):
     persons = models.ManyToManyField(
         Person
     )
+
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name
@@ -151,6 +155,8 @@ class Partner(models.Model):
 
     type= models.CharField(choices = partner_type_choices,
                             max_length=50)
+    
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name
@@ -179,6 +185,8 @@ class Ressource(models.Model):
 
     type= models.CharField(choices = ressource_type_choices,
                             max_length=50)
+    
+    users = models.ManyToManyField(User)
 
 
     def __str__(self):
@@ -223,24 +231,18 @@ class Project(models.Model):
                             max_length=50,
                             default='-')
     
-    persons = models.ManyToManyField(
-        Person,
-        related_name='persons'
-    )
+    persons = models.ManyToManyField(Person)
 
-    groups = models.ManyToManyField(
-        Group,
-        related_name='groups'
-    )
+    groups = models.ManyToManyField(Group)
     partners = models.ManyToManyField(
         Partner,
-        related_name='partners'
+        blank=True
     )
     ressources = models.ManyToManyField(
         Ressource, blank=True
     )
 
-    master_projects = models.ManyToManyField("self", blank=True, null=True)
+    master_projects = models.ManyToManyField("self", blank=True)
 
     users = models.ManyToManyField(User)
 
