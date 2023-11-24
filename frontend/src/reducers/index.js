@@ -1,8 +1,8 @@
-import {combineReducers} from 'redux'
+import {combineReducers} from '@reduxjs/toolkit'
 // import authedUser from './authedUser'
 // import users from './users'
 // import {categories} from './categories'
-import { data } from './data'
+import data from './data'
 // import { loadingBarReducer } from 'react-redux-loading'
 
 export default combineReducers({

@@ -1,58 +1,48 @@
 // import { func } from 'assert-plus'
 // import { div } from 'prelude-ls'
-import React, {Component, useState} from 'react'
+import React, {Component, useState, useEffect} from 'react'
 import { connect, useSelector } from 'react-redux'
-// import Question from './Question'
+import Question from './Question'
 // import { BrowserRouter as Router, Route } from 'react-router-dom'
 // import { handleGetTableC } from '../actions/data'
-// import TableView from './TableView'
+import TableView from './TableView'
+import { dataData, statusData } from '../reducers/data';
+import { useDispatch } from 'react-redux';
+import { getTableData } from '../utils/api';
+import { useParams } from 'react-router-dom';
+import Nav from './Nav';
 
 
-function Dashboard({category}){
-    // state={
-    //     answered: false,
-    //     optimizedView: true,
-    //     tableColumn: [],
-    //     searchInput:''
-    // }
 
-    const categories = ["user", "person", "group", "partner", "ressource", "project"]
-    const [optimizedView, setOptimizedView] = useState(true)
 
-    if (category){
-      let data = useSelector(state => state.data.value[category])
-    }
 
-    // toggleAnswered=(e, answered)=>{
-    //     this.setState(()=>{
-    //       return{
-    //         answered: answered,
-    //       }
-    //     })
-    // }
-    // toggleView= async (e, view)=>{
-    //   const {currentTable}=this.props
-    //   let columns = !view ? await handleGetTableC(currentTable)
-    //                       : []
-    //   this.setState(()=>{
-    //     return{
-    //       tableColumn: columns,
-    //       optimizedView: view
-    //     }
-    //   })
-    // }
+function Dashboard(){
+    let { category } = useParams();
+    category = category ? category : "category"
 
-    // handleSearchChange=(e)=>{
-    //   const searchInput = e.target.value
+    let dispatch = useDispatch();
 
-    //   this.setState(()=>({
-    //     searchInput: searchInput,
-    //   }))
-  // }
+    
+
+    const data = useSelector(dataData)
+    const isLoading = useSelector(statusData)
+    let data_current = data[category] ? data[category] : []
+
+    useEffect(()=>{
+      dispatch(getTableData(category))
+    }, [dispatch, category])
+
+    
+    
+    // const [optimizedView, setOptimizedView] = useState(true)
+    // const [searchInput, handleSearchChange] = useState("")
+
 
         return(
+          <>
+          <Nav></Nav>
             <div className='dashboard'>
-                {category ? <div className='toggle-questions'>
+                {/* {category != "category" && <div className='toggle-questions'>
                       <span
                       className={`toggle-btn left ${optimizedView && 'active'}`}
                       onClick={()=> setOptimizedView(true)}>
@@ -63,49 +53,34 @@ function Dashboard({category}){
                       onClick={()=> setOptimizedView(false)}>
                           Classic View
                       </span>
-                  </div>
-                  : <div className='questions'>
-                  {categories.map(cat => (
-                    <span key={cat}>{cat}</span>
-                    // <Question key={cat} id={cat} category={true} type={"Services"}/>
-                  ))}</div>}</div>)
-                }
-                // {optimizedView ? <div className='questions'>
-                 // {(dataShown!==null)&& 
-            //         <div key="search-bar" className="form-group row">
-            //           <div className="col-sm-10">
-            //             <input type='text' className="form-control" id={`colFormLabelSearchBar`} value={searchInput} placeholder="Search..." onChange={(e)=>this.handleSearchChange(e)}/>
-            //           </div>
-            //         </div>}
-            //       { (dataShown!==null) ? 
-            //       Object.keys(dataShown).filter((k)=>dataShown[k]['name'].toLowerCase().includes(searchInput.toLowerCase())).map((q)=>(<Question key={q} id={q} category={false}/>))
-            //       : answered ? answeredQ.map((q)=>(<Question key={q} id={q} category={true} type={"Services"}/>))
-            //                 : unansweredQ.map((q)=>(<Question key={q} id={q} category={true} type={"Staff"}/>))}
-            //     </div>
-            //     : <TableView dataS={dataShown} tableColumns={tableColumn}/>}
-            // </div> 
-        
-
-// function mapStateToProps({category}, props){
-  
-
-//   let data=null;
-//   if (category){
-//     data = useSelector(state => state.data.value[category])
-//   }
-
-//     const user = users[authedUser]
-//     const answeredQ = Object.keys(categories.services)
-//     const unansweredQ = Object.keys(categories.staff)
-//     // const unansweredQ = Object.keys(questions).filter((question)=> !(question in user.answers))
-//     return{
-//         answeredQ: answeredQ,
-//             // .sort((a,b)=> questions[b].timestamp - questions[a].timestamp),
-//         unansweredQ: unansweredQ,
-//         currentTable: servicename,
-//             // .sort((a,b)=> questions[b].timestamp - questions[a].timestamp)
-//         dataShown: dataShown
-//     }
-// }
+                  </div>} */}
+                {/* {optimizedView ? <div className='questions'>
+                 {(category != "category")&& 
+                    <div key="search-bar" className="form-group row">
+                      <div className="col-sm-10">
+                        <input type='text' className="form-control" id={`colFormLabelSearchBar`} value={searchInput} placeholder="Search..." onChange={(e)=>handleSearchChange(e.target.value)}/>
+                      </div>
+                    </div>}
+                    {data_current.filter(dat=>{
+                      let name = "" 
+                      if (category == "person"){
+                        name = dat.first_name + " " + dat.last_name
+                      } else if (category == "user"){
+                        name = dat.username
+                      } else if (category == "ressource"){
+                        name = dat.full_name
+                      } else {
+                        name = dat.name
+                      }
+                      return  name.toLowerCase().includes(searchInput.toLowerCase())
+                    }).map(cat => (
+                      <Question key={cat.id} id={cat.id} table={category} data={cat}/>
+                  ))}</div>
+                :  */}
+                <TableView key={category} table={category}/>
+                {/* } */}
+            </div>
+            </>)
+}
 
 export default Dashboard

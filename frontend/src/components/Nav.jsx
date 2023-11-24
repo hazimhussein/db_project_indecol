@@ -1,16 +1,19 @@
-import React from 'react'
-import { render } from 'react-dom'
 import {NavLink} from 'react-router-dom'
-import { connect } from 'react-redux'
-import { setAuthedUser } from '../actions/authedUser'
+import { useSelector, useDispatch } from 'react-redux'
+import { authedUser } from '../reducers/data'
+import { addTableRow, getTableData } from '../utils/api'
 
-function Nav(props){
-    const {user}=props
-    const signOut=()=>{
-        const {dispatch}=props
+function Nav(){
+    let dispatch = useDispatch()
+    const current_user = useSelector(authedUser)
 
-        dispatch(setAuthedUser(null))
+    const login=(user, pass)=>{
+        dispatch(addTableRow("login", {"username":user, "password": pass}))
     }
+    const logout=()=>{
+        dispatch(addTableRow("logout"))
+    }
+
     return(
         <nav className="">
             <div className="navbar navbar-expand-lg navbar-light bg-light container-fluid">
@@ -20,32 +23,35 @@ function Nav(props){
                             Home
                         </NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink to='/new_data/add/Staff/Guides' exact activeClassName='active' className="nav-link">
-                            Add item
-                        </NavLink>
-                    </li>
                 </ul>
                 <div className="nav-user">
-                        <div className='nav-avatar'>
+                {current_user ? <div className='nav-avatar'>
                             <img
-                            src={user && user.picture}
-                            alt={`Avatar of ${user && user.name}`}
+                            src="/assets/images/person.png"
+                            alt={`Avatar of ${current_user && current_user.last_name}`}
                             className='avatar'
                             />
                             <div>
-                                {user && user.name}
+                            ${current_user && current_user.first_name} ${current_user && current_user.last_name}
                             </div>
                         </div>
+                        : <div className='nav-avatar'>
+                        <img
+                        src="/assets/images/person.png"
+                        alt={`Avatar of ${current_user && current_user.last_name}`}
+                        className='avatar'
+                        />
+                        <div>
+                        ${current_user && current_user.first_name} ${current_user && current_user.last_name}
+                        </div>
+                    </div>}
                 </div>
+                
             </div>
             <div className="col-xs-12 navbar-inverse navbar-fixed-bottom">
                 <div className="row" id="bottomNav">
                     <div className="col-xs-4 text-center"><NavLink to='/' exact activeClassName='active'>
                             <i className="fa fa-home"></i>
-                        </NavLink></div>
-                    <div className="col-xs-4 text-center"><NavLink to='/new_data/add/Staff/Guides' exact activeClassName='active'>
-                            <i className="fa fa-plus-circle"></i>
                         </NavLink></div>
                     <div className="col-xs-4 text-center"><a href="#"><i className="fa fa-cog"></i></a></div>
                 </div>
@@ -128,11 +134,5 @@ function Nav(props){
 
 }
 
-function mapStateToProps({authedUser, users}){
-    const user = users[authedUser]
-    return{
-        user
-    }
-}
 
-export default connect(mapStateToProps)(Nav)
+export default Nav

@@ -87,14 +87,16 @@ body {
     padding: 4px;
     transform-origin: center top;
     transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
 }
 
 .card figure img {
-    width: 110%;
-    display: block;
-    height: 110%;
-    margin-left: -5%;
-    margin-top: -5%;
+    margin-bottom: -20%;
+    max-width: 50%;
+    height: 80%;
 }
 
 .card-liner {
@@ -142,9 +144,6 @@ body {
     transition: all 0.55s ease 0.1s;
 }
 
-.card--desc p span {
-    text-decoration: line-through;
-}
 
 .card--desc hr {
     border: none;

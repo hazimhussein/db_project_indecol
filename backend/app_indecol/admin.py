@@ -93,6 +93,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Person)
+admin.site.register(Category)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Ressource)

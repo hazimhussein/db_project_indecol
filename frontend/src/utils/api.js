@@ -1,9 +1,18 @@
 import axios from 'axios'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { capitalizeFirstLetter } from './helpers'
 
 ////////////////////////////////////////////
 import {idToList, tableColumnsArray} from './helpers'
 // let fetchingURL = 'https://localhost:3001/'
-let fetchingURL = 'http://127.0.0.1:8000/'
+let fetchingURL = 'http://127.0.0.1:8000/api/'
+axios.defaults.xsrfCookieName = "csrftoken"
+axios.defaults.xsrfHeaderName = "X-CSRFToken"
+axios.defaults.withCredentials = true;
+
+const client = axios.create({
+  baseURL:fetchingURL
+})
 
 // const categories= (cat1, cat2)=>{
 //   let output={}
@@ -57,29 +66,49 @@ export function getInitialData () {
 
 const categories = ["user", "person", "group", "partner", "ressource", "project"]
 
-export async function getTableData (table) {
+export const getTableData = createAsyncThunk(`data/getData`, async (table) =>{
+    // let url = new URL(table, fetchingURL);
+    const response = await client.get(table);
+    
+    return {data:response.data, category:table}
+  })
   
-  let url = new URL(table, fetchingURL);
-  const response = await axios.get(url);
+  
 
-  return response.data
-}
+export const addTableRow = createAsyncThunk(`data/addData`, async ({table, row}) =>{
+  // let url = new URL(table, fetchingURL);
 
-export async function addTableRow (table, row) {
-  let url = new URL(table, fetchingURL);
-  await axios.post(url, row);
-}
+  try{
+    const response = await client.post(`${table}/`, row);
+    return {data:response.data, category:table}
+  }catch(err){
+    console.log(err.response.data);
+ }
+  
+  
+})
 
-export async function removeTableRow (table, rowId) {
-  let url = new URL(table+`/${rowId}`, fetchingURL);
-  await axios.delete(url);
-}
+export const removeTableRow = createAsyncThunk(`data/removeData`, async ({table, rowId}) =>{ 
+  // let url = new URL(table+`/${rowId}/`, fetchingURL);
+  try{
+    const response = await client.delete(table+`/${rowId}/`);
+    return {rowId:rowId, category:table}
+  }catch(err){
+    console.log(err.response.data);
+  }
+})
 
-export async function updateTableRow (table, row, rowId) {
-  let url = new URL(table+`/${rowId}`, fetchingURL);
-  await axios.patch(url, row);
+export const updateTableRow = createAsyncThunk(`data/updateData`, async ({table, row, rowId}) =>{
+  // let url = new URL(table+`/${rowId}/`, fetchingURL);
+  
+  try{
+    const response = await client.patch(table+`/${rowId}/`, row);
+    return {data:response.data, rowId:rowId, category:table, row:row}
+  }catch(err){
+    console.log(err.response.data);
+  }
 
-}
+})
 
 export async function getTableColumns (table) {
   let url = new URL(table, fetchingURL);

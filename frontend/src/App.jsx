@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import './App.css'
-import { MemoryRouter as Router, Switch, Route } from 'react-router-dom'
-import Dashboard from './components/Dashboard'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import App from './components/App'
 
 function App() {
     return (
         <div className='container'>
-            <div>
-              <Route path='/' exact component={Dashboard}/>
-            </div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={<App/>}/>
+                </Routes>
+            </BrowserRouter>
         </div>
     )
 }
