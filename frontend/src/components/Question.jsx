@@ -28,7 +28,7 @@ function Question({ table, data }) {
   } else if (table == "user") {
     name = data.username;
     description = data.email
-  } else if (table == "ressource") {
+  } else if (table == "resource") {
     name = data.full_name;
   } else if (table == "group") {
     description = data.persons.map(pers=><span>{pers.first_name} {pers.last_name}<br/></span>)

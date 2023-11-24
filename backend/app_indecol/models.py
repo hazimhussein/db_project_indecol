@@ -56,7 +56,7 @@ partner_type_choices = (
     ('N/A','N/A')
 )
 
-ressource_type_choices = (
+resource_type_choices = (
     ('Software','Software'),
     ('Article','Article'),
     ('Website','Website'),
@@ -65,7 +65,8 @@ ressource_type_choices = (
 
 
 class User(AbstractUser):
-    pass
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
 
 class Category(models.Model):
     name = models.CharField(
@@ -178,7 +179,7 @@ class Partner(models.Model):
     def __str__(self):
         return self.name
 
-class Ressource(models.Model):
+class Resource(models.Model):
 
 
     full_name= models.CharField(
@@ -200,7 +201,7 @@ class Ressource(models.Model):
         max_length=200
         )
 
-    type= models.CharField(choices = ressource_type_choices,
+    type= models.CharField(choices = resource_type_choices,
                             max_length=50)
     
     users = models.ManyToManyField(User)
@@ -255,8 +256,8 @@ class Project(models.Model):
         Partner,
         blank=True
     )
-    ressources = models.ManyToManyField(
-        Ressource, blank=True
+    resources = models.ManyToManyField(
+        Resource, blank=True
     )
 
     master_projects = models.ManyToManyField("self", blank=True)

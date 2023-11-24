@@ -7,8 +7,8 @@
             "middle_name":"",
             "last_name":"Wood",
             "start_date":"2009-01-01",
-            "role":"Reseacher",
-            "users":[1]
+            "role":"Researcher",
+            "users":[72]
         }
     },
     {
@@ -20,7 +20,7 @@
             "last_name":"Stadler",
             "start_date":"2012-01-01",
             "role":"PostDoc",
-            "users":[1]
+            "users":[72]
         }
     },
     {
@@ -32,7 +32,7 @@
             "last_name":"Hertwich",
             "start_date":"2012-01-01",
             "role":"PI",
-            "users":[1]
+            "users":[72]
         }
     },
     {
@@ -45,7 +45,7 @@
                 "start_date":"2021-08-02",
                 "end_date":"2025-08-02",
                 "role":"PhD",
-                "users":[1]
+                "users":[72]
         }
     }
 

@@ -3,17 +3,37 @@ from .models import *
 from django.contrib.auth import get_user_model, authenticate
 
 
+class DynamicFieldsModelSerializer(serializers.ModelSerializer):
+    """
+    A ModelSerializer that takes an additional `fields` argument that
+    controls which fields should be displayed.
+    """
+
+    def __init__(self, *args, **kwargs):
+        # Don't pass the 'fields' arg up to the superclass
+        fields = kwargs.pop('fields', None)
+
+        # Instantiate the superclass normally
+        super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
+
+        if fields is not None:
+            # Drop any fields that are not specified in the `fields` argument.
+            allowed = set(fields)
+            existing = set(self.fields.keys())
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', "first_name", "last_name", "email")
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Category
         fields = ("__all__")
-class PersonSerializer(serializers.ModelSerializer):
+class PersonSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Person
         fields = ("__all__")
@@ -23,7 +43,7 @@ class PersonSerializer(serializers.ModelSerializer):
         return super(PersonSerializer, self).to_representation(instance)
 
 
-class GroupSerializer(serializers.ModelSerializer):
+class GroupSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Group
         fields = ("__all__")
@@ -34,7 +54,7 @@ class GroupSerializer(serializers.ModelSerializer):
         return super(GroupSerializer, self).to_representation(instance)
 
 
-class PartnerSerializer(serializers.ModelSerializer):
+class PartnerSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Partner
         fields = ("__all__")
@@ -44,14 +64,14 @@ class PartnerSerializer(serializers.ModelSerializer):
         return super(PartnerSerializer, self).to_representation(instance)
 
 
-class RessourceSerializer(serializers.ModelSerializer):
+class ResourceSerializer(DynamicFieldsModelSerializer):
     class Meta:
-        model = Ressource
+        model = Resource
         fields = ("__all__")
 
     def to_representation(self, instance):
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
-        return super(RessourceSerializer, self).to_representation(instance)
+        return super(ResourceSerializer, self).to_representation(instance)
 
 
 class MasterProjectSerializer(serializers.ModelSerializer):
@@ -66,10 +86,10 @@ class ProjectSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
-        self.fields['persons'] =  PersonSerializer(many=True, read_only=True)
-        self.fields['groups'] =  GroupSerializer(many=True, read_only=True)
-        self.fields['partners'] =  PartnerSerializer(many=True, read_only=True)
-        self.fields['ressources'] =  RessourceSerializer(many=True, read_only=True)
+        self.fields['persons'] =  PersonSerializer(many=True, read_only=True, fields = ('last_name', 'role'))
+        self.fields['groups'] =  GroupSerializer(many=True, read_only=True, fields = ('name'))
+        self.fields['partners'] =  PartnerSerializer(many=True, read_only=True, fields = ('name'))
+        self.fields['ressources'] =  ResourceSerializer(many=True, read_only=True, fields = ('full_name'))
         self.fields['master_projects'] =  MasterProjectSerializer(many=True, read_only=True)
         return super(ProjectSerializer, self).to_representation(instance)
     

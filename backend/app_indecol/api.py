@@ -35,10 +35,10 @@ class PartnerViewSet(viewsets.ModelViewSet):
     queryset = Partner.objects.all()
     serializer_class = PartnerSerializer
 
-class RessourceViewSet(viewsets.ModelViewSet):
+class ResourceViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
-    queryset = Ressource.objects.all()
-    serializer_class = RessourceSerializer
+    queryset = Resource.objects.all()
+    serializer_class = ResourceSerializer
     
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -56,6 +56,7 @@ class LDAPLogin(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.check_user(data)
             login(request, user, backend="django_python3_ldap.auth.LDAPBackend")
+            print(User.objects.get(username=user.username).id)
             return Response(UserSerializer(User.objects.get(username=user.username)).data, status=status.HTTP_200_OK)
 
 class LDAPLogout(APIView):
@@ -73,5 +74,4 @@ class UserView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         user = get_user(request) 
-        print(user)
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)

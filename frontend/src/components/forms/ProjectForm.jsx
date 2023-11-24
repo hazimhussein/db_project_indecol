@@ -85,7 +85,7 @@ function ProjectForm({setData, data}){
     const [personId, setPersonsId] = useState(data?data.persons.map(person=>person.id):[]);
     const [groupId, setGroupsId] = useState(data?data.groups.map(group=>group.id):[]);
     const [partnerId, setPartnersId] = useState(data && data.partners?data.partners.map(partner=>partner.id):[]);
-    const [resourceId, setResourcesId] = useState(data && data.ressources?data.ressources.map(resource=>resource.id):[]);
+    const [resourceId, setResourcesId] = useState(data && data.resources?data.resources.map(resource=>resource.id):[]);
     const [projectId, setProjectsId] = useState(data && data.projects ?data.projects.map(project=>project.id):[]);
     const [userId, setUsersId] = useState(data?data.users.map(user=>user.id):[]);
     const [type, setType] = useState(data?data.type:"Master Project");
@@ -126,7 +126,7 @@ function ProjectForm({setData, data}){
     let persons = list["person"] ? list["person"] : []
     let partners = list["partner"] ? list["partner"] : []
     let groups = list["group"] ? list["group"] : []
-    let resources = list["ressource"] ? list["ressource"] : []
+    let resources = list["resource"] ? list["resource"] : []
     let projects = list["project"] ? list["project"] : []
     const current_user = 1
 
@@ -146,7 +146,7 @@ function ProjectForm({setData, data}){
         entry["persons"] = personId
         entry["partners"] = partnerId
         entry["groups"] = groupId
-        entry["ressources"] = resourceId
+        entry["resources"] = resourceId
         entry["projects"] = projectId
         entry["users"] = userIds
         let param = {table:"project", row: entry}

@@ -55,8 +55,8 @@ class ProjectAdminForm(ModelForm):
         keywords = self.cleaned_data['keywords']
         methods = self.cleaned_data['methods']
 
-        self.cleaned_data['keywords'] = ', '.join(keywords)
-        self.cleaned_data['methods'] = ', '.join(methods)
+        self.cleaned_data['keywords'] = ', '.join(keywords).replace("'", "")
+        self.cleaned_data['methods'] = ', '.join(methods).replace("'", "")
 
         return self.cleaned_data
     

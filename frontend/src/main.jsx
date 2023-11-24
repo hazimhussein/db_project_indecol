@@ -20,7 +20,7 @@ store.dispatch(getTableData("category"))
 store.dispatch(getTableData("user"))
 store.dispatch(getTableData("person"))
 store.dispatch(getTableData("partner"))
-store.dispatch(getTableData("ressource"))
+store.dispatch(getTableData("resource"))
 store.dispatch(getTableData("group"))
 store.dispatch(getTableData("project"))
 ReactDOM.createRoot(document.getElementById('root')).render(

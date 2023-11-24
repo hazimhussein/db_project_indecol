@@ -66,17 +66,17 @@ function ResourceForm({setData, data}){
         entry["full_name"] = document.getElementById("name").value
         entry["type"] = type
         entry["users"] = userIds
-        let param = {table:"ressource", row: entry}
+        let param = {table:"resource", row: entry}
         
         if (data == null){
             dispatch(addTableRow(param))
             .then((res)=>{
                 console.log(res)
-                setData({nodes: [...list["ressource"], res.payload.data]})})
+                setData({nodes: [...list["resource"], res.payload.data]})})
            
         } else {
-            dispatch(updateTableRow({table:"ressource", row: entry, rowId: data.id}))
-            .then((res)=>{setData({nodes: [...list["ressource"].filter(row=>row.id!=data.id), res.payload.data]});
+            dispatch(updateTableRow({table:"resource", row: entry, rowId: data.id}))
+            .then((res)=>{setData({nodes: [...list["resource"].filter(row=>row.id!=data.id), res.payload.data]});
             })
 
             
