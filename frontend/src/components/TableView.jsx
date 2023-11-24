@@ -215,11 +215,6 @@ function TableView({table}){
     renderAfterRow: (item) => ((ids.includes(item.id) && list.filter(d=>d.id==item.id)[0]) && (<Details data={data.nodes.filter(d=>d.id==item.id)[0]}/>)),
   };
   
-  ////////////Delete
-  const handleRemove = (tableName, rowId) =>{
-    dispatch(removeTableRow({table:tableName, rowId:rowId}))
-    setData({nodes: list_selector[tableName].filter(row=>row.id!=rowId)})
-  }
   ////////////Edit
   const [editable, setEditable] = useState(null)
   const handleEditable = (tableName, rowId) =>{
@@ -252,32 +247,12 @@ function TableView({table}){
   : []
 
   if (list.length != 0){
-    COLUMNS[0].select = {
-      renderHeaderCellSelect: () => (
-        <Checkbox
-          size="small"
-          checked={select.state.all}
-          indeterminate={!select.state.all && !select.state.none}
-          onChange={select.fns.onToggleAll}
-        />
-      ),
-      renderCellSelect: (item) => (
-        <Checkbox
-          size="small"
-          checked={select.state.ids.includes(item.id)}
-          onChange={() => select.fns.onToggleById(item.id)}
-        />
-      ),
-    }
     COLUMNS.push({
       label: '',
       renderCell: (item) => (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <IconButton onClick={() => handleEditable(table,item.id)}>
             <FaPen size={14} />
-          </IconButton>
-          <IconButton onClick={() => handleRemove(table,item.id)}>
-            <FaRegTrashAlt size={14} />
           </IconButton>
         </div>
       ),
@@ -314,16 +289,6 @@ function TableView({table}){
         }
       }
     }
-    // let name = "" 
-    // if (table == "person"){
-    //   name = node.first_name + " " + node.last_name
-    // } else if (table == "user"){
-    //   name = node.username
-    // } else if (table == "ressource"){
-    //   name = node.full_name
-    // } else {
-    //   name = node.name
-    // }
     return  true
   }
    );
@@ -383,9 +348,6 @@ function TableView({table}){
       <Stack className='py-3' spacing={1} direction="row">
         <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
-        </Button>
-        <Button variant="contained" className='bg-danger' startIcon={<FaRegTrashAlt />} onClick={handleDownloadPdf}>
-          Delete
         </Button>
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
