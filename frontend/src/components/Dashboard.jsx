@@ -35,50 +35,27 @@ function Dashboard(){
     
     
     // const [optimizedView, setOptimizedView] = useState(true)
-    // const [searchInput, handleSearchChange] = useState("")
+    const [searchInput, handleSearchChange] = useState("")
 
 
         return(
           <>
           <Nav></Nav>
             <div className='dashboard'>
-                {/* {category != "category" && <div className='toggle-questions'>
-                      <span
-                      className={`toggle-btn left ${optimizedView && 'active'}`}
-                      onClick={()=> setOptimizedView(true)}>
-                          Optimized View
-                      </span>
-                      <span
-                      className={`toggle-btn right ${!optimizedView && 'active'}`}
-                      onClick={()=> setOptimizedView(false)}>
-                          Classic View
-                      </span>
-                  </div>} */}
-                {/* {optimizedView ? <div className='questions'>
-                 {(category != "category")&& 
+                {(category == "category")? <div className='questions'>
+                 
                     <div key="search-bar" className="form-group row">
                       <div className="col-sm-10">
                         <input type='text' className="form-control" id={`colFormLabelSearchBar`} value={searchInput} placeholder="Search..." onChange={(e)=>handleSearchChange(e.target.value)}/>
                       </div>
-                    </div>}
-                    {data_current.filter(dat=>{
-                      let name = "" 
-                      if (category == "person"){
-                        name = dat.first_name + " " + dat.last_name
-                      } else if (category == "user"){
-                        name = dat.username
-                      } else if (category == "ressource"){
-                        name = dat.full_name
-                      } else {
-                        name = dat.name
-                      }
-                      return  name.toLowerCase().includes(searchInput.toLowerCase())
-                    }).map(cat => (
+                    </div>
+                    {data_current.filter(dat=> dat.name.toLowerCase().includes(searchInput.toLowerCase())
+                    ).map(cat => (
                       <Question key={cat.id} id={cat.id} table={category} data={cat}/>
                   ))}</div>
-                :  */}
+                :
                 <TableView key={category} table={category}/>
-                {/* } */}
+                }
             </div>
             </>)
 }

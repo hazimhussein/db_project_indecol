@@ -74,7 +74,7 @@ function Question({ table, data }) {
             </div>
           )}
           <div className="card--title">
-            <h3>{capitalizeFirstLetter(name)}</h3>
+            <h3>{capitalizeFirstLetter(name)}s</h3>
             <p></p>
           </div>
           <div className="card--desc">
