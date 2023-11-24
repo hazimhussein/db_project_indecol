@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 import { FaPen, FaChevronRight, FaChevronDown, FaChevronUp, FaRegTrashAlt, FaPlusSquare } from 'react-icons/fa';
 import { capitalizeFirstLetter } from '../utils/helpers';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Details from './Details';
 
 import html2canvas from "html2canvas";
@@ -35,7 +35,7 @@ import { jsPDF } from "jspdf";
 import { dataData } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
 import FormPicker from "./FormPicker"
-import { removeTableRow } from "../utils/api";
+import { removeTableRow, getTableData } from "../utils/api";
 
 
 
@@ -49,6 +49,10 @@ function TableView({table}){
   const list_filt = list.map(dat=>Object.fromEntries(Object.keys(dat).filter(key=>dat[key] && dat[key].constructor !== Array).map(x=> [x, dat[x]])));
   
   const [data, setData] = useState({nodes:list});
+  useEffect(()=>{
+    dispatch(getTableData(table))
+    .then((res)=>setData({nodes: res.payload.data}))
+  }, [dispatch, table])
 
   //* Theme *//
 

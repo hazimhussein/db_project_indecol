@@ -29,7 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 CORS_ORIGIN_ALLOW_ALL = True   
 CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_DOMAIN = "127.0.0.1"
 #ALLOWED_HOSTS = [    ]
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 
 # Application definition
@@ -79,9 +81,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "project.wsgi.application"
 
 REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-                    'rest_framework.authentication.SessionAuthentication',
-        ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

@@ -3,7 +3,7 @@ import { createSlice} from "@reduxjs/toolkit"
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { capitalizeFirstLetter } from '../utils/helpers'
-import { getTableData, addTableRow, removeTableRow, updateTableRow } from "../utils/api"
+import { getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI } from "../utils/api"
 
 /////////////////////////
 // import { RECEIVE_DATA, ADD_DATA, UPDATE_DATA, REMOVE_DATA} from "../actions/data"
@@ -79,6 +79,15 @@ const dataSlice = createSlice({
 
           // Add any fetched posts to the array
           state.value[action.payload.category] = nonEdit.concat([action.payload.data])
+      })
+        .addCase(loginAPI.fulfilled, (state, action) => {
+          state.status = 'succeeded'
+
+          state.user = action.payload
+      })
+        .addCase(logoutAPI.fulfilled, (state, action) => {
+          state.status = 'succeeded'
+          state.user = null
       })
         // .addCase(addNewPost.fulfilled, (state, action) => {
         //     // Fix for API post IDs:

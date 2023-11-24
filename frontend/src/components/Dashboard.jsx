@@ -10,7 +10,7 @@ import { dataData, statusData } from '../reducers/data';
 import { useDispatch } from 'react-redux';
 import { getTableData } from '../utils/api';
 import { useParams } from 'react-router-dom';
-import Nav from './Nav';
+import NavTop from './Nav';
 
 
 
@@ -20,17 +20,14 @@ function Dashboard(){
     let { category } = useParams();
     category = category ? category : "category"
 
-    let dispatch = useDispatch();
-
     
 
     const data = useSelector(dataData)
     const isLoading = useSelector(statusData)
+    // let data_current = data[category] ? data[category] : []
     let data_current = data[category] ? data[category] : []
 
-    useEffect(()=>{
-      dispatch(getTableData(category))
-    }, [dispatch, category])
+  
 
     
     
@@ -40,7 +37,7 @@ function Dashboard(){
 
         return(
           <>
-          <Nav></Nav>
+          <NavTop/>
             <div className='dashboard'>
                 {(category == "category")? <div className='questions'>
                  

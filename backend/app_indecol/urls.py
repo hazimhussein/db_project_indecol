@@ -25,5 +25,6 @@ urlpatterns = [
     path('api/', include((router.urls, 'app_indecol'))),
     path('api/login', api.LDAPLogin.as_view()),
     path('api/logout', api.LDAPLogout.as_view()),
+    path('api/loggeduser', api.UserView.as_view()),
     path('bootstrap/',BootstrapFilterView,name = 'bootstrap_form')
 ]

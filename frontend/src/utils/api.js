@@ -6,8 +6,8 @@ import { capitalizeFirstLetter } from './helpers'
 import {idToList, tableColumnsArray} from './helpers'
 // let fetchingURL = 'https://localhost:3001/'
 let fetchingURL = 'http://127.0.0.1:8000/api/'
-axios.defaults.xsrfCookieName = "csrftoken"
-axios.defaults.xsrfHeaderName = "X-CSRFToken"
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
@@ -68,9 +68,22 @@ const categories = ["user", "person", "group", "partner", "ressource", "project"
 
 export const getTableData = createAsyncThunk(`data/getData`, async (table) =>{
     // let url = new URL(table, fetchingURL);
-    const response = await client.get(table);
+    const response = await client.get(`${table}/`);
     
     return {data:response.data, category:table}
+  })
+
+export const loginAPI = createAsyncThunk(`data/login`, async (cred) =>{
+    // let url = new URL(table, fetchingURL);
+    const response = await client.post(`login`, cred)
+    
+    return response.data
+  })
+export const logoutAPI = createAsyncThunk(`data/logout`, async () =>{
+    // let url = new URL(table, fetchingURL);
+    const response = await client.post(`logout`);
+    
+    return response
   })
   
   

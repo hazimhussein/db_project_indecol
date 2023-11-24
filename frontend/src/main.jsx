@@ -16,11 +16,13 @@ const store = configureStore({
   reducer:{data:dataReduce},
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 })
+store.dispatch(getTableData("category"))
 store.dispatch(getTableData("user"))
 store.dispatch(getTableData("person"))
 store.dispatch(getTableData("partner"))
 store.dispatch(getTableData("ressource"))
 store.dispatch(getTableData("group"))
+store.dispatch(getTableData("project"))
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>

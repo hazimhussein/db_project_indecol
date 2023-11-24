@@ -1,25 +1,110 @@
 import {NavLink} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { authedUser } from '../reducers/data'
-import { addTableRow, getTableData } from '../utils/api'
+import { addTableRow, getTableData, loginAPI, logoutAPI } from '../utils/api'
+import { useState, useEffect } from 'react';
+import {Form,
+    InputGroup,
+    Row,
+Col,
+Nav,
+Navbar,
+Container} from 'react-bootstrap';
+import {Button} from '@mui/material';
 
-function Nav(){
+function NavTop(){
     let dispatch = useDispatch()
     const current_user = useSelector(authedUser)
 
-    const login=(user, pass)=>{
-        dispatch(addTableRow("login", {"username":user, "password": pass}))
+    let [showLogin, setShowLogin] = useState(false)
+
+    const login=()=>{
+        let user = document.getElementById("username").value
+        let pass = document.getElementById("password").value
+        dispatch(loginAPI({"username":user, "password": pass}))
     }
     const logout=()=>{
-        dispatch(addTableRow("logout"))
+        dispatch(logoutAPI())
     }
+    
+    // useEffect(()=>{
+    //     current_user = useSelector(authedUser)
+    // }, [dispatch])
 
     return(
-        <nav className="">
+        <>
+        <Navbar className="bg-body-tertiary border-bottom m-0" data-bs-theme="light" style={{height:"80px"}}>
+        <Container className='h-100'>
+        <Navbar.Brand href="/" className='d-flex'>
+            <img
+              alt=""
+              src="/assets/images/logo.png"
+              width="50"
+              height="50"
+              className="d-inline-block align-top"
+            />
+            <span className="d-flex align-items-center ms-2">IndEcX</span>
+          </Navbar.Brand>     
+          {current_user ? <Navbar.Collapse className="justify-content-end h-100 align-items-center">
+          <Navbar.Text>
+          <img
+                src="/assets/images/user_icon.png"
+                alt={`Avatar of ${current_user && current_user.last_name}`}
+                style={{height : "40px", width: "40px"}}
+                width="40"
+                height="40"
+            />          
+          </Navbar.Text>
+          <Navbar.Text className="d-flex align-items-center ms-2 navbar-text h-100 p-3">
+            <div >
+                {`${current_user && current_user.first_name} ${current_user && current_user.last_name}`}
+            </div>           
+          </Navbar.Text>
+          <Navbar.Text onClick={() => logout()} className="d-flex align-items-center ms-4 navbar-text h-100 p-3 nav-link">
+            <div>Logout</div>
+          </Navbar.Text>
+        </Navbar.Collapse> 
+        : showLogin ? 
+        <form id="loginForm" onSubmit={(e)=>login(e)}>
+            <Row className='d-flex align-items-center h-100'>
+            <Col xs="auto">
+            <Form.Control
+                id="username"
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+            />
+            </Col>
+            <Col xs="auto">
+                <Form.Control
+                id="password"
+                type="password"
+                placeholder="password"
+                className=" mr-sm-2"
+                />
+            </Col>
+            <Col xs="auto">
+            <Button type='button' variant="contained" className='m-auto me-0' onClick={()=>login()}>
+          Submit
+        </Button>
+            </Col>
+            </Row>
+        </form>
+        :
+      <Navbar.Collapse className="justify-content-end h-100 align-items-center">
+      <Navbar.Text onClick={()=>setShowLogin(!showLogin)} className="d-flex align-items-center ms-4 navbar-text h-100 p-3 nav-link">
+        <div>Login</div>
+      </Navbar.Text>
+    </Navbar.Collapse>}  
+        </Container>
+        
+        
+      </Navbar>
+        {/* <nav className="">
             <div className="navbar navbar-expand-lg navbar-light bg-light container-fluid">
                 <ul className="navbar-nav m-auto text-center fs-3 fw-bold">
                     <li className="nav-item">
-                        <NavLink to='/' exact activeClassName='active' className="nav-link">
+                        <NavLink to='/' className="active nav-link">
                             Home
                         </NavLink>
                     </li>
@@ -50,13 +135,14 @@ function Nav(){
             </div>
             <div className="col-xs-12 navbar-inverse navbar-fixed-bottom">
                 <div className="row" id="bottomNav">
-                    <div className="col-xs-4 text-center"><NavLink to='/' exact activeClassName='active'>
+                    <div className="col-xs-4 text-center"><NavLink to='/' className='active'>
                             <i className="fa fa-home"></i>
                         </NavLink></div>
                     <div className="col-xs-4 text-center"><a href="#"><i className="fa fa-cog"></i></a></div>
                 </div>
             </div>
-        </nav>
+        </nav> */}
+        </>
     )
           {/* <a className="navbar-brand" href="#">
                 <!--Logo png and style-->
@@ -135,4 +221,4 @@ function Nav(){
 }
 
 
-export default Nav
+export default NavTop

@@ -178,7 +178,7 @@ function GroupForm({setData, data}){
               value={user.id}
               style={getStyles(user.id, userId, theme)}
             >
-              {user.username}
+              {`${user.first_name} ${user.last_name}`}
             </MenuItem>
           ))}
         </Select>
