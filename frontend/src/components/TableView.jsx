@@ -215,6 +215,12 @@ function TableView({table}){
   const ROW_OPTIONS = {
     renderAfterRow: (item) => ((ids.includes(item.id) && list.filter(d=>d.id==item.id)[0]) && (<Details data={data.nodes.filter(d=>d.id==item.id)[0]}/>)),
   };
+
+  ////////////Delete
+  const handleRemove = (tableName, rowId) =>{
+    dispatch(removeTableRow({table:tableName, rowId:rowId}))
+    setData({nodes: list_selector[tableName].filter(row=>row.id!=rowId)})
+  }
   
   ////////////Edit
   const [editable, setEditable] = useState(null)
@@ -254,6 +260,9 @@ function TableView({table}){
         current_user && item.users.map(usr=>usr.id).includes(current_user.id) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <IconButton onClick={() => handleEditable(table,item.id)}>
             <FaPen size={14} />
+          </IconButton>
+          <IconButton onClick={() => handleRemove(table,item.id)}>
+            <FaRegTrashAlt size={14} />
           </IconButton>
         </div>
       ),
