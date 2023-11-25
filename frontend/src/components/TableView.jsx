@@ -32,7 +32,7 @@ import Details from './Details';
 
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { dataData } from '../reducers/data';
+import { dataData, authedUser } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
 import FormPicker from "./FormPicker"
 import { removeTableRow, getTableData } from "../utils/api";
@@ -43,6 +43,7 @@ const key = 'Table';
 
 function TableView({table}){
   let dispatch = useDispatch();
+  const current_user = useSelector(authedUser)
   const list_selector = useSelector(dataData)
   let list = list_selector[table] ? list_selector[table] : []
   
@@ -82,7 +83,7 @@ function TableView({table}){
    const pagination = usePagination(data, {
      state: {
        page: 0,
-       size: 2,
+       size: 10,
      },
      onChange: onPaginationChange,
    });
@@ -250,7 +251,7 @@ function TableView({table}){
     COLUMNS.push({
       label: '',
       renderCell: (item) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        current_user && item.users.map(usr=>usr.id).includes(current_user.id) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <IconButton onClick={() => handleEditable(table,item.id)}>
             <FaPen size={14} />
           </IconButton>
@@ -346,9 +347,9 @@ function TableView({table}){
       {/* Form */}
 
       <Stack className='py-3' spacing={1} direction="row">
-        <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
+        {current_user && <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
-        </Button>
+        </Button>}
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
         </Button>
@@ -394,7 +395,7 @@ function TableView({table}){
           count={modifiedNodes.length}
           page={pagination.state.page}
           rowsPerPage={pagination.state.size}
-          rowsPerPageOptions={[1, 2, 5]}
+          rowsPerPageOptions={[ 2, 5, 10, 20]}
           onRowsPerPageChange={(event) =>
             pagination.fns.onSetSize(parseInt(event.target.value, 10))
           }

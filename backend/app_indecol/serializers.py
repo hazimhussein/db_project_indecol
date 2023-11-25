@@ -22,18 +22,17 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
             existing = set(self.fields.keys())
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', "first_name", "last_name", "email")
 
 
-class CategorySerializer(DynamicFieldsModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("__all__")
-class PersonSerializer(DynamicFieldsModelSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ("__all__")
@@ -43,7 +42,7 @@ class PersonSerializer(DynamicFieldsModelSerializer):
         return super(PersonSerializer, self).to_representation(instance)
 
 
-class GroupSerializer(DynamicFieldsModelSerializer):
+class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ("__all__")
@@ -54,7 +53,7 @@ class GroupSerializer(DynamicFieldsModelSerializer):
         return super(GroupSerializer, self).to_representation(instance)
 
 
-class PartnerSerializer(DynamicFieldsModelSerializer):
+class PartnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partner
         fields = ("__all__")
@@ -64,7 +63,7 @@ class PartnerSerializer(DynamicFieldsModelSerializer):
         return super(PartnerSerializer, self).to_representation(instance)
 
 
-class ResourceSerializer(DynamicFieldsModelSerializer):
+class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resource
         fields = ("__all__")
@@ -86,10 +85,10 @@ class ProjectSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
-        self.fields['persons'] =  PersonSerializer(many=True, read_only=True, fields = ('last_name', 'role'))
-        self.fields['groups'] =  GroupSerializer(many=True, read_only=True, fields = ('name'))
-        self.fields['partners'] =  PartnerSerializer(many=True, read_only=True, fields = ('name'))
-        self.fields['ressources'] =  ResourceSerializer(many=True, read_only=True, fields = ('full_name'))
+        self.fields['persons'] =  PersonSerializer(many=True, read_only=True)
+        self.fields['groups'] =  GroupSerializer(many=True, read_only=True)
+        self.fields['partners'] =  PartnerSerializer(many=True, read_only=True)
+        self.fields['resources'] =  ResourceSerializer(many=True, read_only=True)
         self.fields['master_projects'] =  MasterProjectSerializer(many=True, read_only=True)
         return super(ProjectSerializer, self).to_representation(instance)
     

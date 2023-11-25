@@ -14,4 +14,19 @@
     background-color: #bbbbddcc;
     border-bottom: 1px solid #bbbbdd;
 }
+
+.child {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+.child:hover {
+    cursor: pointer;
+    background-color: #b8b9ba;
+    border-radius: 0.5rem;
+}
     
