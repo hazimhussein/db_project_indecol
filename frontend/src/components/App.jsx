@@ -11,6 +11,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 // import Nav from './Nav'
 import Dashboard from './Dashboard'
 import { Navigate } from 'react-router-dom';
+import "../assets/styles/index.css"
 
 function App() {  
     return (

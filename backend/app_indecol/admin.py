@@ -11,9 +11,12 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 
+class UsersAdmin(UserAdmin):
+
+    list_display = ["id", "username", "email", "first_name", "last_name"]
 class ProjectAdmin(admin.ModelAdmin):
 
-    list_display = ["name", "start_date", "keywords", "type", "assigned_persons", "assigned_ressources", "assigned_partners"]
+    list_display = ["name", "start_date", "keywords", "type", "assigned_persons", "assigned_resources", "assigned_partners"]
     
     form = ProjectAdminForm
     search_fields = ('methods','keywords','name','description', "persons__last_name", "persons__first_name")
@@ -29,15 +32,15 @@ class ProjectAdmin(admin.ModelAdmin):
         return [person for person in obj.persons.all()]
 
 
-    @admin.display(description='Ressource')
-    def assigned_ressources(self, obj):
-        return format_html("{}", mark_safe([f"<a href='../ressource/{ressource.id}'>{ressource}</a>" for ressource in obj.ressources.all()]))
+    @admin.display(description='resource')
+    def assigned_resources(self, obj):
+        return format_html("{}", mark_safe([f"<a href='../resource/{resource.id}'>{resource}</a>" for resource in obj.resources.all()]))
     
     @admin.display(description='Partners')
     def assigned_partners(self, obj):
         return format_html("{}", mark_safe([f"<a href='../partner/{partner.id}'>{partner}</a>" for partner in obj.partners.all()]))
         # list_url=[])
-        # url =[ressource.location for ressource in obj.ressources.all()]
+        # url =[resource.location for ressource in obj.ressources.all()]
         # print(url)
         # all_url ={}
         # all_text={}
@@ -97,4 +100,4 @@ admin.site.register(Category)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Resource)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, UsersAdmin)

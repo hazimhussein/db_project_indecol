@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { addTableRow, updateTableRow, getTableData } from "../../utils/api";
 import { useSelector } from 'react-redux';
-import { dataData } from '../../reducers/data';
+import { dataData, authedUser } from '../../reducers/data';
 import { useState } from "react";
 import { Col } from "react-bootstrap";
 import { Option, MultiSelect } from "./Select";
@@ -33,7 +33,7 @@ function getStyles(name, userId, theme) {
   };
 
   
-function PersonForm({setData, data}){
+function PersonForm({setData, data, child}){
     let dispatch = useDispatch();
     const theme = useTheme();
     const [userId, setUsersId] = useState(data?data.users.map(user=>user.id):[]);
@@ -55,12 +55,14 @@ function PersonForm({setData, data}){
 
     let list = useSelector(dataData)
     let users = list["user"] ? list["user"] : []
-    const current_user = 1
+    const current_user = useSelector(authedUser)
 
     const handleSave = () => {
         let cols = ["first_name", "middle_name", "last_name"]
         let userIds = [...userId]
-        userIds.push(current_user)
+        if (~userIds.includes(current_user.id)){
+          userIds.push(current_user.id)
+        }
         let entry = {}
         for (let col of cols){
             entry[col] = document.getElementById(col).value
@@ -163,7 +165,7 @@ function PersonForm({setData, data}){
           input={<OutlinedInput label="Users" />}
           MenuProps={MenuProps}
         >
-          {users.filter(user=>user.id!=current_user).map((user) => (
+          {users.filter(user=>user.id!=current_user.id).map((user) => (
             <MenuItem
               key={user.id}
               value={user.id}
@@ -178,7 +180,7 @@ function PersonForm({setData, data}){
         to be able to edit this entry
       </Form.Text>
       </FormControl>
-        <Button className="mt-5" variant="contained" onClick={handleSave}>
+        <Button className="mt-5 mb-2" variant="contained" onClick={handleSave}>
             Save
           </Button>
         </>

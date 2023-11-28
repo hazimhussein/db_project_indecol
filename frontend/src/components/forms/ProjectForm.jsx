@@ -1,15 +1,21 @@
-import { TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, Select } from "@mui/material"
+import { TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, Select, Modal, Box, Typography, FormGroup, ListSubheader  } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 import TextArea from "./TextArea"
 import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { addTableRow, updateTableRow, getTableData } from "../../utils/api";
 import { useSelector } from 'react-redux';
-import { dataData } from '../../reducers/data';
+import { dataData, authedUser } from '../../reducers/data';
 import { useState } from "react";
 import { Col } from "react-bootstrap";
 import { Option, MultiSelect } from "./Select";
 import dayjs from 'dayjs';
+import { FaPlusSquare } from 'react-icons/fa';
+import PersonForm from "./PersonForm";
+import GroupForm from "./GroupForm";
+import ResourceForm from "./ResourceForm";
+import PartnerForm from "./PartnerForm";
+
 
 import {DatePicker} from "@mui/x-date-pickers"
 
@@ -68,6 +74,7 @@ function getStyles(name, userId, theme) {
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
+    autoFocus:false,
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -91,6 +98,14 @@ function ProjectForm({setData, data}){
     const [type, setType] = useState(data?data.type:"Master Project");
     const [startDate, setStartDate] = useState(data?dayjs(data.start_date):"");
     const [endDate, setEndDate] = useState(data?dayjs(data.end_date):"");
+
+    //Filter
+    let filter_dict = {user:"", keyword:"", method:"", type:"", person:"", group:"", partner:"", resource:"", project:""}
+    const [filter, setFilter] = useState(filter_dict)
+
+    let options_dict = {user:[], keyword:[], method:[], type:[], person:[], group:[], partner:[], resource:[], project:[]}
+    const [options, setOptions] = useState(options_dict)
+
     const handleChange = (event) => {
         const {
         target: { value },
@@ -128,12 +143,15 @@ function ProjectForm({setData, data}){
     let groups = list["group"] ? list["group"] : []
     let resources = list["resource"] ? list["resource"] : []
     let projects = list["project"] ? list["project"] : []
-    const current_user = 1
+    const current_user = useSelector(authedUser)
 
     const handleSave = () => {
         let cols = ["project_id", "name", "description"]
         let userIds = [...userId]
-        userIds.push(current_user)
+        if (~userIds.includes(current_user.id)){
+          userIds.push(current_user.id)
+        }
+        
         let entry = {}
         for (let col of cols){
             entry[col] = document.getElementById(col).value
@@ -166,8 +184,61 @@ function ProjectForm({setData, data}){
         }
       };
 
+
+
+      // Modal
+      const [modalOpened, setModalOpened] = useState(false);
+
     return (
         <>
+        <Modal open={modalOpened} onClose={() => setModalOpened(false)}>
+        <Box
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 500,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e0e0e0',
+            borderRadius: '4px',
+            padding: '10px',
+          }}
+          className="d-flex flex-column"
+        >
+          {modalOpened == "person"?
+            <>
+            <Typography variant="h6" component="h2">
+              Add a new person record ...
+            </Typography>
+            <PersonForm setData={setData} child={true}/>
+            </>
+            : modalOpened == "group"?
+            <>
+            <Typography variant="h6" component="h2">
+              Add a new group record ...
+            </Typography>
+            <GroupForm setData={setData} child={true}/>
+            </>
+            : modalOpened == "resource"?
+            <>
+            <Typography variant="h6" component="h2">
+              Add a new person record ...
+            </Typography>
+            <ResourceForm setData={setData} child={true}/>
+            </>
+            : modalOpened == "partner" &&
+            <>
+            <Typography variant="h6" component="h2">
+              Add a new person record ...
+            </Typography>
+            <PartnerForm setData={setData} child={true}/>
+            </>}
+            <Button variant="outlined" onClick={()=>setModalOpened(false)}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
         <TextField
             label="Project ID"
             id="project_id"
@@ -259,11 +330,13 @@ function ProjectForm({setData, data}){
         </Select>
       </FormControl>
       <FormControl className="py-2 w-100">
+        <Form.Group>
         <InputLabel id="personsLabel">Persons</InputLabel>
         <Select
           labelId="personsLabel"
           id="persons"
           name="persons"
+          style={{width:"85%"}}
           multiple
           defaultValue={personId}
           onChange={handleChange}
@@ -280,16 +353,21 @@ function ProjectForm({setData, data}){
             </MenuItem>
           ))}
         </Select>
+        <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
+        onClick={()=>setModalOpened("person")}><FaPlusSquare /></button>
+        </Form.Group>
         <Form.Text muted>
         Add people who are part of this Project
       </Form.Text>
       </FormControl>
       <FormControl className="py-2 w-100">
+      <Form.Group>
         <InputLabel id="groupsLabel">Groups</InputLabel>
         <Select
           labelId="groupsLabel"
           id="groups"
           name="groups"
+          style={{width:"85%"}}
           multiple
           defaultValue={groupId}
           onChange={handleChange}
@@ -306,13 +384,18 @@ function ProjectForm({setData, data}){
             </MenuItem>
           ))}
         </Select>
+        <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
+        onClick={()=>setModalOpened("group")}><FaPlusSquare /></button>
+        </Form.Group>
       </FormControl>
       <FormControl className="py-2 w-100">
+      <Form.Group>
         <InputLabel id="partnersLabel">Partners</InputLabel>
         <Select
           labelId="partnersLabel"
           id="partners"
           name="partners"
+          style={{width:"85%"}}
           multiple
           defaultValue={partnerId}
           onChange={handleChange}
@@ -329,13 +412,18 @@ function ProjectForm({setData, data}){
             </MenuItem>
           ))}
         </Select>
+        <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
+        onClick={()=>setModalOpened("partner")}><FaPlusSquare /></button>
+        </Form.Group>
       </FormControl>
       <FormControl className="py-2 w-100">
+      <Form.Group>
         <InputLabel id="resourcesLabel">Resources</InputLabel>
         <Select
           labelId="resourcesLabel"
           id="resources"
           name="resources"
+          style={{width:"85%"}}
           multiple
           defaultValue={resourceId}
           onChange={handleChange}
@@ -352,6 +440,9 @@ function ProjectForm({setData, data}){
             </MenuItem>
           ))}
         </Select>
+        <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
+        onClick={()=>setModalOpened("resource")}><FaPlusSquare /></button>
+        </Form.Group>
       </FormControl>
       <FormControl className="py-2 w-100">
         <InputLabel id="projectsLabel">Master Projects</InputLabel>
@@ -389,7 +480,22 @@ function ProjectForm({setData, data}){
           input={<OutlinedInput label="Users" />}
           MenuProps={MenuProps}
         >
-          {users.filter(user=>user.id!=current_user).map((user) => (
+          <ListSubheader> 
+              <TextField
+              size="small"
+              autoFocus
+              placeholder="Search"
+              fullWidth
+              defaultValue={filter.user}
+              onChange={(event) => setFilter({...filter, user: event.target.value})}
+              onKeyDown={(e) => {
+                if (e.key !== "Escape") {
+                  // Prevents autoselecting item while typing (default Select behaviour)
+                  e.stopPropagation();
+                }
+              }}
+          /></ListSubheader>
+          {users.filter(user=>user.id!=current_user.id && (`${user.first_name} ${user.last_name}`.toLowerCase().includes(filter.user.toLowerCase()))).map((user) => (
             <MenuItem
               key={user.id}
               value={user.id}

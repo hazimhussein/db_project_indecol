@@ -12,7 +12,7 @@ function FormPicker({table, setData, data}){
         return <PersonForm setData={setData} data={data}/>
     } else if (table == "group"){
         return <GroupForm setData={setData} data={data}/>
-    } else if (table == "ressource"){
+    } else if (table == "resource"){
         return <ResourceForm setData={setData} data={data}/>
     } else if (table == "partner"){
         return <PartnerForm setData={setData} data={data}/>

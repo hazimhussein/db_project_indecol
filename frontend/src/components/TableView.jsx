@@ -7,11 +7,6 @@ import { useTree, TreeExpandClickTypes } from '@table-library/react-table-librar
 import { useSort } from '@table-library/react-table-library/sort';
 import { usePagination } from '@table-library/react-table-library/pagination';
 import {
-  fromTreeToList,
-  findNodeById,
-  insertNode,
-} from '@table-library/react-table-library/common';
-import {
   Stack,
   TextField,
   Checkbox,
@@ -92,20 +87,6 @@ function TableView({table}){
      console.log(action, state);
    }
  
-   //* Filter *//
- 
-   const [isHide, setHide] = useState(false);
- 
-   useCustom('filter', data, {
-     state: { isHide },
-     onChange: onFilterChange,
-   });
- 
-   function onFilterChange(action, state) {
-     console.log(action, state);
-     pagination.fns.onSetPage(0);
-   }
- 
    //* Select *//
  
    const select = useRowSelect(data, {
@@ -169,28 +150,9 @@ function TableView({table}){
    //* Drawer *//
  
    const [drawerId, setDrawerId] = useState(null);
-   const [edited, setEdited] = useState('');
- 
-   const handleEdit = (event) => {
-     setEdited(event.target.value);
-   };
- 
+
    const handleCancel = () => {
     setEditable(null)
-     setEdited('');
-     setDrawerId(null);
-   };
- 
-   const handleSave = () => {
-     const node = findNodeById(data.nodes, drawerId);
-     const editedNode = { ...node, name: edited };
-     const nodes = insertNode(data.nodes, editedNode);
- 
-     setData({
-       nodes,
-     });
- 
-     setEdited('');
      setDrawerId(null);
    };
  
@@ -253,7 +215,7 @@ function TableView({table}){
       sort: { sortKey: lab.toUpperCase() },  hide: hiddenColumns.includes(capitalizeFirstLetter(lab)), }})
   : []
 
-  if (list.length != 0){
+  if (list.length != 0 && table != "user"){
     COLUMNS.push({
       label: '',
       renderCell: (item) => (
@@ -261,9 +223,9 @@ function TableView({table}){
           <IconButton onClick={() => handleEditable(table,item.id)}>
             <FaPen size={14} />
           </IconButton>
-          <IconButton onClick={() => handleRemove(table,item.id)}>
+          {current_user.is_superuser && <IconButton onClick={() => handleRemove(table,item.id)}>
             <FaRegTrashAlt size={14} />
-          </IconButton>
+          </IconButton>}
         </div>
       ),
       resize,
@@ -302,10 +264,6 @@ function TableView({table}){
     return  true
   }
    );
- 
-   // filter
-   modifiedNodes = isHide ? modifiedNodes.filter((node) => !node.isComplete) : modifiedNodes;
-
 
    ////////Print
    const printRef = useRef();
@@ -345,7 +303,7 @@ function TableView({table}){
           }}
         >
           <Typography variant="h6" component="h2">
-            "Select the columns you would like to display ..."
+            Select the columns you would like to display ...
           </Typography>
           <FormGroup>
             {COLUMNS.filter(col=>col.label!="Id"&& col.label!="").map(col=>col.label).map(col=><FormControlLabel key={col} control={<Checkbox checked={!hiddenColumns.includes(col)}  onChange={() => toggleColumn(col)} />} label={col} />)}
@@ -356,7 +314,7 @@ function TableView({table}){
       {/* Form */}
 
       <Stack className='py-3' spacing={1} direction="row">
-        {current_user && <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
+        {current_user && table != "user" && <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
@@ -366,18 +324,13 @@ function TableView({table}){
       <Stack spacing={1} direction="row">
         
         {Object.entries(search).filter(([key, value])=>(!hiddenColumns.includes(capitalizeFirstLetter(key)))).map(([key, value])=>(
-        <TextField key={`search${key}`} label={`Search ${capitalizeFirstLetter(key)}`}
+        <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
+        className='me-1'
+        size='small'
               defaultValue={value}
               onChange={(event) => setSearch({...search, [key]: event.target.value})}/>))}
-        
-        {/* <FormControlLabel
-          control={
-            <Checkbox checked={isHide} onChange={(event) => setHide(event.target.checked)} />
-          }
-          label="Hide Complete"
-        /> */}
-        <Button variant="contained" className='m-auto me-0' onClick={() => setModalOpened(true)}>
-          Columns?
+        <Button variant="contained" className='m-auto me-0' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
+          Columns
         </Button>
       </Stack>
 
@@ -423,13 +376,6 @@ function TableView({table}){
       >
         <Stack spacing={1}>
           <FormPicker table={table} setData={setData} data={editable}/>
-
-          {/* <TextField
-            label="Name"
-            value={edited || fromTreeToList(data.nodes).find((node) => node.id === drawerId)?.name}
-            onChange={handleEdit}
-            autoFocus
-          /> */}
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

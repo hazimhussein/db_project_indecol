@@ -1,15 +1,17 @@
-import { TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, Select } from "@mui/material"
+import { TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, Select, Modal, Box, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 import TextArea from "./TextArea"
 import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { addTableRow, updateTableRow, getTableData } from "../../utils/api";
 import { useSelector } from 'react-redux';
-import { dataData } from '../../reducers/data';
+import { dataData, authedUser } from '../../reducers/data';
 import { useState } from "react";
 import { Col } from "react-bootstrap";
 import { Option, MultiSelect } from "./Select";
 import dayjs from 'dayjs';
+import PersonForm from "./PersonForm";
+import { FaPlusSquare } from 'react-icons/fa';
 
 import {DatePicker} from "@mui/x-date-pickers"
 
@@ -33,7 +35,7 @@ function getStyles(name, userId, theme) {
   };
 
   
-function GroupForm({setData, data}){
+function GroupForm({setData, data, child}){
     let dispatch = useDispatch();
     const theme = useTheme();
     const [userId, setUsersId] = useState(data?data.users.map(user=>user.id):[]);
@@ -60,11 +62,13 @@ function GroupForm({setData, data}){
     let list = useSelector(dataData)
     let users = list["user"] ? list["user"] : []
     let persons = list["person"] ? list["person"] : []
-    const current_user = 1
+    const current_user = useSelector(authedUser)
 
     const handleSave = () => {
         let userIds = [...userId]
-        userIds.push(current_user)
+        if (~userIds.includes(current_user.id)){
+          userIds.push(current_user.id)
+        }
         let entry = {}
         entry["name"] = name
         entry["start_date"] = `${startDate.$y}-${startDate.$M}-${startDate.$D}`
@@ -88,8 +92,37 @@ function GroupForm({setData, data}){
         }
       };
 
+      // Modal
+      const [modalOpened, setModalOpened] = useState(false);
+
     return (
         <>
+        <Modal open={modalOpened} onClose={() => setModalOpened(false)}>
+        <Box
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 500,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e0e0e0',
+            borderRadius: '4px',
+            padding: '10px',
+          }}
+          className="d-flex flex-column"
+        >
+          
+            <Typography variant="h6" component="h2">
+              Add a new person record ...
+            </Typography>
+            <PersonForm setData={setData} child={true}/>
+            
+            <Button variant="outlined" onClick={()=>setModalOpened(false)}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
         <FormControl className="py-2 w-100">
         <InputLabel id="nameLabel">Name</InputLabel>
         <Select
@@ -135,11 +168,13 @@ function GroupForm({setData, data}){
             </DatePicker>
 
         <FormControl className="py-2 w-100">
+        <Form.Group>
         <InputLabel id="personsLabel">Persons</InputLabel>
         <Select
           labelId="personsLabel"
           id="persons"
           name="persons"
+          style={{width:"85%"}}
           multiple
           defaultValue={personId}
           onChange={handleChange}
@@ -156,6 +191,9 @@ function GroupForm({setData, data}){
             </MenuItem>
           ))}
         </Select>
+        <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
+        onClick={()=>setModalOpened("person")}><FaPlusSquare /></button>
+        </Form.Group>
         <Form.Text muted>
         Add people who are part of this group
       </Form.Text>
@@ -172,7 +210,7 @@ function GroupForm({setData, data}){
           input={<OutlinedInput label="Users" />}
           MenuProps={MenuProps}
         >
-          {users.filter(user=>user.id!=current_user).map((user) => (
+          {users.filter(user=>user.id!=current_user.id).map((user) => (
             <MenuItem
               key={user.id}
               value={user.id}
@@ -187,7 +225,7 @@ function GroupForm({setData, data}){
         to be able to edit this entry
       </Form.Text>
       </FormControl>
-        <Button className="mt-5" variant="contained" onClick={handleSave}>
+        <Button className="mt-5 mb-2" variant="contained" onClick={handleSave}>
             Save
           </Button>
         </>
