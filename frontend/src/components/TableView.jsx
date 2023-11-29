@@ -57,9 +57,10 @@ function TableView({table}){
     striped: true,
     highlightOnHover: true,
   });
+  
   const customTheme = {
     Table: `
-      --data-table-library_grid-template-columns:  70px repeat(5, minmax(0, 1fr));
+      --data-table-library_grid-template-columns:  repeat(${Object.keys(list_filt[0]).length}, minmax(0, ${100/(Object.keys(list_filt[0]).length)}%));
 
       margin: 16px 0px;
     `,
