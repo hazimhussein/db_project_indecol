@@ -27,14 +27,11 @@ function getStyles(name, id, theme) {
     },
   };
 
-function SelectSearch({table, add, options, setOptions, data, parameter, setModalOpened}){
+function SelectSearch({table, add, options, setOptions, data, parameter, setModalOpened, multi, list}){
     const theme = useTheme();
 
     //Filter
     const [filter, setFilter] = useState("")
-    console.log(table)
-    // options = options ? options : {[table]:[]}
-    console.log(options && options)
 
     return (
         <FormControl className="py-2 w-100">
@@ -44,15 +41,19 @@ function SelectSearch({table, add, options, setOptions, data, parameter, setModa
           labelId={`${table}sLabel`}
           id={`${table}s`}
           name={`${table}s`}
-          style={add && {width:"85%"}}
-          multiple
-          value={options && options[table]}
-          onChange={(e)=>setOptions({...options, [table]:e.target.value})}
+          style={add ? {width:"85%"} : {width:"100%"}}
+          multiple = {multi}
+          value={options[table]}
+          onChange={(e)=>setOptions({...options, [table]: e.target.value})}
           input={<OutlinedInput label={`${capitalizeFirstLetter(table)}s`} />}
           MenuProps={MenuProps}
-          renderValue={() => data.filter(val=>options[table].includes(val.id)).map(val=>
-            typeof parameter == "string" ? val[parameter]
-            : parameter.map(param=> `${val[param]} `).join(" ")).join(", ") }
+          renderValue={() => multi ? 
+            !list ? data.filter(val=>options[table].includes(val.id)).map(val=>
+                    typeof parameter == "string" 
+                    ? val[parameter]
+                    : parameter.map(param=> `${val[param]} `).join(" ")).join(", ")
+            : options[table].join(", ")
+        : options[table]}
         >
           <ListSubheader> 
               <TextField
@@ -69,7 +70,7 @@ function SelectSearch({table, add, options, setOptions, data, parameter, setModa
                 }
               }}
           /></ListSubheader>
-          {data.filter(val=>(typeof parameter == "string" ? val[parameter]
+          { !list ? data.filter(val=>(typeof parameter == "string" ? val[parameter]
             : `${parameter.map(param=> `${val[param]} `)}`).toLowerCase().includes(filter.toLowerCase())).map((val) => (
             <MenuItem
               key={val.id}
@@ -79,7 +80,8 @@ function SelectSearch({table, add, options, setOptions, data, parameter, setModa
               {typeof parameter == "string" ? val[parameter]
             : parameter.map(param=> `${val[param]} `).join(" ")}
             </MenuItem>
-          ))}
+          ))
+        : data.filter(val=>(`${val[0]} ${val[1]}`).toLowerCase().includes(filter.toLowerCase())).map(val=><MenuItem key={val[0]} value={val[0]}>{val[1]}</MenuItem>)}
         </Select>
         {add && <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
         onClick={()=>setModalOpened(table)}><FaPlusSquare /></button>}

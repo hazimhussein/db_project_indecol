@@ -1,79 +1,55 @@
-import { TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, Select, Modal, Box, Typography } from "@mui/material"
-import { useTheme } from '@mui/material/styles';
-import TextArea from "./TextArea"
+import { TextField, Button, FormControl, Modal, Box, Typography } from "@mui/material"
 import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
-import { addTableRow, updateTableRow, getTableData } from "../../utils/api";
+import { addTableRow, updateTableRow } from "../../utils/api";
 import { useSelector } from 'react-redux';
 import { dataData, authedUser } from '../../reducers/data';
 import { useState } from "react";
-import { Col } from "react-bootstrap";
-import { Option, MultiSelect } from "./Select";
 import dayjs from 'dayjs';
 import PersonForm from "./PersonForm";
-import { FaPlusSquare } from 'react-icons/fa';
+import SelectSearch from "./elements/selectSearch";
 
 import {DatePicker} from "@mui/x-date-pickers"
 
-function getStyles(name, userId, theme) {
-    return {
-      fontWeight:
-        userId.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-
+const name_list = [
+  ['Cherubini Group','Francesco Cherubini Group'],
+  ['Verones Group','Francesca Verones Group'],
+  ['Strømman Group','Anders Strømman Group'],
+  ['Hertwich Group', 'Edgar Hertwich Group'],
+  ['Müller Group', 'Daniel Müller Group'],
+  ['Pettersen Group', 'Johan Pettersen Group'],
+  ['Ottelin Group', 'Juudit Ottelin Groupy'],
+  ['IEDL Group', 'Konstantin Stadler Group']
+]
   
 function GroupForm({setData, data, child}){
     let dispatch = useDispatch();
-    const theme = useTheme();
-    const [userId, setUsersId] = useState(data?data.users.map(user=>user.id):[]);
-    const [personId, setPersonsId] = useState(data?data.persons.map(person=>person.id):[]);
-    const [name, setName] = useState(data?data.name:"Cherubini Group");
-    const [startDate, setStartDate] = useState(data?dayjs(data.start_date):"");
-    const [endDate, setEndDate] = useState(data?dayjs(data.end_date):"");
-    const handleChange = (event) => {
-        const {
-        target: { value },
-        } = event;
-        console.log(event)
-        if(event.target.name == "name"){
-            setName(value)
-        } else if (event.target.name == "users"){
-            let val = typeof value === 'string' ? value.split(',') : value
-            setUsersId(val)
-        } else if (event.target.name == "persons"){
-            let val = typeof value === 'string' ? value.split(',') : value
-            setPersonsId(val)
-        }
-    }; 
-
     let list = useSelector(dataData)
-    let users = list["user"] ? list["user"] : []
-    let persons = list["person"] ? list["person"] : []
     const current_user = useSelector(authedUser)
+    
+    let users = list["user"] ? list["user"].filter(user=>user.id!=current_user.id) : []
+    let persons = list["person"] ? list["person"] : []
+
+    let options_dict = {
+      user:data?data.users.filter(user=>user.id!=current_user.id).map(user=>user.id):[],
+      name:data?data.name:"",
+      person:data?data.persons.map(person=>person.id):[],
+      start_date:data?dayjs(data.start_date):"",
+      end_date:data?dayjs(data.end_date):""
+    }
+
+    const [options, setOptions] = useState(options_dict)
 
     const handleSave = () => {
-        let userIds = [...userId]
+        let userIds = [...options.user]
         if (~userIds.includes(current_user.id)){
           userIds.push(current_user.id)
         }
         let entry = {}
-        entry["name"] = name
-        entry["start_date"] = `${startDate.$y}-${startDate.$M}-${startDate.$D}`
-        entry["end_date"] = `${endDate.$y}-${endDate.$M}-${endDate.$D}`
-        entry["persons"] = personId
+        entry["name"] = options.name
+        entry["start_date"] = `${options.start_date.$y}-${options.start_date.$M}-${options.start_date.$D}`
+        entry["end_date"] = `${options.end_date.$y}-${options.end_date.$M}-${options.end_date.$D}`
+        entry["persons"] = options.person
         entry["users"] = userIds
         let param = {table:"group", row: entry}
         
@@ -123,35 +99,28 @@ function GroupForm({setData, data, child}){
           </Button>
         </Box>
       </Modal>
-        <FormControl className="py-2 w-100">
-        <InputLabel id="nameLabel">Name</InputLabel>
-        <Select
-          labelId="nameLabel"
-          id="name"
-          name="name"
-          defaultValue={name}
-          onChange={handleChange}
-          input={<OutlinedInput label="Name" />}
-          MenuProps={MenuProps}
-          autoFocus
-          required
-        >
-            <MenuItem value="Cherubini Group">Francesco Cherubini Group</MenuItem>
-            <MenuItem value="Verones Group">Francesca Verones Group</MenuItem>
-            <MenuItem value="Strømman Group">Anders Strømman Group</MenuItem>
-            <MenuItem value="Hertwich Group">Edgar Hertwich Group</MenuItem>
-            <MenuItem value="Müller Group">Daniel Müller Group</MenuItem>
-            <MenuItem value="Pettersen Group">Johan Pettersen Group</MenuItem>
-            <MenuItem value="Ottelin Group">Juudit Ottelin Group</MenuItem>
-            <MenuItem value="IEDL Group">Konstantin Stadler Group</MenuItem>
-        </Select>
+      <FormControl className="py-2 w-100">
+        <TextField
+            label="Name"
+            id="name"
+            className='my-2'
+            value={options.name}
+            onChange={(e)=>setOptions({...options, name:e.target.value})}
+            autoFocus
+            required
+          />
+        <Form.Label htmlFor="name">or choose...</Form.Label>
+        <SelectSearch table="name" add={false} multi={false} list={true}
+          options={options} setOptions={setOptions} 
+          data={name_list}/>
       </FormControl>
+
       <DatePicker 
           label="Start Date"
           format="YYYY-MM-DD"
           inputFormat="YYYY-MM-DD"
-          value={startDate}
-          onChange={(newValue) => setStartDate(newValue)} 
+          value={options.start_date}
+          onChange={(e)=>setOptions({...options, start_date: e.target.value})}
           id="start_date" 
           className="my-2">
             {data && data.start_date}
@@ -160,66 +129,28 @@ function GroupForm({setData, data, child}){
           label="End Date"
           format="YYYY-MM-DD"
           inputFormat="YYYY-MM-DD"
-          value={endDate}
-          onChange={(newValue) => setEndDate(newValue)} 
+          value={options.end_date}
+          onChange={(e)=>setOptions({...options, end_date: e.target.value})}
           id="end_date" 
           className="my-2">
             {data && data.end_date}
             </DatePicker>
 
-        <FormControl className="py-2 w-100">
-        <Form.Group>
-        <InputLabel id="personsLabel">Persons</InputLabel>
-        <Select
-          labelId="personsLabel"
-          id="persons"
-          name="persons"
-          style={{width:"85%"}}
-          multiple
-          defaultValue={personId}
-          onChange={handleChange}
-          input={<OutlinedInput label="Persons" />}
-          MenuProps={MenuProps}
-        >
-          {persons.map((person) => (
-            <MenuItem
-              key={person.id}
-              value={person.id}
-              style={getStyles(person.id, personId, theme)}
-            >
-              {`${person.first_name} ${person.last_name}`}
-            </MenuItem>
-          ))}
-        </Select>
-        <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
-        onClick={()=>setModalOpened("person")}><FaPlusSquare /></button>
-        </Form.Group>
-        <Form.Text muted>
-        Add people who are part of this group
-      </Form.Text>
-      </FormControl>
-        <FormControl className="py-2 w-100">
-        <InputLabel id="usersLabel">Users</InputLabel>
-        <Select
-          labelId="usersLabel"
-          id="users"
-          name="users"
-          multiple
-          defaultValue={userId}
-          onChange={handleChange}
-          input={<OutlinedInput label="Users" />}
-          MenuProps={MenuProps}
-        >
-          {users.filter(user=>user.id!=current_user.id).map((user) => (
-            <MenuItem
-              key={user.id}
-              value={user.id}
-              style={getStyles(user.id, userId, theme)}
-            >
-              {`${user.first_name} ${user.last_name}`}
-            </MenuItem>
-          ))}
-        </Select>
+            <FormControl className="py-2 w-100">
+
+          <SelectSearch table="person" add={child ? false : true} multi={true} 
+              options={options} setOptions={setOptions} 
+              data={persons} parameter={["first_name", "last_name"]}
+              setModalOpened={setModalOpened}/>
+
+            <Form.Text muted>
+            Add people who are part of this Project
+          </Form.Text>
+          </FormControl>
+      <FormControl className="py-2 w-100">
+          <SelectSearch table="user" add={false} multi={true} 
+          options={options} setOptions={setOptions} 
+          data={users} parameter={["first_name", "last_name"]}/>
         <Form.Text muted>
         Add other people who you would like 
         to be able to edit this entry
