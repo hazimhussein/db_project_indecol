@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { getTableData } from '../utils/api';
 import { useParams } from 'react-router-dom';
 import NavTop from './Nav';
-
+import LoadingBar from 'react-redux-loading-bar'
 
 
 
@@ -38,6 +38,7 @@ function Dashboard(){
 
         return(
           <>
+          <LoadingBar/>
           <NavTop/>
             <div className='dashboard'>
                 {(category == "category")? <div className='questions'>

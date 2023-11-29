@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 // import { connect } from 'react-redux'
 // import { handleInitialData } from '../actions/shared'

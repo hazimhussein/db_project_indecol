@@ -1,10 +1,6 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { capitalizeFirstLetter } from './helpers'
 
-////////////////////////////////////////////
-import {idToList, tableColumnsArray} from './helpers'
-// let fetchingURL = 'https://localhost:3001/'
 let fetchingURL = 'http://127.0.0.1:8000/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -14,53 +10,6 @@ const client = axios.create({
   baseURL:fetchingURL
 })
 
-// const categories= (cat1, cat2)=>{
-//   let output={}
-  
-//   let url = new URL('getTable', fetchingURL)
-//   url.search = new URLSearchParams({
-//       table: cat1
-//   })
-
-//   return fetch(url)
-//   .then((res) => res.json())
-//   .then((services)=>output["services"]=services)
-//   .then(()=>{
-//     let url = new URL('getTable', fetchingURL)
-//     url.search = new URLSearchParams({
-//         table: cat2
-//     })
-
-//     return fetch(url)
-//     .then((res) => res.json())
-//     .then((staff)=> output["staff"]=staff)
-//     .then(()=>{
-//       console.log(output)
-//       return output
-//     })
-//   })
-// }
-
-const adminUsers= (user1)=>{
-  let url = new URL('getTable', fetchingURL)
-  url.search = new URLSearchParams({
-      table: user1
-  })
-
-  return fetch(url)
-  .then((res) => res.json())
-  .then((users)=>idToList(users))
-}
-
-export function getInitialData () {
-  return Promise.all([
-    categories("Services", "StaffCategories"),
-    adminUsers("adminUsers"),
-  ]).then(([categories, users]) => ({
-    categories,
-    users,
-  }))
-}
 
 ////////////////////////////////////////
 
@@ -122,20 +71,3 @@ export const updateTableRow = createAsyncThunk(`data/updateData`, async ({table,
   }
 
 })
-
-export async function getTableColumns (table) {
-  let url = new URL(table, fetchingURL);
-  const response = await axios.get(url);
-
-  return Object.keys(response.data)
-}
-
-
-//////////////////////////////////////////////
-// export function saveQuestionAnswer (info) {
-//   return _saveQuestionAnswer(info)
-// }
-
-// export function saveQuestion (info) {
-//   return _saveQuestion(info)
-// }
