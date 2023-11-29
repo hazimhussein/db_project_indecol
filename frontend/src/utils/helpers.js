@@ -107,5 +107,5 @@ export function tableColumnsArray(list){
 }
 
 export function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.slice(0, 1).toUpperCase() + string.slice(1);
 }

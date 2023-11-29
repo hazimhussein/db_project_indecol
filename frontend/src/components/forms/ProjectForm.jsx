@@ -15,6 +15,7 @@ import PersonForm from "./PersonForm";
 import GroupForm from "./GroupForm";
 import ResourceForm from "./ResourceForm";
 import PartnerForm from "./PartnerForm";
+import SelectSearch from "./elements/selectSearch";
 
 
 import {DatePicker} from "@mui/x-date-pickers"
@@ -501,7 +502,11 @@ function ProjectForm({setData, data}){
       </FormControl>
 
         <FormControl className="py-2 w-100">
-        <InputLabel id="usersLabel">Users</InputLabel>
+          <SelectSearch table="user" add={true} 
+          options={options} setOptions={setOptions} 
+          data={users} parameter={["first_name", "last_name"]}
+          setModalOpened={setModalOpened}/>
+        {/* <InputLabel id="usersLabel">Users</InputLabel>
         <Select
           labelId="usersLabel"
           id="users"
@@ -532,12 +537,12 @@ function ProjectForm({setData, data}){
             <MenuItem
               key={user.id}
               value={user.id}
-              style={getStyles(user.id, userId, theme)}
+              style={getStyles(user.id, filter.user, theme)}
             >
               {`${user.first_name} ${user.last_name}`}
             </MenuItem>
           ))}
-        </Select>
+        </Select> */}
         <Form.Text muted>
         Add other people who you would like 
         to be able to edit this entry
