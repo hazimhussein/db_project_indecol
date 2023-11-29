@@ -1,0 +1,32 @@
+.dashboard td, .container td  {
+    text-align: left;
+}
+
+
+.css-1oobkil-getRowContainerStyle-Row:nth-of-type(odd)>td {
+    background-color: #e1e1f533;
+}
+.css-1oobkil-getRowContainerStyle-Row:hover>td {
+    background-color: #d1d1f599;
+}
+
+.css-1oobkil-getRowContainerStyle-Row.tr.tr-body.row-select.row-select-single-selected>td{
+    background-color: #bbbbddcc;
+    border-bottom: 1px solid #bbbbdd;
+}
+
+.child {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+.child:hover {
+    cursor: pointer;
+    background-color: #b8b9ba;
+    border-radius: 0.5rem;
+}
+    

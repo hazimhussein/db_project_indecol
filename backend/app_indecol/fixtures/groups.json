@@ -1,0 +1,22 @@
+[
+    {
+        "model": "app_indecol.group",
+        "pk": 11,
+        "fields": {
+            "name":"Edgars group",
+            "start_date":"2000-01-01",
+            "persons":[102],
+            "users":[72]
+        }
+    },
+    {
+        "model": "app_indecol.group",
+        "pk": 12,
+        "fields": {
+            "name":"IEDL",
+            "start_date":"2000-01-01",
+            "persons":[102],
+            "users":[72]
+        }
+    }
+]
