@@ -158,15 +158,15 @@ function ProjectForm({setData, data}){
         }
         entry["start_date"] = `${startDate.$y}-${startDate.$M}-${startDate.$D}`
         entry["end_date"] = `${endDate.$y}-${endDate.$M}-${endDate.$D}`
-        entry["type"] = type
-        entry["keywords"] = typeof keyword != "string" ? keyword.join(", ") : keyword
-        entry["methods"] = typeof method != "string" ? method.join(", ") : method
-        entry["persons"] = personId
-        entry["partners"] = partnerId
-        entry["groups"] = groupId
-        entry["resources"] = resourceId
-        entry["projects"] = projectId
-        entry["users"] = userIds
+        entry["type"] = options.type
+        entry["keywords"] = typeof options.keyword != "string" ? options.keyword.join(", ") : options.keyword
+        entry["methods"] = typeof options.method != "string" ? options.method.join(", ") : options.method
+        entry["persons"] = options.person
+        entry["partners"] = options.partner
+        entry["groups"] = options.group
+        entry["resources"] = options.resource
+        entry["projects"] = options.project
+        entry["users"] = options.user
         let param = {table:"project", row: entry}
         
         if (data == null){
@@ -289,8 +289,8 @@ function ProjectForm({setData, data}){
           id="keywords"
           name="keywords"
           multiple
-          defaultValue={keyword}
-          onChange={handleChange}
+          value={options.keyword}
+          onChange={(e)=>setOptions({...options, user:e.target.value.join(", ")})}
           input={<OutlinedInput label="Keywords" />}
           MenuProps={MenuProps}
         >
@@ -305,8 +305,8 @@ function ProjectForm({setData, data}){
           id="method"
           name="method"
           multiple
-          defaultValue={method}
-          onChange={handleChange}
+          value={options.method}
+          onChange={(e)=>setOptions({...options, user:e.target.value.join(", ")})}
           input={<OutlinedInput label="Methods" />}
           MenuProps={MenuProps}
         >
@@ -320,8 +320,8 @@ function ProjectForm({setData, data}){
           labelId="typeLabel"
           id="type"
           name="type"
-          defaultValue={type}
-          onChange={handleChange}
+          value={options.type}
+          onChange={(e)=>setOptions({...options, user:e.target.value})}
           input={<OutlinedInput label="Type" />}
           MenuProps={MenuProps}
         >
@@ -338,8 +338,8 @@ function ProjectForm({setData, data}){
           name="persons"
           style={{width:"85%"}}
           multiple
-          defaultValue={personId}
-          onChange={handleChange}
+          value={options.person}
+          onChange={(e)=>setOptions({...options, user:e.target.value})}
           input={<OutlinedInput label="Persons" />}
           MenuProps={MenuProps}
         >
@@ -369,8 +369,8 @@ function ProjectForm({setData, data}){
           name="groups"
           style={{width:"85%"}}
           multiple
-          defaultValue={groupId}
-          onChange={handleChange}
+          value={options.group}
+          onChange={(e)=>setOptions({...options, user:e.target.value})}
           input={<OutlinedInput label="Groups" />}
           MenuProps={MenuProps}
         >
@@ -397,8 +397,8 @@ function ProjectForm({setData, data}){
           name="partners"
           style={{width:"85%"}}
           multiple
-          defaultValue={partnerId}
-          onChange={handleChange}
+          value={options.partner}
+          onChange={(e)=>setOptions({...options, user:e.target.value})}
           input={<OutlinedInput label="Partners" />}
           MenuProps={MenuProps}
         >
@@ -425,12 +425,28 @@ function ProjectForm({setData, data}){
           name="resources"
           style={{width:"85%"}}
           multiple
-          defaultValue={resourceId}
-          onChange={handleChange}
+          value={options.resource}
+          onChange={(e)=>setOptions({...options, resource:e.target.value})}
           input={<OutlinedInput label="Resources" />}
           MenuProps={MenuProps}
+          renderValue={() => resources.filter(res=>options.resource.includes(res.id)).map(res=>res.full_name).join(", ") }
         >
-          {resources.map((resource) => (
+          <ListSubheader> 
+              <TextField
+              size="small"
+              autoFocus
+              placeholder="Search"
+              fullWidth
+              defaultValue={filter.resource}
+              onChange={(event) => setFilter({...filter, resource: event.target.value})}
+              onKeyDown={(e) => {
+                if (e.key !== "Escape") {
+                  // Prevents autoselecting item while typing (default Select behaviour)
+                  e.stopPropagation();
+                }
+              }}
+          /></ListSubheader>
+          {resources.filter(res=>res.full_name.toLowerCase().includes(filter.resource.toLowerCase())).map((resource) => (
             <MenuItem
               key={resource.id}
               value={resource.id}
@@ -451,12 +467,28 @@ function ProjectForm({setData, data}){
           id="projects"
           name="projects"
           multiple
-          defaultValue={projectId}
-          onChange={handleChange}
+          value={options.project}
+          onChange={(e)=>setOptions({...options, project:e.target.value})}
           input={<OutlinedInput label="Master Projects" />}
           MenuProps={MenuProps}
+          renderValue={() => projects.filter(pj=>options.project.includes(pj.id)).map(pj=>pj.project_id).join(", ") }
         >
-          {projects.map((project) => (
+          <ListSubheader> 
+              <TextField
+              size="small"
+              autoFocus
+              placeholder="Search"
+              fullWidth
+              defaultValue={filter.project}
+              onChange={(event) => setFilter({...filter, project: event.target.value})}
+              onKeyDown={(e) => {
+                if (e.key !== "Escape") {
+                  // Prevents autoselecting item while typing (default Select behaviour)
+                  e.stopPropagation();
+                }
+              }}
+          /></ListSubheader>
+          {projects.filter(pj=>pj.project_id.toLowerCase().includes(filter.project.toLowerCase())).map((project) => (
             <MenuItem
               key={project.id}
               value={project.id}
@@ -475,10 +507,11 @@ function ProjectForm({setData, data}){
           id="users"
           name="users"
           multiple
-          defaultValue={userId}
-          onChange={handleChange}
+          value={options.user}
+          onChange={(e)=>setOptions({...options, user:e.target.value})}
           input={<OutlinedInput label="Users" />}
           MenuProps={MenuProps}
+          renderValue={() => users.filter(usr=>options.user.includes(usr.id)).map(usr=>`${usr.first_name} ${usr.last_name}`).join(", ") }
         >
           <ListSubheader> 
               <TextField
