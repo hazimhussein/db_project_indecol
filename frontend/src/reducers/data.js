@@ -67,6 +67,15 @@ const dataSlice = createSlice({
           // Add any fetched posts to the array
           state.value[action.payload.category].push(action.payload.data)
       })
+        .addCase(addTableRow.rejected, (state, action) => {
+          state.status = 'failed'
+          if (action.payload) {
+            // Being that we passed in ValidationErrors to rejectType in `createAsyncThunk`, the payload will be available here.
+            state.error = action.payload.errorMessage
+          } else {
+            state.error = action.error.message
+          }
+      })
         .addCase(removeTableRow.fulfilled, (state, action) => {
           state.status = 'succeeded'
 
@@ -79,6 +88,15 @@ const dataSlice = createSlice({
 
           // Add any fetched posts to the array
           state.value[action.payload.category] = nonEdit.concat([action.payload.data])
+      })
+        .addCase(updateTableRow.rejected, (state, action) => {
+          state.status = 'failed'
+          if (action.payload) {
+            // Being that we passed in ValidationErrors to rejectType in `createAsyncThunk`, the payload will be available here.
+            state.error = action.payload.errorMessage
+          } else {
+            state.error = action.error.message
+          }
       })
         .addCase(loginAPI.fulfilled, (state, action) => {
           state.status = 'succeeded'

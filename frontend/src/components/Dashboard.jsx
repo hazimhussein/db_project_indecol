@@ -1,14 +1,9 @@
-// import { func } from 'assert-plus'
-// import { div } from 'prelude-ls'
-import React, {Component, useState, useEffect} from 'react'
-import { connect, useSelector } from 'react-redux'
+
+import { useState} from 'react'
+import { useSelector } from 'react-redux'
 import Question from './Question'
-// import { BrowserRouter as Router, Route } from 'react-router-dom'
-// import { handleGetTableC } from '../actions/data'
 import TableView from './TableView'
 import { dataData, statusData, authedUser } from '../reducers/data';
-import { useDispatch } from 'react-redux';
-import { getTableData } from '../utils/api';
 import { useParams } from 'react-router-dom';
 import NavTop from './Nav';
 import LoadingBar from 'react-redux-loading-bar'
@@ -24,9 +19,10 @@ function Dashboard(){
 
     const data = useSelector(dataData)
     const isLoading = useSelector(statusData)
-    // let data_current = data[category] ? data[category] : []
+    
     let data_current = data[category] ? data[category] : []
     const current_user = useSelector(authedUser)
+    console.log(current_user)
 
   
 

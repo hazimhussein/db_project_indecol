@@ -2,7 +2,7 @@ import { TextField, MenuItem, FormControl, InputLabel, OutlinedInput, Select, Li
 import Form from 'react-bootstrap/Form';
 import { useTheme } from '@mui/material/styles';
 import { capitalizeFirstLetter } from "../../../utils/helpers";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaPlusSquare } from 'react-icons/fa';
 
 
@@ -27,11 +27,12 @@ function getStyles(name, id, theme) {
     },
   };
 
-function SelectSearch({table, add, options, setOptions, data, parameter, setModalOpened, multi, list}){
+function SelectSearch({table, add, options, setOptions, data, parameter, setModalOpened, multi, list, error}){
     const theme = useTheme();
 
     //Filter
     const [filter, setFilter] = useState("")
+    let inputRef = useRef(undefined);
 
     return (
         <FormControl className="py-2 w-100">
@@ -54,6 +55,9 @@ function SelectSearch({table, add, options, setOptions, data, parameter, setModa
                     : parameter.map(param=> `${val[param]} `).join(" ")).join(", ")
             : options[table].join(", ")
         : options[table]}
+        onAnimationEnd={() => inputRef.current.focus()}
+        onClick={()=> inputRef.current.focus()}
+        error={error}
         >
           <ListSubheader> 
               <TextField
@@ -61,6 +65,7 @@ function SelectSearch({table, add, options, setOptions, data, parameter, setModa
               autoFocus
               placeholder="Search"
               fullWidth
+              inputRef={inputRef}
               defaultValue={filter}
               onChange={(event) => setFilter(event.target.value)}
               onKeyDown={(e) => {

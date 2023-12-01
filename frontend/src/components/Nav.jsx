@@ -1,13 +1,11 @@
-import {NavLink} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { authedUser } from '../reducers/data'
-import { addTableRow, getTableData, loginAPI, logoutAPI } from '../utils/api'
-import { useState, useEffect } from 'react';
+import { loginAPI, logoutAPI } from '../utils/api'
+import { useState } from 'react';
+import { Link } from "react-router-dom";
 import {Form,
-    InputGroup,
     Row,
 Col,
-Nav,
 Navbar,
 Container} from 'react-bootstrap';
 import {Button} from '@mui/material';
@@ -15,27 +13,32 @@ import {Button} from '@mui/material';
 function NavTop(){
     let dispatch = useDispatch()
     const current_user = useSelector(authedUser)
+    console.log(current_user)
 
     let [showLogin, setShowLogin] = useState(false)
+    let [loginState, setLoginState] = useState(true)
 
     const login=()=>{
         let user = document.getElementById("username").value
         let pass = document.getElementById("password").value
         dispatch(loginAPI({"username":user, "password": pass}))
+        .then(res=>
+            {if (res.error){
+                setLoginState(false)
+            } else {
+                setLoginState(true)
+            }})
     }
+
     const logout=()=>{
         dispatch(logoutAPI())
     }
-    
-    // useEffect(()=>{
-    //     current_user = useSelector(authedUser)
-    // }, [dispatch])
 
     return(
         <>
         <Navbar className="bg-body-tertiary border-bottom m-0" data-bs-theme="light" style={{height:"80px"}}>
         <Container className='h-100'>
-        <Navbar.Brand href="/" className='d-flex'>
+        <Navbar.Brand as={Link} to="/dashboard" className='d-flex'>
             <img
               alt=""
               src="/assets/images/logo.png"
@@ -73,6 +76,7 @@ function NavTop(){
                 placeholder="Username"
                 aria-label="Username"
                 aria-describedby="basic-addon1"
+                onKeyDown={(e) => (e.key === "Enter") && login()}
             />
             </Col>
             <Col xs="auto">
@@ -81,14 +85,19 @@ function NavTop(){
                 type="password"
                 placeholder="password"
                 className=" mr-sm-2"
+                onKeyDown={(e) => (e.key === "Enter") && login()}
                 />
             </Col>
             <Col xs="auto">
             <Button type='button' variant="contained" className='m-auto me-0' onClick={()=>login()}>
-          Submit
+          Login
         </Button>
             </Col>
             </Row>
+            {!loginState && <Row className='d-flex align-items-start h-100 mt-1'>
+                <p className='text-danger small' style={{textAlign:"left"}}>
+              Login failed, please confirm your credentials 
+            </p></Row>}
         </form>
         :
       <Navbar.Collapse className="justify-content-end h-100 align-items-center">
@@ -100,122 +109,7 @@ function NavTop(){
         
         
       </Navbar>
-        {/* <nav className="">
-            <div className="navbar navbar-expand-lg navbar-light bg-light container-fluid">
-                <ul className="navbar-nav m-auto text-center fs-3 fw-bold">
-                    <li className="nav-item">
-                        <NavLink to='/' className="active nav-link">
-                            Home
-                        </NavLink>
-                    </li>
-                </ul>
-                <div className="nav-user">
-                {current_user ? <div className='nav-avatar'>
-                            <img
-                            src="/assets/images/person.png"
-                            alt={`Avatar of ${current_user && current_user.last_name}`}
-                            className='avatar'
-                            />
-                            <div>
-                            ${current_user && current_user.first_name} ${current_user && current_user.last_name}
-                            </div>
-                        </div>
-                        : <div className='nav-avatar'>
-                        <img
-                        src="/assets/images/person.png"
-                        alt={`Avatar of ${current_user && current_user.last_name}`}
-                        className='avatar'
-                        />
-                        <div>
-                        ${current_user && current_user.first_name} ${current_user && current_user.last_name}
-                        </div>
-                    </div>}
-                </div>
-                
-            </div>
-            <div className="col-xs-12 navbar-inverse navbar-fixed-bottom">
-                <div className="row" id="bottomNav">
-                    <div className="col-xs-4 text-center"><NavLink to='/' className='active'>
-                            <i className="fa fa-home"></i>
-                        </NavLink></div>
-                    <div className="col-xs-4 text-center"><a href="#"><i className="fa fa-cog"></i></a></div>
-                </div>
-            </div>
-        </nav> */}
-        </>
-    )
-          {/* <a className="navbar-brand" href="#">
-                <!--Logo png and style-->
-
-                <div className="brand-img">
-                <img src="assets/images/logo.png" alt="मैत्री - Maitrī" className="d-inline-block align-top"/>
-
-                </div>
-            </a> */}
-
-            {/* <!--Collapsable menue code--> */}
-            {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggleMobileMenu"
-             aria-controls="toggleMobileMenu" aria-expanded="false" aria-label="Toggle navigation">
-
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="toggleMobileMenu"> */}
-
-                {/* <!--Navigation bar items--> */}
-                
-                    {/* <li className="nav-item">
-                        <a className="nav-link btn btn-block btn-social btn-twitter">
-                            <i className="fa fa-twitter" aria-hidden="true"></i> <span>Sign in</span>
-                          </a>
-                    </li> */}
-                    
-                    {/* <li className="nav-item">
-                        <NavLink to='/add' exact activeClassName='active' className="nav-link">
-                            New Question
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to='/leaderboard' exact activeClassName='active' className="nav-link">
-                            Leaderboard
-                        </NavLink>
-                    </li> */}
-                        {/* <NavLink to='/' exact activeClassName='active' className="nav-link" onClick={signOut}>
-                            Sign Out
-                        </NavLink> */}
-                
-{/*
-
-          <ul>
-                <li>
-
-                </li>
-                <li>
-                    <NavLink to='/add' exact activeClassName='active'>
-                        New Question
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to='/leaderboard' exact activeClassName='active'>
-                        Leaderboard
-                    </NavLink>
-                </li>
-                <li>
-                    <div className='nav-avatar'>
-                        <img
-                        src={user.avatarURL}
-                        alt={`Avatar of ${user.name}`}
-                        className='avatar'
-                        />
-                        <div>
-                            {user.name}
-                        </div>
-                    </div>
-                    <NavLink to='/' exact activeClassName='active' onClick={signOut}>
-                        Sign Out
-                    </NavLink>
-                </li>
-
-            </ul> */}
+      </>)
 
 
 }

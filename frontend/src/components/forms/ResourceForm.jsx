@@ -26,37 +26,74 @@ function ResourceForm({setData, data, child}){
     let users = list["user"] ? list["user"].filter(user=>user.id!=current_user.id)  : []
 
     let options_dict = {
+      full_name:data?data.full_name:"",
+      location:data?data.location:"",
+      description:data?data.description:"",
       user:data?data.users.filter(user=>user.id!=current_user.id).map(user=>user.id):[],
       type:data?data.type:''
     }
 
     const [options, setOptions] = useState(options_dict)
 
+    let invalid_dict = { full_name: false, description: false, location: false, type: false }
+
+    const [invalid, setInvalid] = useState(invalid_dict)
+    const [formState, setFormState] = useState("")
+
     const handleSave = () => {
-        let cols = ["description", "location"]
         let userIds = [...options.user]
         if (~userIds.includes(current_user.id)){
           userIds.push(current_user.id)
         }
 
         let entry = {}
-        for (let col of cols){
-            entry[col] = document.getElementById(col).value
-        }
-        entry["full_name"] = document.getElementById("name").value
+        entry["full_name"] = options.full_name
+        entry["location"] = options.location
+        entry["description"] = options.description
         entry["type"] = options.type
         entry["users"] = userIds
         let param = {table:"resource", row: entry}
-        
         if (data == null){
             dispatch(addTableRow(param))
             .then((res)=>{
-                console.log(res)
-                setData({nodes: [...list["resource"], res.payload.data]})})
+              if (res.error){
+                Object.keys(invalid).map(key=>{
+                  if (Object.keys(res.payload).includes(key)){
+                    setInvalid(prev=>({...prev, [key]: res.payload[key]}))
+                  } else {
+                    setInvalid(prev=>({...prev, [key]: false}))
+                  }
+                })
+                setFormState("fail")
+            } else {
+              Object.keys(invalid).map(key=>{
+                  setInvalid(prev=>({...prev, [key]: false}))
+              })
+              setFormState("success")
+              setData({nodes: [...list["resource"], res.payload.data]})
+            }
+                
+              })
            
         } else {
             dispatch(updateTableRow({table:"resource", row: entry, rowId: data.id}))
-            .then((res)=>{setData({nodes: [...list["resource"].filter(row=>row.id!=data.id), res.payload.data]});
+            .then((res)=>{
+              if (res.error){
+                Object.keys(invalid).map(key=>{
+                  if (Object.keys(res.payload).includes(key)){
+                    setInvalid(prev=>({...prev, [key]: res.payload[key]}))
+                  } else {
+                    setInvalid(prev=>({...prev, [key]: false}))
+                  }
+                })
+                setFormState("fail")
+            } else {
+              Object.keys(invalid).map(key=>{
+                setInvalid(prev=>({...prev, [key]: false}))
+            })
+              setFormState("success")
+              setData({nodes: [...list["resource"].filter(row=>row.id!=data.id), res.payload.data]});
+            }
             })
 
             
@@ -72,26 +109,39 @@ function ResourceForm({setData, data, child}){
             label="Name"
             id="name"
             className='my-2'
-            defaultValue={data && data.full_name}
+            defaultValue={options.full_name}
             autoFocus
             required
+            onChange={(e)=>setOptions({...options, full_name:e.target.value})}
+            error = {invalid.full_name && true}
           />
+          {invalid.full_name && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.full_name}</p>}
+
           <Form.Label htmlFor="description">Description</Form.Label>
           <textarea id="description" 
-          className="form-control px-3" 
+          className={`form-control px-3 ${invalid.description && "border-danger"}`} 
           name="description" 
           minLength={10} 
-          defaultValue={data && data.description} placeholder={data && data.description}/>
+          onChange={(e)=>setOptions({...options, description:e.target.value})}
+          defaultValue={options.description} placeholder={options.description}/>
+          {invalid.description && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.description}</p>}
+
           <TextField
             label="Location"
             id="location"
             className='my-2'
-            defaultValue={data && data.location}
+            onChange={(e)=>setOptions({...options, location:e.target.value})}
+            defaultValue={options.location}
+            error = {invalid.location && true}
           />
+          {invalid.location && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.location}</p>}
+
 
         <SelectSearch table="type" add={false} multi={false} list={true}
           options={options} setOptions={setOptions} 
-          data={type_list}/>
+          data={type_list} error={invalid.type && true}/>
+          {invalid.type && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.type}</p>}
+
 
       <FormControl className="py-2 w-100">
           <SelectSearch table="user" add={false} multi={true} 
@@ -106,6 +156,11 @@ function ResourceForm({setData, data, child}){
         <Button className="mt-5 mb-2" variant="contained" onClick={handleSave}>
             Save
           </Button>
+          {formState != "" &&
+                <p className={`${formState=="fail" ?"text-danger": "text-success"} small`} style={{textAlign:"left"}}>
+              {formState=="fail" ? `${data==null? "Adding": "Updating"} record failed, please confirm your inputs are in correct format and you have filled all required fields`
+              :`${data==null? "Adding": "Updating"} record succeeded`}
+            </p>}
         </>
         
     )

@@ -35,6 +35,8 @@ function PartnerForm({setData, data, child}){
     let users = list["user"] ? list["user"].filter(user=>user.id!=current_user.id) : []
     
     let options_dict = {
+      url:data?data.url:"",
+      description:data?data.description:"",
       user:data?data.users.filter(user=>user.id!=current_user.id).map(user=>user.id):[],
       type:data?data.type:"",
       name:data?data.name:"",
@@ -42,16 +44,19 @@ function PartnerForm({setData, data, child}){
 
     const [options, setOptions] = useState(options_dict)
 
+    let invalid_dict = { name: false, description: false, url: false, type: false }
+
+    const [invalid, setInvalid] = useState(invalid_dict)
+    const [formState, setFormState] = useState("")
+
     const handleSave = () => {
-        let cols = ["description", "url"]
         let userIds = [...options.user]
         if (~userIds.includes(current_user.id)){
           userIds.push(current_user.id)
         }
         let entry = {}
-        for (let col of cols){
-            entry[col] = document.getElementById(col).value
-        }
+        entry["url"] = options.url
+        entry["description"] = options.description
         entry["name"] = options.name
         entry["type"] = options.type
         entry["users"] = userIds
@@ -60,12 +65,43 @@ function PartnerForm({setData, data, child}){
         if (data == null){
             dispatch(addTableRow(param))
             .then((res)=>{
-                console.log(res)
-                setData({nodes: [...list["partner"], res.payload.data]})})
+              if (res.error){
+                Object.keys(invalid).map(key=>{
+                  if (Object.keys(res.payload).includes(key)){
+                    setInvalid(prev=>({...prev, [key]: res.payload[key]}))
+                  } else {
+                    setInvalid(prev=>({...prev, [key]: false}))
+                  }
+                })
+                setFormState("fail")
+            } else {
+              Object.keys(invalid).map(key=>{
+                  setInvalid(prev=>({...prev, [key]: false}))
+              })
+              setFormState("success")
+              setData({nodes: [...list["partner"], res.payload.data]})
+            }
+                })
            
         } else {
             dispatch(updateTableRow({table:"partner", row: entry, rowId: data.id}))
-            .then((res)=>{setData({nodes: [...list["partner"].filter(row=>row.id!=data.id), res.payload.data]});
+            .then((res)=>{
+              if (res.error){
+                Object.keys(invalid).map(key=>{
+                  if (Object.keys(res.payload).includes(key)){
+                    setInvalid(prev=>({...prev, [key]: res.payload[key]}))
+                  } else {
+                    setInvalid(prev=>({...prev, [key]: false}))
+                  }
+                })
+                setFormState("fail")
+            } else {
+              Object.keys(invalid).map(key=>{
+                setInvalid(prev=>({...prev, [key]: false}))
+            })
+              setFormState("success")
+              setData({nodes: [...list["partner"].filter(row=>row.id!=data.id), res.payload.data]});
+            }
             })
 
             
@@ -86,29 +122,39 @@ function PartnerForm({setData, data, child}){
             onChange={(e)=>setOptions({...options, name:e.target.value})}
             autoFocus
             required
+            error = {invalid.name && true}
           />
         <Form.Label htmlFor="name">or choose...</Form.Label>
         <SelectSearch table="name" add={false} multi={false} list={true}
           options={options} setOptions={setOptions} 
-          data={name_list}/>
+          data={name_list}
+          error = {invalid.name && true}/>
+          {invalid.name && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.name}</p>}
       </FormControl>
 
           <Form.Label htmlFor="description">Description</Form.Label>
           <textarea id="description" 
-          className="form-control px-3" 
+          className={`form-control px-3 ${invalid.description && "border-danger"}`} 
           name="description" 
           minLength={10} 
-          defaultValue={data && data.description} placeholder={data && data.description}/>
+          onChange={(e)=>setOptions({...options, description:e.target.value})}
+          defaultValue={options.description} placeholder={options.description}/>
+          {invalid.description && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.description}</p>}
+
           <TextField
             label="URL"
             id="url"
             className='my-2'
-            defaultValue={data && data.url}
-          />
+            onChange={(e)=>setOptions({...options, url:e.target.value})}
+            defaultValue={options.url} error = {invalid.url && true}
+            />
+            {invalid.url && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.url}</p>}
+  
 
         <SelectSearch table="type" add={false} multi={false} list={true}
           options={options} setOptions={setOptions} 
-          data={type_list}/>
+          data={type_list}  error={invalid.type && true}/>
+          {invalid.type && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid.type}</p>}
 
       <FormControl className="py-2 w-100">
           <SelectSearch table="user" add={false} multi={true} 
@@ -123,6 +169,11 @@ function PartnerForm({setData, data, child}){
         <Button className="mt-5 mb-2" variant="contained" onClick={handleSave}>
             Save
           </Button>
+          {formState != "" &&
+                <p className={`${formState=="fail" ?"text-danger": "text-success"} small`} style={{textAlign:"left"}}>
+              {formState=="fail" ? `${data==null? "Adding": "Updating"} record failed, please confirm your inputs are in correct format and you have filled all required fields`
+              :`${data==null? "Adding": "Updating"} record succeeded`}
+            </p>}
         </>
         
     )
