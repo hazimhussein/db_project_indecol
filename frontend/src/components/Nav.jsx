@@ -13,7 +13,6 @@ import {Button} from '@mui/material';
 function NavTop(){
     let dispatch = useDispatch()
     const current_user = useSelector(authedUser)
-    console.log(current_user)
 
     let [showLogin, setShowLogin] = useState(false)
     let [loginState, setLoginState] = useState(true)

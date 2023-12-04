@@ -47,7 +47,7 @@ function TableView({table}){
   const [data, setData] = useState({nodes:list});
   useEffect(()=>{
     dispatch(getTableData(table))
-    .then((res)=>setData({nodes: res.payload.data}))
+    .then((res)=>{setData({nodes: res.payload.data})})
   }, [dispatch, table])
 
   //* Theme *//

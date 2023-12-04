@@ -74,7 +74,9 @@ function PersonForm({setData, data, child}){
                   setInvalid(prev=>({...prev, [key]: false}))
               })
               setFormState("success")
-              setData({nodes: [...list["person"], res.payload.data]})
+              if (!child){
+                setData({nodes: [...list["person"], res.payload.data]})
+              }
             }})
            
         } else {

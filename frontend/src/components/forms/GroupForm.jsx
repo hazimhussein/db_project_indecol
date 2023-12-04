@@ -76,7 +76,9 @@ function GroupForm({setData, data, child}){
                   setInvalid(prev=>({...prev, [key]: false}))
               })
               setFormState("success")
-              setData({nodes: [...list["group"], res.payload.data]})
+              if (!child){
+                setData({nodes: [...list["group"], res.payload.data]})
+              }
             }})
            
         } else {

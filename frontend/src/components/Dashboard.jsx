@@ -22,7 +22,6 @@ function Dashboard(){
     
     let data_current = data[category] ? data[category] : []
     const current_user = useSelector(authedUser)
-    console.log(current_user)
 
   
 

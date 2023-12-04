@@ -79,7 +79,9 @@ function PartnerForm({setData, data, child}){
                   setInvalid(prev=>({...prev, [key]: false}))
               })
               setFormState("success")
-              setData({nodes: [...list["partner"], res.payload.data]})
+              if (!child){
+                setData({nodes: [...list["partner"], res.payload.data]})
+              }
             }
                 })
            
