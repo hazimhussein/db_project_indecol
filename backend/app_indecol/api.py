@@ -49,15 +49,20 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class LDAPLogin(APIView):
     permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
     def post(self, request):
         data = request.data
         serializer = UserLoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.check_user(data)
             login(request, user, backend="django_python3_ldap.auth.LDAPBackend")
-            print(User.objects.get(username=user.username).id)
-            return Response(UserSerializer(User.objects.get(username=user.username)).data, status=status.HTTP_200_OK)
+            try:
+                login_user = User.objects.get(username=user.username)
+            except:
+                login_user = User(user)
+                login_user.save()
+                
+            return Response(UserSerializer(login_user).data, status=status.HTTP_200_OK)
 
 class LDAPLogout(APIView):
     permission_classes = (permissions.AllowAny,)

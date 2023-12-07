@@ -333,7 +333,7 @@ body {
     }
     
     .card .card--desc p {
-        opacity: 1;
+        opacity: 0;
     }
     
     .card .card--desc hr {

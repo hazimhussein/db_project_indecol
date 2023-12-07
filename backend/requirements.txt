@@ -1,1 +1,6 @@
-django
+Django==4.1.5
+django-cors-headers==3.13.0
+djangorestframework==3.14.0
+gunicorn==20.1.0
+django-python3-ldap==0.15.5
+unipath==1.1.0

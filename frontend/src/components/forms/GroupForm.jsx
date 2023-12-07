@@ -119,7 +119,6 @@ function GroupForm({setData, data, child}){
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 500,
             backgroundColor: '#ffffff',
             border: '1px solid #e0e0e0',
             borderRadius: '4px',

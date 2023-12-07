@@ -46,6 +46,10 @@ function TableView({table}){
   
   const [data, setData] = useState({nodes:list});
   useEffect(()=>{
+    let shown_cols = COLUMNS.filter(col => !hiddenColumns.includes(col.label) && col.label!="Id" && col.label!="")
+    if (window.innerWidth <= 768 && shown_cols.length >= 3){
+        setHiddenColumns(shown_cols.filter(col=>!shown_cols.slice(0,3).map(c=>c.label).includes(col.label)).map(col=>col.label))
+    }
     dispatch(getTableData(table))
     .then((res)=>{setData({nodes: res.payload.data})})
   }, [dispatch, table])
@@ -193,7 +197,7 @@ function TableView({table}){
   }
 
   //////// Hide Columns
-  const [hiddenColumns, setHiddenColumns] = useState([]);
+  let [hiddenColumns, setHiddenColumns] = useState([]);
   const toggleColumn = (column) => {
     if (hiddenColumns.includes(column)) {
       setHiddenColumns(hiddenColumns.filter((v) => v !== column));
@@ -220,7 +224,7 @@ function TableView({table}){
     COLUMNS.push({
       label: '',
       renderCell: (item) => (
-        current_user && item.users.map(usr=>usr.id).includes(current_user.id) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        current_user && (item.users.map(usr=>usr.id).includes(current_user.id) || current_user.is_superuser) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <IconButton onClick={() => handleEditable(table,item.id)}>
             <FaPen size={14} />
           </IconButton>
@@ -284,6 +288,8 @@ function TableView({table}){
   };
 
 
+
+
   
 
    return (
@@ -296,7 +302,6 @@ function TableView({table}){
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 500,
             backgroundColor: '#ffffff',
             border: '1px solid #e0e0e0',
             borderRadius: '4px',
