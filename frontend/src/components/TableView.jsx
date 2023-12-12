@@ -31,6 +31,9 @@ import { dataData, authedUser } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
 import FormPicker from "./FormPicker"
 import { removeTableRow, getTableData } from "../utils/api";
+import dayjs from 'dayjs';
+import { DatePicker } from '@mui/x-date-pickers';
+import SearchGlob from './elements/search';
 
 
 
@@ -239,7 +242,10 @@ function TableView({table}){
 
   
    //* Search *//
-   let search_cols = Object.fromEntries(COLUMNS.filter(col=>col.label!="Id"&& col.label!="").map(col=>[col.label.toLowerCase(),""]))
+   let search_cols = Object.fromEntries(COLUMNS.filter(col=>col.label!="Id"&& col.label!="").map(col=>
+    col.label.toLowerCase().includes("date")
+    ? [col.label.toLowerCase(),{start:null, end:null}]
+    :[col.label.toLowerCase(),""]))
  
    const [search, setSearch] = useState(search_cols);
  
@@ -254,14 +260,22 @@ function TableView({table}){
    }
  
    //* Custom Modifiers *//
+   let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
-   let modifiedNodes = data.nodes;
  
    // search
    modifiedNodes = modifiedNodes.filter((node) =>{
     for (const [key, value] of Object.entries(search)){
       if (value != "" && typeof node[key] == "string"){
-        if (!node[key].toLowerCase().includes(value.toLowerCase())){
+        if (key.toLowerCase().includes("date")) {
+          let val = dayjs(node[key])
+          if  (!(value.start == null && value.end == null) 
+          && ((value.start != null ? val < value.start : false) 
+        || (value.end != null ? val > value.end : false))){
+            return false
+          }
+        }
+        else if (!node[key].toLowerCase().includes(value.toLowerCase())){
           return false
         }
       }
@@ -269,6 +283,8 @@ function TableView({table}){
     return  true
   }
    );
+
+   
 
    ////////Print
    const printRef = useRef();
@@ -320,21 +336,50 @@ function TableView({table}){
       {/* Form */}
 
       <Stack className='py-3' spacing={1} direction="row">
-        {current_user && table != "user" && <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
+        {current_user && table != "user" && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-3":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
+        {table == "project" && <SearchGlob modifiedNodes={list} setModifiedNodes={setModifiedNodes} />}
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
         </Button>
       </Stack>
-      <Stack spacing={1} direction="row">
+      <Stack id="searchArea" spacing={1} direction="row" className='d-flex justify-content-center align-items-center'>
         
         {Object.entries(search).filter(([key, value])=>(!hiddenColumns.includes(capitalizeFirstLetter(key)))).map(([key, value])=>(
-        <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
+        key.includes("date")?
+        <div key={`search${key}`} className='d-flex flex-column mb-1'>
+          <h6 className='small'>Search range...</h6>
+          <DatePicker 
+          label={<small>{[`Start ${capitalizeFirstLetter(key)}`]}</small>}
+          format="YYYY-MM-DD"
+          inputFormat="YYYY-MM-DD"
+          onChange={(e) => setSearch({...search, [key]: {start: e, end: value.end}})}
+          id={key} 
+          size="small"
+          className= "me-1 mb-1"
+          slotProps={{ textField: { size: 'small' } }}
+          >
+            {value.start && value.start.format("YYYY-MM-DD")}
+            </DatePicker>
+          <DatePicker 
+          label={<small>{[`End ${capitalizeFirstLetter(key)}`]}</small>}
+          format="YYYY-MM-DD"
+          inputFormat="YYYY-MM-DD"
+          onChange={(e) => setSearch({...search, [key]: {start: value.start, end: e}})}
+          id={key} 
+          className= "me-1"
+          slotProps={{ textField: { size: 'small' } }}
+          >
+            {value.end && value.end.format("YYYY-MM-DD")}
+            </DatePicker>
+        </div>
+        :<TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
         className='me-1'
         size='small'
               defaultValue={value}
-              onChange={(event) => setSearch({...search, [key]: event.target.value})}/>))}
+              onChange={(event) => setSearch({...search, [key]: event.target.value})}/>
+              ))}
         <Button variant="contained" className='m-auto me-0' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
           Columns
         </Button>
@@ -381,7 +426,7 @@ function TableView({table}){
         }}
       >
         <Stack spacing={1}>
-          <FormPicker table={table} setData={setData} data={editable}/>
+          <FormPicker table={table} setData={setData} data={editable} setModifiedNodes={setModifiedNodes}/>
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

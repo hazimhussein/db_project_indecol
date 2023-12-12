@@ -18,7 +18,7 @@ import SelectSearch from "./elements/selectSearch";
 ]
 
   
-function ResourceForm({setData, data, child}){
+function ResourceForm({setData, data, child, setModifiedNodes}){
     let dispatch = useDispatch();
     let list = useSelector(dataData)
     const current_user = useSelector(authedUser)
@@ -72,6 +72,7 @@ function ResourceForm({setData, data, child}){
               setFormState("success")
               if (!child){
                 setData({nodes: [...list["resource"], res.payload.data]})
+                setModifiedNodes([...list["resource"], res.payload.data])
               }
             }
                 
@@ -95,6 +96,7 @@ function ResourceForm({setData, data, child}){
             })
               setFormState("success")
               setData({nodes: [...list["resource"].filter(row=>row.id!=data.id), res.payload.data]});
+              setModifiedNodes([...list["resource"].filter(row=>row.id!=data.id), res.payload.data])
             }
             })
 

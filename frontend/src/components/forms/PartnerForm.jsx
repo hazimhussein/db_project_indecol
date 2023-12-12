@@ -27,7 +27,7 @@ import SelectSearch from "./elements/selectSearch";
 ]
 
   
-function PartnerForm({setData, data, child}){
+function PartnerForm({setData, data, child, setModifiedNodes}){
     let dispatch = useDispatch();
     let list = useSelector(dataData)
     const current_user = useSelector(authedUser)
@@ -81,6 +81,7 @@ function PartnerForm({setData, data, child}){
               setFormState("success")
               if (!child){
                 setData({nodes: [...list["partner"], res.payload.data]})
+                setModifiedNodes([...list["partner"], res.payload.data])
               }
             }
                 })
@@ -103,6 +104,7 @@ function PartnerForm({setData, data, child}){
             })
               setFormState("success")
               setData({nodes: [...list["partner"].filter(row=>row.id!=data.id), res.payload.data]});
+              setModifiedNodes([...list["partner"].filter(row=>row.id!=data.id), res.payload.data])
             }
             })
 

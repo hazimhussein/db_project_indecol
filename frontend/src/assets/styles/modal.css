@@ -92,6 +92,9 @@
     width: 500px;
 }
 
+.MuiModal-root .MuiBox-root {
+    overflow-y: scroll;
+}
 @media screen and (max-width: 768px){
     .MuiModal-root .MuiBox-root {
         width: 95%;

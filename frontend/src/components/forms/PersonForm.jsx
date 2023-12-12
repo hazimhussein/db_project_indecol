@@ -20,7 +20,7 @@ import {DatePicker} from "@mui/x-date-pickers"
     ['Professor','Professor']
 ]
   
-function PersonForm({setData, data, child}){
+function PersonForm({setData, data, child, setModifiedNodes}){
     let dispatch = useDispatch();
     let list = useSelector(dataData)
     const current_user = useSelector(authedUser)
@@ -76,6 +76,7 @@ function PersonForm({setData, data, child}){
               setFormState("success")
               if (!child){
                 setData({nodes: [...list["person"], res.payload.data]})
+                setModifiedNodes([...list["person"], res.payload.data])
               }
             }})
            
@@ -97,6 +98,7 @@ function PersonForm({setData, data, child}){
             })
               setFormState("success")
               setData({nodes: [...list["person"].filter(row=>row.id!=data.id), res.payload.data]});
+              setModifiedNodes([...list["person"].filter(row=>row.id!=data.id), res.payload.data])
             }
             })
 

@@ -29,4 +29,19 @@
     background-color: #b8b9ba;
     border-radius: 0.5rem;
 }
+
+#searchArea .MuiInputBase-adornedEnd .MuiInputBase-inputAdornedEnd {
+    padding-left: 0;
+}
+#searchArea .MuiInputBase-adornedEnd button {
+    padding: 0;
+}
+#searchArea .MuiInputBase-adornedEnd input {
+    font-size: 0.7rem;
+    min-width: 60px;
+}
+
+#searchArea div:has(> .MuiInputBase-adornedEnd) label:not(.MuiInputLabel-shrink) { 
+    transform: translate(2%, 20%);
+}
     

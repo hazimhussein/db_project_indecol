@@ -30,12 +30,12 @@ function Details({data, child, table}){
                             <td>
                                 {child && start.map(([k, value])=>
                                     (<div key={k} className="d-flex child" onClick={()=>setShow(!show)}>
-                                        <span><strong>{`${capitalizeFirstLetter(k)}:_______`} </strong></span><span>{value}</span><span className="d-flex align-items-center ms-2" style={{width:"10px"}}>{show?<FaChevronRight />:<FaChevronDown />}</span>
+                                        <span><strong>{`${capitalizeFirstLetter(k)}:`} </strong></span><span className="ms-4" >{value}</span><span className="d-flex align-items-center ms-2" style={{width:"10px"}}>{show?<FaChevronRight />:<FaChevronDown />}</span>
                                     </div>)
                                 )}
                                 {(!child || show) && data.map(([k, value])=>
                                     (<div key={k} className="d-flex">
-                                        <span><strong>{`${capitalizeFirstLetter(k)}:_______`} </strong></span><span>{value && value.constructor === Array ? value.map(val=>{return(<div key={val.id}><br/><Details data={val} child={true} table={k.slice(0,-1)}/></div>)}): value}</span>
+                                        <span><strong>{`${capitalizeFirstLetter(k)}:`} </strong></span><span className="ms-4" >{value && value.constructor === Array ? value.map(val=>{return(<div key={val.id}><br/><Details data={val} child={true} table={k.slice(0,-1)}/></div>)}): value}</span>
                                     </div>)
                                 )}
                             </td>

@@ -22,7 +22,7 @@ const name_list = [
   ['IEDL Group', 'Konstantin Stadler Group']
 ]
   
-function GroupForm({setData, data, child}){
+function GroupForm({setData, data, child, setModifiedNodes}){
     let dispatch = useDispatch();
     let list = useSelector(dataData)
     const current_user = useSelector(authedUser)
@@ -78,6 +78,7 @@ function GroupForm({setData, data, child}){
               setFormState("success")
               if (!child){
                 setData({nodes: [...list["group"], res.payload.data]})
+                setModifiedNodes([...list["group"], res.payload.data])                
               }
             }})
            
@@ -99,6 +100,7 @@ function GroupForm({setData, data, child}){
             })
               setFormState("success")
               setData({nodes: [...list["group"].filter(row=>row.id!=data.id), res.payload.data]});
+              setModifiedNodes([...list["group"].filter(row=>row.id!=data.id), res.payload.data])
             }
             
             })

@@ -61,7 +61,7 @@ const type_list = [
 
 
   
-function ProjectForm({setData, data}){
+function ProjectForm({setData, data, setModifiedNodes}){
     let dispatch = useDispatch();
 
     let list = useSelector(dataData)
@@ -138,6 +138,7 @@ function ProjectForm({setData, data}){
               })
               setFormState("success")
               setData({nodes: [...list["project"], res.payload.data]})
+              setModifiedNodes([...list["project"], res.payload.data])
             }
                 
               })
@@ -161,6 +162,7 @@ function ProjectForm({setData, data}){
             })
               setFormState("success")
               setData({nodes: [...list["project"].filter(row=>row.id!=data.id), res.payload.data]});
+              setModifiedNodes([...list["project"].filter(row=>row.id!=data.id), res.payload.data])
             }
             
             })

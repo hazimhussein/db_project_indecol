@@ -22,16 +22,9 @@ function Question({ table, data }) {
   let description = data.description ? data.description : "";
   let img = table == "category" ? data.name : table
 
-  if (table == "person") {
+  if (table == "team") {
     name = data.first_name + " " + data.last_name;
     description = data.role
-  } else if (table == "user") {
-    name = data.username;
-    description = data.email
-  } else if (table == "resource") {
-    name = data.full_name;
-  } else if (table == "group") {
-    description = data.persons.map(pers=><span>{pers.first_name} {pers.last_name}<br/></span>)
   } 
   return (
     <div className="wrap" onClick={() => routeChange(img)}>
@@ -57,7 +50,7 @@ function Question({ table, data }) {
                       </li>
                     </ul>
                   </div>}
-          {!table && (
+          {table == "team" && (
             <div className="card--social">
               <ul>
                 <li className="instagram">
