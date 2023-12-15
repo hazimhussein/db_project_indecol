@@ -27,17 +27,17 @@ function getStyles(name, id, theme) {
     },
   };
 
-function SelectSearch({table, add, options, setOptions, data, parameter, setModalOpened, multi, list, error}){
+function SelectSearch({table, add, options, setOptions, data, parameter, setModalOpened, multi, list, error, filter_id}){
     const theme = useTheme();
 
-    //Filter
+    //_id
     const [filter, setFilter] = useState("")
     let inputRef = useRef(undefined);
 
     return (
         <FormControl className="py-2 w-100">
       <Form.Group>
-        <InputLabel id={`${table}sLabel`}>{capitalizeFirstLetter(table)}</InputLabel>
+        <InputLabel id={`${table}sLabel`}>{table == "project"? "Related":capitalizeFirstLetter(table)}</InputLabel>
         <Select
           labelId={`${table}sLabel`}
           id={`${table}s`}
@@ -76,7 +76,7 @@ function SelectSearch({table, add, options, setOptions, data, parameter, setModa
               }}
           /></ListSubheader>
           { !list ? data.filter(val=>(typeof parameter == "string" ? val[parameter]
-            : `${parameter.map(param=> `${val[param]} `)}`).toLowerCase().includes(filter.toLowerCase())).map((val) => (
+            : `${parameter.map(param=> `${val[param]} `)}`).toLowerCase().includes(filter.toLowerCase()) && (filter_id ? val.id != filter_id : true)).map((val) => (
             <MenuItem
               key={val.id}
               value={val.id}

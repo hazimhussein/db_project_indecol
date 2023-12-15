@@ -4,7 +4,7 @@ import App from './components/App'
 import './index.css'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import { getTableData, logoutAPI } from './utils/api'
+import { getTableData, logoutAPI, getTableOptions } from './utils/api'
 import dataReduce from './reducers/data'
 import logger from 'redux-logger'
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -23,6 +23,7 @@ store.dispatch(getTableData("partner"))
 store.dispatch(getTableData("resource"))
 store.dispatch(getTableData("group"))
 store.dispatch(getTableData("project"))
+store.dispatch(getTableOptions("project"))
 store.dispatch(logoutAPI())
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

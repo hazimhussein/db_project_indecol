@@ -73,7 +73,7 @@ class ResourceSerializer(serializers.ModelSerializer):
         return super(ResourceSerializer, self).to_representation(instance)
 
 
-class MasterProjectSerializer(serializers.ModelSerializer):
+class RelatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ["id", "name"]
@@ -89,7 +89,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         self.fields['groups'] =  GroupSerializer(many=True, read_only=True)
         self.fields['partners'] =  PartnerSerializer(many=True, read_only=True)
         self.fields['resources'] =  ResourceSerializer(many=True, read_only=True)
-        self.fields['master_projects'] =  MasterProjectSerializer(many=True, read_only=True)
+        self.fields['related'] =  RelatedSerializer(many=True, read_only=True)
         return super(ProjectSerializer, self).to_representation(instance)
     
 class UserLoginSerializer(serializers.Serializer):

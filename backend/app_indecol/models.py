@@ -260,7 +260,7 @@ class Project(models.Model):
         Resource, blank=True
     )
 
-    master_projects = models.ManyToManyField("self", blank=True)
+    related = models.ManyToManyField("self", blank=True)
 
     users = models.ManyToManyField(User)
 

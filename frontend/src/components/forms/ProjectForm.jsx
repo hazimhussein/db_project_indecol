@@ -83,7 +83,7 @@ function ProjectForm({setData, data, setModifiedNodes}){
       group:data?data.groups.map(group=>group.id):[],
       partner:data && data.partners?data.partners.map(partner=>partner.id):[],
       resource:data && data.resources?data.resources.map(resource=>resource.id):[],
-      project:data && data.projects ?data.projects.map(project=>project.id):[],
+      project:data && data.related ?data.related.map(project=>project.id):[],
       start_date:data?dayjs(data.start_date):null,
       end_date:data?dayjs(data.end_date):null
     }
@@ -106,8 +106,8 @@ function ProjectForm({setData, data, setModifiedNodes}){
         for (let col of cols){
             entry[col] = document.getElementById(col).value
         }
-        entry["start_date"] = options.start_date ? `${options.start_date.$y}-${options.start_date.$M}-${options.start_date.$D}`: options.start_date
-        entry["end_date"] = options.end_date ? `${options.end_date.$y}-${options.end_date.$M}-${options.end_date.$D}` : options.end_date
+        entry["start_date"] = options.start_date ? dayjs(options.start_date).format("YYYY-MM-DD"): options.start_date
+        entry["end_date"] = options.end_date ? dayjs(options.end_date).format("YYYY-MM-DD") : options.end_date
         entry["type"] = options.type
         entry["keywords"] = typeof options.keyword != "string" ? options.keyword.join(", ") : options.keyword
         entry["methods"] = typeof options.method != "string" ? options.method.join(", ") : options.method
@@ -115,7 +115,7 @@ function ProjectForm({setData, data, setModifiedNodes}){
         entry["partners"] = options.partner
         entry["groups"] = options.group
         entry["resources"] = options.resource
-        entry["projects"] = options.project
+        entry["related"] = options.project
         entry["users"] = userIds
         let param = {table:"project", row: entry}
 
@@ -161,8 +161,8 @@ function ProjectForm({setData, data, setModifiedNodes}){
                 setInvalid(prev=>({...prev, [key]: false}))
             })
               setFormState("success")
-              setData({nodes: [...list["project"].filter(row=>row.id!=data.id), res.payload.data]});
-              setModifiedNodes([...list["project"].filter(row=>row.id!=data.id), res.payload.data])
+              setData({nodes: res.payload.data});
+              setModifiedNodes(res.payload.data)
             }
             
             })
@@ -326,7 +326,7 @@ function ProjectForm({setData, data, setModifiedNodes}){
 
       <SelectSearch table="project" add={false} multi={true} 
           options={options} setOptions={setOptions} 
-          data={projects} parameter="project_id"/>
+          data={projects} parameter="project_id" filter_id={data && data.id}/>
 
         <FormControl className="py-2 w-100">
           <SelectSearch table="user" add={false} multi={true} 

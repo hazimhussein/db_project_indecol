@@ -10,6 +10,18 @@ from django.contrib.sessions.models import Session
 from importlib import import_module
 from  django.contrib.auth.middleware import get_user
 from django.http import HttpRequest
+from rest_framework.metadata import SimpleMetadata
+from rest_framework.relations import ManyRelatedField, RelatedField
+
+
+class MyMetaData(SimpleMetadata):
+
+    def get_field_info(self, field):
+        field_info = super(MyMetaData, self).get_field_info(field)
+        if isinstance(field, (RelatedField, ManyRelatedField)):
+            field_info['type'] = "foreign_key"
+            field_info['name'] = field.child_relation.queryset.model.__name__.lower()
+        return field_info
 
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
@@ -43,6 +55,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
 class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
