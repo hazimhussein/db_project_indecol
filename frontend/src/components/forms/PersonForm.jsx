@@ -29,9 +29,9 @@ function PersonForm({setData, data, child, setModifiedNodes}){
 
     let options_dict = {
       user:data?data.users.filter(user=>user.id!=current_user.id).map(user=>user.id):[],
-      role:data?data.role:"Master Student",
+      role:data?data.roles.split(", "):[],
       start_date:data?dayjs(data.start_date):null,
-      end_date:data?dayjs(data.end_date):null
+      end_date:data&& data.end_date ?dayjs(data.end_date):null
     }
 
     const [options, setOptions] = useState(options_dict)
@@ -51,9 +51,9 @@ function PersonForm({setData, data, child, setModifiedNodes}){
         for (let col of cols){
             entry[col] = document.getElementById(col).value
         }
-        entry["start_date"] = options.start_date ? `${options.start_date.$y}-${options.start_date.$M}-${options.start_date.$D}`: options.start_date
-        entry["end_date"] = options.end_date ? `${options.end_date.$y}-${options.end_date.$M}-${options.end_date.$D}` : options.end_date
-        entry["role"] = options.role
+        entry["start_date"] = options.start_date ? dayjs(options.start_date).format("YYYY-MM-DD"): options.start_date
+        entry["end_date"] = options.end_date ? dayjs(options.end_date).format("YYYY-MM-DD") : options.end_date
+        entry["roles"] = typeof options.role != "string" ? options.role.join(", ") : options.role
         entry["users"] = userIds
         let param = {table:"person", row: entry}
         
@@ -97,8 +97,8 @@ function PersonForm({setData, data, child, setModifiedNodes}){
                 setInvalid(prev=>({...prev, [key]: false}))
             })
               setFormState("success")
-              setData({nodes: [...list["person"].filter(row=>row.id!=data.id), res.payload.data]});
-              setModifiedNodes([...list["person"].filter(row=>row.id!=data.id), res.payload.data])
+              setData({nodes: res.payload.data});
+              setModifiedNodes(res.payload.data)
             }
             })
 
@@ -153,13 +153,14 @@ function PersonForm({setData, data, child, setModifiedNodes}){
           format="YYYY-MM-DD"
           inputFormat="YYYY-MM-DD"
           value={options.end_date}
+          minDate={options.start_date}
           onChange={(e)=>setOptions({...options, end_date: e})}
            id="end_date" 
           className="my-2">
             {data && data.end_date}
             </DatePicker>
         
-        <SelectSearch table="role" add={false} multi={false} list={true}
+        <SelectSearch table="role" add={false} multi={true} list={true}
           options={options} setOptions={setOptions} 
           data={role_list}
           error = {invalid.role && true}/>

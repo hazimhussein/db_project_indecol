@@ -42,6 +42,15 @@ method_choices = (
     ('sqlite','Sqlite')
 )
 
+role_choices = (
+    ('Master Student','Master Student'),
+    ('PhD','PhD'),
+    ('PostDoc','PostDoc'),
+    ('Enginner','Enginner'),
+    ('Associate Professor','Associate Professor'),
+    ('Researcher','Researcher'),
+    ('Professor','Professor'),
+)
 
 class ProjectAdminForm(ModelForm):
     keywords = forms.MultipleChoiceField(choices = keyword_choices)
@@ -57,6 +66,19 @@ class ProjectAdminForm(ModelForm):
 
         self.cleaned_data['keywords'] = ', '.join(keywords).replace("'", "")
         self.cleaned_data['methods'] = ', '.join(methods).replace("'", "")
+
+        return self.cleaned_data
+class PersonAdminForm(ModelForm):
+    roles = forms.MultipleChoiceField(choices = role_choices)
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+    def clean(self):
+        roles = self.cleaned_data['roles']
+
+        self.cleaned_data['roles'] = ', '.join(roles).replace("'", "")
 
         return self.cleaned_data
     

@@ -16,15 +16,6 @@ group_choices = (
     ('IEDL Group','Konstantin Stadler Group'),
 )
 
-role_choices = (
-    ('Master Student','Master Student'),
-    ('PhD','PhD'),
-    ('PostDoc','PostDoc'),
-    ('Enginner','Enginner'),
-    ('Associate Professor','Associate Professor'),
-    ('Researcher','Researcher'),
-    ('Professor','Professor'),
-)
 
 project_type_choices = (
     ('Master Project','Master Project'),
@@ -118,8 +109,7 @@ class Person(models.Model):
         blank = True
     )
 
-    role = models.CharField(choices = role_choices,
-                            max_length=50)
+    roles = models.CharField(max_length=50, default="PhD")
     
     users = models.ManyToManyField(User)
     
