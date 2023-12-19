@@ -27,10 +27,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+class FieldOptionsViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    queryset = FieldOptions.objects.all()
+    serializer_class = FieldOptionsSerializer
 class PersonViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+class FieldOptionsViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    queryset = FieldOptions.objects.all()
+    serializer_class = FieldOptionsSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)

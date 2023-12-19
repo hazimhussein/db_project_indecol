@@ -40,6 +40,14 @@ class PersonSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         return super(PersonSerializer, self).to_representation(instance)
+class FieldOptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FieldOptions
+        fields = ("__all__")
+    
+    def to_representation(self, instance):
+        self.fields['users'] =  UserSerializer(many=True, read_only=True)
+        return super(FieldOptionsSerializer, self).to_representation(instance)
 
 
 class GroupSerializer(serializers.ModelSerializer):

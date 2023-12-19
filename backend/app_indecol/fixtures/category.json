@@ -1,0 +1,58 @@
+[
+    {
+        "model": "app_indecol.category",
+        "pk": 1,
+        "fields": {
+            "name":"Project",
+            "description":"Different indecol projects and their details"
+        }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 2,
+        "fields": {
+            "name":"Person",
+            "description":"Persons who can be assigned to projects"
+        }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 3,
+        "fields": {
+            "name":"User",
+            "description":"Users registered to use the database"
+        }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 4,
+        "fields": {
+            "name":"Group",
+            "description":"Different groups at indecol"
+        }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 5,
+        "fields": {
+            "name":"Partner",
+            "description":"Partners who contribute to projects"
+        }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 6,
+        "fields": {
+            "name":"Resource",
+            "description":"Resources which the projects used"
+        }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 7,
+        "fields": {
+            "name":"FieldOptions",
+            "description":"Options available for fields that have specific lists of options in the database"
+        }
+    }
+]

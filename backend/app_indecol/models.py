@@ -54,11 +54,39 @@ resource_type_choices = (
     ('Report','Report'),
 )
 
-
 class User(AbstractUser):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
+class FieldOptions(models.Model):
+    name = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+    value = models.CharField(
+        unique=False,
+        null=False,
+        blank=True,
+        max_length=50
+    )
+    table = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    field = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    def __str__(self):
+        return self.name
 class Category(models.Model):
     name = models.CharField(
         unique=False,
@@ -109,7 +137,7 @@ class Person(models.Model):
         blank = True
     )
 
-    roles = models.CharField(max_length=50, default="PhD")
+    roles = models.ManyToManyField(FieldOptions)
     
     users = models.ManyToManyField(User)
     
@@ -118,8 +146,7 @@ class Person(models.Model):
     
 class Group(models.Model):
 
-    name = models.CharField(choices = group_choices,
-                            max_length=50)
+    name = models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="group_name_field")
 
 
     start_date= models.DateField(
@@ -139,15 +166,12 @@ class Group(models.Model):
     users = models.ManyToManyField(User)
 
     def __str__(self):
-        return self.name
+        return self.name.name
     
 class Partner(models.Model):
 
 
-    name= models.CharField(
-        null = False,
-        choices = partner_choices,
-        max_length=50)
+    name= models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="partner_name_field")
 
     description = models.TextField(
         null = False,
@@ -161,13 +185,12 @@ class Partner(models.Model):
         max_length=200
         )
 
-    type= models.CharField(choices = partner_type_choices,
-                            max_length=50)
+    type= models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="partner_type_field")
     
     users = models.ManyToManyField(User)
 
     def __str__(self):
-        return self.name
+        return self.name.name
 
 class Resource(models.Model):
 
@@ -191,8 +214,7 @@ class Resource(models.Model):
         max_length=200
         )
 
-    type= models.CharField(choices = resource_type_choices,
-                            max_length=50)
+    type= models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="resource_type_field")
     
     users = models.ManyToManyField(User)
 
@@ -232,12 +254,10 @@ class Project(models.Model):
         blank = True
     )
 
-    keywords = models.CharField(max_length=100)
-    methods = models.CharField(max_length=50)
+    keywords = models.ManyToManyField(FieldOptions, related_name="project_keywords_field")
+    methods = models.ManyToManyField(FieldOptions, related_name="project_methods_field")
 
-    type = models.CharField(choices = project_type_choices,
-                            max_length=50,
-                            default='-')
+    type = models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="project_type_field")
     
     persons = models.ManyToManyField(Person)
 

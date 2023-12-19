@@ -1,24 +1,24 @@
 [
     {
-        "model": "app_indecol.ressource",
-        "pk": 11,
+        "model": "app_indecol.resource",
+        "pk": 1,
         "fields": {
             "full_name":"HiTEA code repository",
             "description":"",
             "location":"https://gitlab.com/hitea",
-            "type":"Repo",
-            "users":[72]
+            "type":30,
+            "users":[1]
         }
     },
     {
-        "model": "app_indecol.ressource",
-        "pk": 12,
+        "model": "app_indecol.resource",
+        "pk": 2,
         "fields": {
             "full_name":"HiTEA project website",
             "description":"",
             "location":"https://hitea.iedl.no/",
-            "type":"project website",
-            "users":[72]
+            "type":32,
+            "users":[1]
         }
     }
 ]

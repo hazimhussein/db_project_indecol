@@ -14,22 +14,30 @@ from django.contrib.auth.admin import UserAdmin
 class UsersAdmin(UserAdmin):
 
     list_display = ["id", "username", "email", "first_name", "last_name"]
-class PersonAdmin(admin.ModelAdmin):
-    form = PersonAdminForm
+# class PersonAdmin(admin.ModelAdmin):
+#     form = PersonAdminForm
 
 class ProjectAdmin(admin.ModelAdmin):
 
-    list_display = ["name", "start_date", "keywords", "type", "assigned_persons", "assigned_resources", "assigned_partners"]
+    list_display = ["name", "start_date", "assigned_keywords", "get_type", "assigned_persons", "assigned_resources", "assigned_partners"]
     
-    form = ProjectAdminForm
-    search_fields = ('methods','keywords','name','description', "persons__last_name", "persons__first_name")
+    # form = ProjectAdminForm
+    search_fields = ('methods__name','keywords__name','name','description', "persons__last_name", "persons__first_name")
 
-    list_filter = ("keywords", "methods","type","groups","persons")
+    # list_filter = ("keywords", "methods","type","groups","persons")
 
+    @admin.display(ordering='type__name', description='Type')
+    def get_type(self, obj):
+        return obj.type.name
 
-
-
-
+    @admin.display(description='Keywords')
+    def assigned_keywords(self, obj):
+        return [keyword for keyword in obj.keywords.all()]
+    
+    @admin.display(description='Methods')
+    def assigned_methods(self, obj):
+        return [method for method in obj.methods.all()]
+    
     @admin.display(description='Persons')
     def assigned_persons(self, obj):
         return [person for person in obj.persons.all()]
@@ -45,9 +53,11 @@ class ProjectAdmin(admin.ModelAdmin):
         
 
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Person, PersonAdmin)
+admin.site.register(Person)
+# admin.site.register(Person, PersonAdmin)
 admin.site.register(Category)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Resource)
+admin.site.register(FieldOptions)
 admin.site.register(User, UsersAdmin)

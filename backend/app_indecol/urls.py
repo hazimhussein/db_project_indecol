@@ -5,6 +5,7 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register("category", api.CategoryViewSet)
+router.register("fieldoptions", api.FieldOptionsViewSet)
 router.register("person", api.PersonViewSet)
 router.register("partner", api.PartnerViewSet)
 router.register("group", api.GroupViewSet)
