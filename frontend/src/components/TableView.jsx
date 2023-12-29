@@ -11,7 +11,6 @@ import {
   TextField,
   Checkbox,
   Modal,
-  IconButton,
   Button,
   Box,
   Typography,
@@ -20,20 +19,21 @@ import {
   FormControlLabel,
   TablePagination,
 } from '@mui/material';
-import { FaPen, FaChevronRight, FaChevronDown, FaChevronUp, FaRegTrashAlt, FaPlusSquare } from 'react-icons/fa';
+import { FaChevronRight, FaChevronDown, FaChevronUp, FaPlusSquare } from 'react-icons/fa';
 import { capitalizeFirstLetter } from '../utils/helpers';
 import { useState, useRef, useEffect } from 'react';
 import Details from './Details';
 
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { dataData, authedUser } from '../reducers/data';
+import { dataData, authedUser, dataOptions } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
 import FormPicker from "./FormPicker"
 import { removeTableRow, getTableData } from "../utils/api";
 import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers';
 import SearchGlob from './elements/search';
+import col_func from './elements/columns';
 
 
 
@@ -43,39 +43,82 @@ function TableView({table}){
   let dispatch = useDispatch();
   const current_user = useSelector(authedUser)
   const list_selector = useSelector(dataData)
+  const list_options = useSelector(dataOptions)
   let list = list_selector[table] ? list_selector[table] : []
+
+  //* Search *//
+  let search_cols = Object.fromEntries(Object.keys(list_options[table]).filter(col=>col!="id"&& col!="").map(col=>
+    col.includes("date")
+    ? [col,{start:null, end:null}]
+    :[col,""]))
+ 
+   const [search, setSearch] = useState(search_cols);
+
+   let search_row = {id:"search", search:true}
+   Object.entries(search).map(([key, value])=>(
+     key.includes("date")?
+     search_row[key] = <div key={`search${key}`} className='d-flex flex-column mb-1'>
+       <h6 className='small'>Search range...</h6>
+       <DatePicker 
+       label={<small>{[`Start ${capitalizeFirstLetter(key)}`]}</small>}
+       format="YYYY-MM-DD"
+       inputFormat="YYYY-MM-DD"
+       onChange={(e) => setSearch((prevSearch) => ({...prevSearch, [key]: {start: e, end: prevSearch[key].end}}))}
+       id={key} 
+       size="small"
+       className= "mb-2 mt-1"
+       style={{height: "50px"}}
+       slotProps={{ textField: { size: 'small' } }}
+       >
+         {value.start && value.start.format("YYYY-MM-DD")}
+         </DatePicker>
+       <DatePicker 
+       label={<small>{[`End ${capitalizeFirstLetter(key)}`]}</small>}
+       format="YYYY-MM-DD"
+       inputFormat="YYYY-MM-DD"
+       onChange={(e) => setSearch((prevSearch) => ({...prevSearch, [key]: {start: prevSearch[key].start, end: e}}))}
+       id={key} 
+       slotProps={{ textField: { size: 'small' } }}
+       >
+         {value.end && value.end.format("YYYY-MM-DD")}
+         </DatePicker>
+     </div>
+     :search_row[key] = <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
+     size='small'
+           defaultValue={value}
+           onChange={(event) => setSearch((prevSearch) => ({...prevSearch, [key]: event.target.value}))}/>
+           ))
+
   
-  const list_filt = list.map(dat=>Object.fromEntries(Object.keys(dat).filter(key=>dat[key] && dat[key].constructor !== Array).map(x=> [x, dat[x]])));
+  const [data, setData] = useState({nodes:[search_row].concat(list)});
+
+  useCustom('search', data, {
+    state: { search },
+    onChange: onSearchChange,
+  });
+
+  function onSearchChange(action, state) {
+    console.log(action, state);
+    pagination.fns.onSetPage(0);
+  }
   
-  const [data, setData] = useState({nodes:list});
+  function customSetData(d){
+    let n = [search_row].concat(d)
+    setData({nodes:n})
+  }
+
   useEffect(()=>{
     let shown_cols = COLUMNS.filter(col => !hiddenColumns.includes(col.label) && col.label!="Id" && col.label!="")
     if (window.innerWidth <= 768 && shown_cols.length >= 3){
-        setHiddenColumns(shown_cols.filter(col=>!shown_cols.slice(0,3).map(c=>c.label).includes(col.label)).map(col=>col.label))
+      shown_cols = shown_cols.filter(col=>!shown_cols.slice(0,3).map(c=>c.label).includes(col.label)).map(col=>col.label)
+        setHiddenColumns(shown_cols)
+    } else if (window.innerWidth > 768 && shown_cols.length >= 6){
+      shown_cols = shown_cols.filter(col=>!shown_cols.slice(0,6).map(c=>c.label).includes(col.label)).map(col=>col.label)
+        setHiddenColumns(shown_cols)
     }
     dispatch(getTableData(table))
-    .then((res)=>{setData({nodes: res.payload.data})})
+    .then((res)=>{customSetData(res.payload.data)})
   }, [dispatch, table])
-
-  //* Theme *//
-
-  const materialTheme = getTheme({
-    ...DEFAULT_OPTIONS,
-    striped: true,
-    highlightOnHover: true,
-  });
-  
-  const customTheme = {
-    Table: `
-      --data-table-library_grid-template-columns:  repeat(${Object.keys(list_filt[0]).length}, minmax(0, ${100/(Object.keys(list_filt[0]).length)}%));
-
-      margin: 16px 0px;
-    `,
-    Cell:`
-      background-color: none;
-    `
-  };
-  const theme = useTheme([materialTheme, customTheme]);
 
    //* Resize *//
 
@@ -189,7 +232,7 @@ function TableView({table}){
   ////////////Delete
   const handleRemove = (tableName, rowId) =>{
     dispatch(removeTableRow({table:tableName, rowId:rowId}))
-    setData({nodes: list_selector[tableName].filter(row=>row.id!=rowId)})
+    customSetData(list_selector[tableName].filter(row=>row.id!=rowId))
   }
   
   ////////////Edit
@@ -210,54 +253,7 @@ function TableView({table}){
   };
 
   //* Columns *//
-
-  let COLUMNS = list_filt.length > 0 ? Object.keys(list_filt[0]).map((lab)=> {
-    if (lab == "id") {
-      return {
-        label: 'Id',
-        renderCell: (item) => item.id,
-        hide: true,
-      }
-    }
-    return {label: capitalizeFirstLetter(lab), renderCell: (item) => item[lab], resize,
-      sort: { sortKey: lab.toUpperCase() },  hide: hiddenColumns.includes(capitalizeFirstLetter(lab)), }})
-  : []
-
-  if (list.length != 0 && table != "user"){
-    COLUMNS.push({
-      label: '',
-      renderCell: (item) => (
-        current_user && (item.users.map(usr=>usr.id).includes(current_user.id) || current_user.is_superuser) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <IconButton onClick={() => handleEditable(table,item.id)}>
-            <FaPen size={14} />
-          </IconButton>
-          {current_user.is_superuser && <IconButton onClick={() => handleRemove(table,item.id)}>
-            <FaRegTrashAlt size={14} />
-          </IconButton>}
-        </div>
-      ),
-      resize,
-    })
-  }
-
-  
-   //* Search *//
-   let search_cols = Object.fromEntries(COLUMNS.filter(col=>col.label!="Id"&& col.label!="").map(col=>
-    col.label.toLowerCase().includes("date")
-    ? [col.label.toLowerCase(),{start:null, end:null}]
-    :[col.label.toLowerCase(),""]))
- 
-   const [search, setSearch] = useState(search_cols);
- 
-   useCustom('search', data, {
-     state: { search },
-     onChange: onSearchChange,
-   });
- 
-   function onSearchChange(action, state) {
-     console.log(action, state);
-     pagination.fns.onSetPage(0);
-   }
+  let COLUMNS = col_func(data, list_options, table, current_user, hiddenColumns, resize, handleEditable, handleRemove)
  
    //* Custom Modifiers *//
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
@@ -265,19 +261,53 @@ function TableView({table}){
  
    // search
    modifiedNodes = modifiedNodes.filter((node) =>{
+    if (node.search){
+      return true
+    }
     for (const [key, value] of Object.entries(search)){
       if (value != "" && typeof node[key] == "string"){
         if (key.toLowerCase().includes("date")) {
-          let val = dayjs(node[key])
-          if  (!(value.start == null && value.end == null) 
-          && ((value.start != null ? val < value.start : false) 
-        || (value.end != null ? val > value.end : false))){
+            let val = dayjs(node[key])
+            if (value.start && val < value.start){
+              return false
+            }
+            if (value.end && val > value.end){
+              return false
+            }
+          } else if (!node[key].toLowerCase().includes(value.toLowerCase())){
             return false
           }
-        }
-        else if (!node[key].toLowerCase().includes(value.toLowerCase())){
-          return false
-        }
+        } else if (typeof node[key] == "object"){
+          if (node[key] && node[key].constructor == Array){
+            let final_str = ""
+              for (const entry of node[key]){
+                  for (const [k, v] of Object.entries(entry)){
+                      if (v && typeof v == "object"){
+                          for (const [key_c, val_c] of Object.entries(v)){
+                              if (typeof val_c == "string"){
+                                  final_str += val_c
+                              }
+                          }
+                        }
+                      else if (typeof v == "string"){
+                          final_str += v
+                        }
+                  }
+              }
+              if (!final_str.toLowerCase().includes(value.toLowerCase())){
+                return false
+              }
+          } else if (node[key]) {
+            let final_str = ""
+              for (const [k, v] of Object.entries(node[key])){
+                  if (typeof v == "string"){
+                      final_str += v
+                    }
+              }
+              if (!final_str.toLowerCase().includes(value.toLowerCase())){
+                return false
+              }
+          }
       }
     }
     return  true
@@ -303,10 +333,28 @@ function TableView({table}){
     pdf.save("print.pdf");
   };
 
+  //* Theme *//
 
+  const materialTheme = getTheme({
+    ...DEFAULT_OPTIONS,
+    striped: true,
+    highlightOnHover: true,
+  });
 
+  let shown_col_num = COLUMNS.filter((col)=>col.label!="Id" && col.label!="").length 
+  - hiddenColumns.length 
+  + (current_user ? 1 : 0)
+  const customTheme = {
+    Table: `
+      --data-table-library_grid-template-columns:  repeat(${shown_col_num}, minmax(0, ${100/shown_col_num}%));
 
-  
+      margin: 16px 0px;
+    `,
+    Cell:`
+      background-color: none;
+    `
+  };
+  const theme = useTheme([materialTheme, customTheme]);
 
    return (
     <>
@@ -336,52 +384,15 @@ function TableView({table}){
       {/* Form */}
 
       <Stack className='py-3' spacing={1} direction="row">
-        {current_user && table != "user" && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-3":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
+      <Button variant="contained" className='m-auto ms-0 me-1' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
+          Columns
+        </Button>
+        {current_user && table != "user" && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-1":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
-        {table == "project" && <SearchGlob modifiedNodes={list} setModifiedNodes={setModifiedNodes} />}
+        <SearchGlob modifiedNodes={[search_row].concat(list)} setModifiedNodes={setModifiedNodes} />
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
-        </Button>
-      </Stack>
-      <Stack id="searchArea" spacing={1} direction="row" className='d-flex justify-content-center align-items-center'>
-        
-        {Object.entries(search).filter(([key, value])=>(!hiddenColumns.includes(capitalizeFirstLetter(key)))).map(([key, value])=>(
-        key.includes("date")?
-        <div key={`search${key}`} className='d-flex flex-column mb-1'>
-          <h6 className='small'>Search range...</h6>
-          <DatePicker 
-          label={<small>{[`Start ${capitalizeFirstLetter(key)}`]}</small>}
-          format="YYYY-MM-DD"
-          inputFormat="YYYY-MM-DD"
-          onChange={(e) => setSearch({...search, [key]: {start: e, end: value.end}})}
-          id={key} 
-          size="small"
-          className= "me-1 mb-1"
-          slotProps={{ textField: { size: 'small' } }}
-          >
-            {value.start && value.start.format("YYYY-MM-DD")}
-            </DatePicker>
-          <DatePicker 
-          label={<small>{[`End ${capitalizeFirstLetter(key)}`]}</small>}
-          format="YYYY-MM-DD"
-          inputFormat="YYYY-MM-DD"
-          onChange={(e) => setSearch({...search, [key]: {start: value.start, end: e}})}
-          id={key} 
-          className= "me-1"
-          slotProps={{ textField: { size: 'small' } }}
-          >
-            {value.end && value.end.format("YYYY-MM-DD")}
-            </DatePicker>
-        </div>
-        :<TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
-        className='me-1'
-        size='small'
-              defaultValue={value}
-              onChange={(event) => setSearch({...search, [key]: event.target.value})}/>
-              ))}
-        <Button variant="contained" className='m-auto me-0' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
-          Columns
         </Button>
       </Stack>
 
@@ -426,7 +437,7 @@ function TableView({table}){
         }}
       >
         <Stack spacing={1}>
-          <FormPicker table={table} setData={setData} data={editable} setModifiedNodes={setModifiedNodes}/>
+          <FormPicker table={table} setData={customSetData} data={editable} setModifiedNodes={setModifiedNodes}/>
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

@@ -103,6 +103,59 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Team(models.Model):
+    first_name = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    last_name = models.CharField(
+        unique=False,
+        null=False,
+        blank=False,
+        max_length=50
+    )
+
+    url = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=100
+    )
+
+    img_url = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=100
+    )
+
+    role = models.CharField(
+        unique=False,
+        null=False,
+        blank=True,
+        max_length=100
+    )
+
+    email = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=50
+    )
+
+    phone = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=15
+    )
+    
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
 class Person(models.Model):
 
 

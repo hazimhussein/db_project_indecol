@@ -16,14 +16,12 @@ const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger).concat(loadingBarMiddleware()),
 })
-store.dispatch(getTableData("category"))
-store.dispatch(getTableData("user"))
-store.dispatch(getTableData("person"))
-store.dispatch(getTableData("partner"))
-store.dispatch(getTableData("resource"))
-store.dispatch(getTableData("group"))
-store.dispatch(getTableData("project"))
-store.dispatch(getTableOptions("project"))
+store.dispatch(getTableData("category")).then((res)=>{
+  res.payload.data.map((cat)=> {
+    store.dispatch(getTableData(cat.name.toLowerCase()))
+    store.dispatch(getTableOptions(cat.name.toLowerCase()))
+  })
+})
 store.dispatch(logoutAPI())
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -27,7 +27,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', "first_name", "last_name", "email", "is_superuser")
 
-
+class FieldOptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FieldOptions
+        fields = ("__all__")
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -38,24 +41,21 @@ class PersonSerializer(serializers.ModelSerializer):
         fields = ("__all__")
     
     def to_representation(self, instance):
+        self.fields['roles'] =  FieldOptionsSerializer(many=True, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         return super(PersonSerializer, self).to_representation(instance)
-class FieldOptionsSerializer(serializers.ModelSerializer):
+
+class TeamSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FieldOptions
+        model = Team
         fields = ("__all__")
-    
-    def to_representation(self, instance):
-        self.fields['users'] =  UserSerializer(many=True, read_only=True)
-        return super(FieldOptionsSerializer, self).to_representation(instance)
-
-
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ("__all__")
     
     def to_representation(self, instance):
+        self.fields['name'] =  FieldOptionsSerializer(many=False, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         self.fields['persons'] =  PersonSerializer(many=True, read_only=True)
         return super(GroupSerializer, self).to_representation(instance)
@@ -67,6 +67,8 @@ class PartnerSerializer(serializers.ModelSerializer):
         fields = ("__all__")
     
     def to_representation(self, instance):
+        self.fields['name'] =  FieldOptionsSerializer(many=False, read_only=True)
+        self.fields['type'] =  FieldOptionsSerializer(many=False, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         return super(PartnerSerializer, self).to_representation(instance)
 
@@ -77,6 +79,7 @@ class ResourceSerializer(serializers.ModelSerializer):
         fields = ("__all__")
 
     def to_representation(self, instance):
+        self.fields['type'] =  FieldOptionsSerializer(many=False, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         return super(ResourceSerializer, self).to_representation(instance)
 
@@ -84,7 +87,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 class RelatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "name"]
+        fields = ["id", "project_id", "name"]
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -92,6 +95,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ('__all__')
     
     def to_representation(self, instance):
+        self.fields['keywords'] =  FieldOptionsSerializer(many=True, read_only=True)
+        self.fields['methods'] =  FieldOptionsSerializer(many=True, read_only=True)
+        self.fields['type'] =  FieldOptionsSerializer(many=False, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         self.fields['persons'] =  PersonSerializer(many=True, read_only=True)
         self.fields['groups'] =  GroupSerializer(many=True, read_only=True)

@@ -54,5 +54,13 @@
             "name":"FieldOptions",
             "description":"Options available for fields that have specific lists of options in the database"
         }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 8,
+        "fields": {
+            "name":"Team",
+            "description":"The team members responsible for developing the app"
+        }
     }
 ]

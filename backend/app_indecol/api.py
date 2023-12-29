@@ -11,52 +11,64 @@ from importlib import import_module
 from  django.contrib.auth.middleware import get_user
 from django.http import HttpRequest
 from rest_framework.metadata import SimpleMetadata
-from rest_framework.relations import ManyRelatedField, RelatedField
+from rest_framework.relations import ManyRelatedField, RelatedField, PrimaryKeyRelatedField
 
 
 class MyMetaData(SimpleMetadata):
 
     def get_field_info(self, field):
         field_info = super(MyMetaData, self).get_field_info(field)
-        if isinstance(field, (RelatedField, ManyRelatedField)):
+        if isinstance(field, (PrimaryKeyRelatedField)):
             field_info['type'] = "foreign_key"
+            field_info['name'] = field.queryset.model.__name__.lower()
+        elif isinstance(field, (RelatedField, ManyRelatedField)):
+            field_info['type'] = "foreign_key_many"
             field_info['name'] = field.child_relation.queryset.model.__name__.lower()
         return field_info
 
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
 class FieldOptionsViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = FieldOptions.objects.all()
     serializer_class = FieldOptionsSerializer
+class TeamViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
 class PersonViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-class FieldOptionsViewSet(viewsets.ModelViewSet):
-    permission_classes = (permissions.AllowAny,)
-    queryset = FieldOptions.objects.all()
-    serializer_class = FieldOptionsSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 class PartnerViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = Partner.objects.all()
     serializer_class = PartnerSerializer
 
 class ResourceViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
     queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
     

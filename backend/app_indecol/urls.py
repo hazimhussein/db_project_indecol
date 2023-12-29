@@ -6,14 +6,13 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register("category", api.CategoryViewSet)
 router.register("fieldoptions", api.FieldOptionsViewSet)
+router.register("team", api.TeamViewSet)
 router.register("person", api.PersonViewSet)
 router.register("partner", api.PartnerViewSet)
 router.register("group", api.GroupViewSet)
 router.register("user", api.UserViewSet)
 router.register("resource", api.ResourceViewSet)
 router.register("project", api.ProjectViewSet)
-# router.register("login", api.LDAPLogin, basename="login")
-# router.register("logout", api.LDAPLogout, basename="logout")
 
 urlpatterns = [
     path('', views.index, name = 'index'),

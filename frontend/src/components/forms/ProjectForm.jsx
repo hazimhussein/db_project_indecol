@@ -137,7 +137,7 @@ function ProjectForm({setData, data, setModifiedNodes}){
                   setInvalid(prev=>({...prev, [key]: false}))
               })
               setFormState("success")
-              setData({nodes: [...list["project"], res.payload.data]})
+              setData([...list["project"], res.payload.data])
               setModifiedNodes([...list["project"], res.payload.data])
             }
                 
@@ -161,7 +161,7 @@ function ProjectForm({setData, data, setModifiedNodes}){
                 setInvalid(prev=>({...prev, [key]: false}))
             })
               setFormState("success")
-              setData({nodes: res.payload.data});
+              setData(res.payload.data);
               setModifiedNodes(res.payload.data)
             }
             

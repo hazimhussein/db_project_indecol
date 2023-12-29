@@ -44,4 +44,23 @@
 #searchArea div:has(> .MuiInputBase-adornedEnd) label:not(.MuiInputLabel-shrink) { 
     transform: translate(2%, 20%);
 }
+
+.dashboard table .MuiInputBase-adornedEnd .MuiInputBase-inputAdornedEnd {
+    padding-left: 4px;
+}
+.dashboard table .MuiInputBase-adornedEnd button {
+    padding: 0;
+}
+.dashboard table .MuiInputBase-adornedEnd input {
+    font-size: 0.7rem;
+}
+.dashboard table .MuiInputBase-root.MuiOutlinedInput-root {
+    height: 40px;
+}
+
+.dashboard table div:has(> .MuiInputBase-adornedEnd) label:not(.MuiInputLabel-shrink) { 
+    transform: translate(2%, 20%);
+}
+
+
     

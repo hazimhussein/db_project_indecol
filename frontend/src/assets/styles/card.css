@@ -98,6 +98,11 @@ body {
     max-width: 50%;
     height: 80%;
 }
+.card figure img.person {
+    margin-bottom: auto;
+    max-width: 110%;
+    height: auto;
+}
 
 .card-liner {
     position: relative;

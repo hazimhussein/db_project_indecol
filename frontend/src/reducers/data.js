@@ -142,6 +142,7 @@ const dataSlice = createSlice({
 }
 })
 export const dataData = (state) => state.data.value
+export const dataOptions = (state) => state.data.options
 export const statusData = (state) => state.data.status
 export const errorData = (state) => state.data.error
 export const authedUser = (state) => state.data.user
