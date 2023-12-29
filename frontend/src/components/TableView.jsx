@@ -8,7 +8,6 @@ import { useSort } from '@table-library/react-table-library/sort';
 import { usePagination } from '@table-library/react-table-library/pagination';
 import {
   Stack,
-  TextField,
   Checkbox,
   Modal,
   Button,
@@ -20,10 +19,8 @@ import {
   TablePagination,
 } from '@mui/material';
 import { FaChevronRight, FaChevronDown, FaChevronUp, FaPlusSquare } from 'react-icons/fa';
-import { capitalizeFirstLetter } from '../utils/helpers';
 import { useState, useRef, useEffect } from 'react';
 import Details from './Details';
-
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { dataData, authedUser, dataOptions } from '../reducers/data';
@@ -31,11 +28,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import FormPicker from "./FormPicker"
 import { removeTableRow, getTableData } from "../utils/api";
 import dayjs from 'dayjs';
-import { DatePicker } from '@mui/x-date-pickers';
 import SearchGlob from './elements/search';
-import col_func from './elements/columns';
-
-
+import col_func from './utils/columns';
+import search_row_builder from './utils/search_row';
 
 const key = 'Table';
 
@@ -53,41 +48,7 @@ function TableView({table}){
     :[col,""]))
  
    const [search, setSearch] = useState(search_cols);
-
-   let search_row = {id:"search", search:true}
-   Object.entries(search).map(([key, value])=>(
-     key.includes("date")?
-     search_row[key] = <div key={`search${key}`} className='d-flex flex-column mb-1'>
-       <h6 className='small'>Search range...</h6>
-       <DatePicker 
-       label={<small>{[`Start ${capitalizeFirstLetter(key)}`]}</small>}
-       format="YYYY-MM-DD"
-       inputFormat="YYYY-MM-DD"
-       onChange={(e) => setSearch((prevSearch) => ({...prevSearch, [key]: {start: e, end: prevSearch[key].end}}))}
-       id={key} 
-       size="small"
-       className= "mb-2 mt-1"
-       style={{height: "50px"}}
-       slotProps={{ textField: { size: 'small' } }}
-       >
-         {value.start && value.start.format("YYYY-MM-DD")}
-         </DatePicker>
-       <DatePicker 
-       label={<small>{[`End ${capitalizeFirstLetter(key)}`]}</small>}
-       format="YYYY-MM-DD"
-       inputFormat="YYYY-MM-DD"
-       onChange={(e) => setSearch((prevSearch) => ({...prevSearch, [key]: {start: prevSearch[key].start, end: e}}))}
-       id={key} 
-       slotProps={{ textField: { size: 'small' } }}
-       >
-         {value.end && value.end.format("YYYY-MM-DD")}
-         </DatePicker>
-     </div>
-     :search_row[key] = <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
-     size='small'
-           defaultValue={value}
-           onChange={(event) => setSearch((prevSearch) => ({...prevSearch, [key]: event.target.value}))}/>
-           ))
+   let search_row = search_row_builder(search, setSearch)
 
   
   const [data, setData] = useState({nodes:[search_row].concat(list)});
@@ -121,11 +82,9 @@ function TableView({table}){
   }, [dispatch, table])
 
    //* Resize *//
-
    const resize = { resizerHighlight: '#dee2e6' };
 
    //* Pagination *//
- 
    const pagination = usePagination(data, {
      state: {
        page: 0,
@@ -139,7 +98,6 @@ function TableView({table}){
    }
  
    //* Select *//
- 
    const select = useRowSelect(data, {
      onChange: onSelectChange,
    });
@@ -149,7 +107,6 @@ function TableView({table}){
    }
  
    //* Tree *//
- 
    const tree = useTree(
      data,
      {
@@ -172,7 +129,6 @@ function TableView({table}){
    }
  
    //* Sort *//
- 
    const sort = useSort(
      data,
      {
@@ -199,7 +155,6 @@ function TableView({table}){
    }
  
    //* Drawer *//
- 
    const [drawerId, setDrawerId] = useState(null);
 
    const handleCancel = () => {
@@ -208,7 +163,6 @@ function TableView({table}){
    };
  
    //* Modal *//
- 
    const [modalOpened, setModalOpened] = useState(false);
 
   ////// Expand
