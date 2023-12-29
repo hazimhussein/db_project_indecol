@@ -27,10 +27,8 @@ import { dataData, authedUser, dataOptions } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
 import FormPicker from "./FormPicker"
 import { removeTableRow, getTableData } from "../utils/api";
-import dayjs from 'dayjs';
 import SearchGlob from './elements/search';
-import col_func from './utils/columns';
-import search_row_builder from './utils/search_row';
+import { col_func, search_row_builder, modify_nodes } from './utils';
 
 const key = 'Table';
 
@@ -214,61 +212,7 @@ function TableView({table}){
  
  
    // search
-   modifiedNodes = modifiedNodes.filter((node) =>{
-    if (node.search){
-      return true
-    }
-    for (const [key, value] of Object.entries(search)){
-      if (value != "" && typeof node[key] == "string"){
-        if (key.toLowerCase().includes("date")) {
-            let val = dayjs(node[key])
-            if (value.start && val < value.start){
-              return false
-            }
-            if (value.end && val > value.end){
-              return false
-            }
-          } else if (!node[key].toLowerCase().includes(value.toLowerCase())){
-            return false
-          }
-        } else if (typeof node[key] == "object"){
-          if (node[key] && node[key].constructor == Array){
-            let final_str = ""
-              for (const entry of node[key]){
-                  for (const [k, v] of Object.entries(entry)){
-                      if (v && typeof v == "object"){
-                          for (const [key_c, val_c] of Object.entries(v)){
-                              if (typeof val_c == "string"){
-                                  final_str += val_c
-                              }
-                          }
-                        }
-                      else if (typeof v == "string"){
-                          final_str += v
-                        }
-                  }
-              }
-              if (!final_str.toLowerCase().includes(value.toLowerCase())){
-                return false
-              }
-          } else if (node[key]) {
-            let final_str = ""
-              for (const [k, v] of Object.entries(node[key])){
-                  if (typeof v == "string"){
-                      final_str += v
-                    }
-              }
-              if (!final_str.toLowerCase().includes(value.toLowerCase())){
-                return false
-              }
-          }
-      }
-    }
-    return  true
-  }
-   );
-
-   
+   modifiedNodes = modify_nodes(modifiedNodes, search)
 
    ////////Print
    const printRef = useRef();
@@ -298,6 +242,7 @@ function TableView({table}){
   let shown_col_num = COLUMNS.filter((col)=>col.label!="Id" && col.label!="").length 
   - hiddenColumns.length 
   + (current_user ? 1 : 0)
+  
   const customTheme = {
     Table: `
       --data-table-library_grid-template-columns:  repeat(${shown_col_num}, minmax(0, ${100/shown_col_num}%));
