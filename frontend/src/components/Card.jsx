@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { capitalizeFirstLetter } from "../utils/helpers";
 
-function Question({ table, data }) {
+function Card({ table, data }) {
   let navigate = useNavigate();
 
   const routeChange = (path) => {
@@ -36,7 +36,7 @@ function Question({ table, data }) {
       <div className="card">
         <div className="card-liner">
           <figure>
-            <img className={table == "team" && "person"} src={img} onError={({ currentTarget }) => {
+            <img className={table == "team" ? "person" : undefined} src={img} onError={({ currentTarget }) => {
     currentTarget.onerror = null; // prevents looping
     currentTarget.src=`/assets/images/${table == "category"? "project": "person"}.png`;
   }}/>
@@ -69,4 +69,4 @@ function Question({ table, data }) {
   );
 }
 
-export default Question;
+export default Card;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import Question from "./Question";
+import Card from "./Card";
 import TableView from "./TableView";
 import { dataData, authedUser } from "../reducers/data";
 import { useParams } from "react-router-dom";
@@ -61,7 +61,7 @@ function Dashboard() {
                   (n) => n.last_name.toLowerCase() == nam.toLowerCase()
                 )
                 .map((cat) => 
-                  <Question
+                  <Card
                     key={cat.id}
                     id={cat.id}
                     table="team"
@@ -73,7 +73,7 @@ function Dashboard() {
                   (nam) => !main_developers.map(n=>n.toLowerCase()).includes(nam.last_name.toLowerCase())
                 )
                 .map((cat) => 
-                  <Question
+                  <Card
                     key={cat.id}
                     id={cat.id}
                     table="team"
@@ -105,7 +105,7 @@ function Dashboard() {
                   (d) => d.name.toLowerCase() == dat.toLowerCase()
                 )
                 .map((cat) => 
-                  <Question
+                  <Card
                     key={cat.id}
                     id={cat.id}
                     table={category}
@@ -121,7 +121,7 @@ function Dashboard() {
               )
               .map((cat) =>
                 !admin_tables.map(d=>d.toLowerCase()).includes(cat.name.toLowerCase()) ? (
-                  <Question
+                  <Card
                     key={cat.id}
                     id={cat.id}
                     table={category}
@@ -130,7 +130,7 @@ function Dashboard() {
                 ) : (
                   current_user &&
                   current_user.is_superuser && (
-                    <Question
+                    <Card
                       key={cat.id}
                       id={cat.id}
                       table={category}

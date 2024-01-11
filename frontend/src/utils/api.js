@@ -10,6 +10,17 @@ const client = axios.create({
   baseURL:fetchingURL
 })
 
+function order_data(data){
+  data = Object.entries(data)
+  let ordered_data = data && data.filter(([key, val])=>key.toLowerCase().includes("id") && !key.toLowerCase().includes("name"))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("name") && !key.toLowerCase().includes("id")))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("desc")))
+  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().includes("id") && !key.toLowerCase().includes("desc") && typeof val != "object"))
+  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().includes("id") && !key.toLowerCase().includes("desc") && typeof val == "object"))
+
+  return ordered_data
+}
+
 
 ////////////////////////////////////////
 

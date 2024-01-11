@@ -14,7 +14,12 @@ import { loadingBarReducer } from 'react-redux-loading-bar'
 
 const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger).concat(loadingBarMiddleware()),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      // Ignore these field paths in all actions
+      ignoredActionPaths: ['payload.config', 'payload.request', 'payload.headers', 'meta.arg', 'meta.baseQueryMeta'],
+    },
+  }).concat(logger).concat(loadingBarMiddleware()),
 })
 store.dispatch(getTableData("category")).then((res)=>{
   res.payload.data.map((cat)=> {

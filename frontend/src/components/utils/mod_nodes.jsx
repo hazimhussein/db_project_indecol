@@ -1,6 +1,4 @@
-
 import dayjs from "dayjs";
-  
 
 function modify_nodes(nodes, search){
   return nodes.filter((node) =>{

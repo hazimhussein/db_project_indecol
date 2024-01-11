@@ -64,6 +64,7 @@ function TableView({table}){
   function customSetData(d){
     let n = [search_row].concat(d)
     setData({nodes:n})
+    setModifiedNodes(modify_nodes(n, search))
   }
 
   useEffect(()=>{
@@ -178,7 +179,8 @@ function TableView({table}){
   };
 
   const ROW_OPTIONS = {
-    renderAfterRow: (item) => ((ids.includes(item.id) && list.filter(d=>d.id==item.id)[0]) && (<Details data={data.nodes.filter(d=>d.id==item.id)[0]}/>)),
+    renderAfterRow: (item) => ((ids.includes(item.id) && list.filter(d=>d.id==item.id)[0]) 
+    && (<tr className="d-flex w-100" style={{gridColumn: "1 / -1" }}><td><Details data={data.nodes.filter(d=>d.id==item.id)[0]} table={table}/></td></tr>)),
   };
 
   ////////////Delete
@@ -210,7 +212,6 @@ function TableView({table}){
    //* Custom Modifiers *//
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
- 
    // search
    modifiedNodes = modify_nodes(modifiedNodes, search)
 
@@ -241,8 +242,8 @@ function TableView({table}){
 
   let shown_col_num = COLUMNS.filter((col)=>col.label!="Id" && col.label!="").length 
   - hiddenColumns.length 
-  + (current_user ? 1 : 0)
-  
+  + ((current_user && table != "user") ? 1 : 0)
+
   const customTheme = {
     Table: `
       --data-table-library_grid-template-columns:  repeat(${shown_col_num}, minmax(0, ${100/shown_col_num}%));
@@ -258,7 +259,7 @@ function TableView({table}){
    return (
     <>
     <div className='w-100 p-2'></div>
-      <Modal open={modalOpened} onClose={() => setModalOpened(false)}>
+      <Modal open={modalOpened ? modalOpened : false} onClose={() => setModalOpened(false)}>
         <Box
           style={{
             position: 'absolute',
@@ -269,6 +270,7 @@ function TableView({table}){
             border: '1px solid #e0e0e0',
             borderRadius: '4px',
             padding: '10px',
+            height: '90%',
           }}
         >
           <Typography variant="h6" component="h2">
@@ -314,8 +316,11 @@ function TableView({table}){
 
       <br />
       <Stack spacing={10}>
+        <table>
+        <tbody>
+          <tr>
         <TablePagination
-          count={modifiedNodes.length}
+          count={modifiedNodes.length-1}
           page={pagination.state.page}
           rowsPerPage={pagination.state.size}
           rowsPerPageOptions={[ 2, 5, 10, 20]}
@@ -324,10 +329,13 @@ function TableView({table}){
           }
           onPageChange={(event, page) => pagination.fns.onSetPage(page)}
         />
+        </tr>
+        </tbody>
+        </table>
       </Stack>
 
       <Drawer
-        open={drawerId}
+        open={drawerId ? drawerId : false}
         onClose={handleCancel}
         title="Edit"
         anchor="right"
@@ -336,7 +344,7 @@ function TableView({table}){
         }}
       >
         <Stack spacing={1}>
-          <FormPicker table={table} setData={customSetData} data={editable} setModifiedNodes={setModifiedNodes}/>
+          <FormPicker table={table} setData={customSetData} data={editable}/>
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

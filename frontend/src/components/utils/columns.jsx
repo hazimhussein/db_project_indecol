@@ -27,7 +27,7 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
                 }
                 let field = list_options[table][lab]
                 let val = item[lab]
-                if (field.type == "foreign_key"){
+                if (field && field.type == "foreign_key"){
                   let name_fields = Object.keys(val).filter((k)=>k.includes("name"))
                   let name_field =  name_fields.includes("last_name") ? "last_name" 
                   : name_fields.length > 0 && name_fields.slice(0,1)
@@ -59,6 +59,7 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
         !lab.toLowerCase().includes("id")
         && !lab.toLowerCase().includes("name")
         && !lab.toLowerCase().includes("desc")
+        && lab.toLowerCase() != "users"
         )
         .map((lab)=> {
           return {
@@ -69,6 +70,9 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
                 }
                 let field = list_options[table][lab]
                 let val = item[lab]
+                if (val == null){
+                  return ""
+                }
                 if (field.type == "foreign_key"){
                   while (field.type == "foreign_key"){
                     let name_fields = Object.keys(val).filter((k)=>k.includes("name"))
@@ -111,7 +115,7 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
           if (item.search){
             return ""
           }
-          return current_user && (item.users.map(usr=>usr.id).includes(current_user.id) || current_user.is_superuser) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          return current_user && ((item.users && item.users.map(usr=>usr.id).includes(current_user.id)) || current_user.is_superuser) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <IconButton onClick={() => handleEditable(table,item.id)}>
               <FaPen size={14} />
             </IconButton>

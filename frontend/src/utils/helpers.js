@@ -52,3 +52,14 @@ export function tableColumnsArray(list){
 export function capitalizeFirstLetter(string) {
   return string.slice(0, 1).toUpperCase() + string.slice(1);
 }
+
+export function order_dict(dict, options_dict=false){
+  let data = Object.entries(dict)
+  let ordered_data = data && data.filter(([key, val])=>key.toLowerCase().includes("id") && !key.toLowerCase().includes("name"))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("name")))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("desc")))
+  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().includes("id") && !key.toLowerCase().includes("desc") && (options_dict ? !val.type.includes("many") : typeof val != "object")))
+  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().includes("id") && !key.toLowerCase().includes("desc") && (options_dict ? val.type.includes("many") : typeof val == "object")))
+
+  return ordered_data
+}
