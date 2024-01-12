@@ -35,7 +35,7 @@ function Dashboard() {
         <Box
           style={{
             position: "absolute",
-            top: "10%",
+            top: "5%",
             left: "5%",
             width: "90%",
             height: "90%",
