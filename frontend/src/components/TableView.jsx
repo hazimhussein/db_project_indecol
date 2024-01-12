@@ -241,7 +241,7 @@ function TableView({table}){
   });
 
   let shown_col_num = COLUMNS.filter((col)=>col.label!="Id" && col.label!="").length 
-  - hiddenColumns.length 
+  - hiddenColumns.filter(c=>c!="").length 
   + ((current_user && table != "user") ? 1 : 0)
 
   const customTheme = {
@@ -305,7 +305,7 @@ function TableView({table}){
         columns={COLUMNS}
         data={{ ...data, nodes: modifiedNodes }}
         theme={theme}
-        layout={{ custom: true }}
+        layout={{ custom: true}}
         select={select}
         tree={tree}
         sort={sort}
