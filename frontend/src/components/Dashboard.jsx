@@ -38,7 +38,7 @@ function Dashboard() {
             top: "10%",
             left: "5%",
             width: "90%",
-            height: "80%",
+            height: "90%",
             backgroundColor: "#ffffff",
             border: "1px solid #e0e0e0",
             borderRadius: "4px",
