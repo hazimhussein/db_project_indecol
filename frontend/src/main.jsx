@@ -4,7 +4,7 @@ import App from './components/App'
 import './index.css'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import { getTableData } from './utils/api'
+import { getTableData, logoutAPI, getTableOptions } from './utils/api'
 import dataReduce from './reducers/data'
 import logger from 'redux-logger'
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -14,15 +14,21 @@ import { loadingBarReducer } from 'react-redux-loading-bar'
 
 const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger).concat(loadingBarMiddleware()),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      // Ignore these field paths in all actions
+      ignoredActionPaths: ['payload.config', 'payload.request', 'payload.headers', 'meta.arg', 'meta.baseQueryMeta'],
+    },
+  }).concat(logger).concat(loadingBarMiddleware()),
 })
-store.dispatch(getTableData("category"))
-store.dispatch(getTableData("user"))
-store.dispatch(getTableData("person"))
-store.dispatch(getTableData("partner"))
-store.dispatch(getTableData("resource"))
-store.dispatch(getTableData("group"))
-store.dispatch(getTableData("project"))
+store.dispatch(getTableData("category")).then((res)=>{
+  store.dispatch(getTableOptions("category"))
+  res.payload.data.map((cat)=> {
+    store.dispatch(getTableData(cat.name.toLowerCase()))
+    store.dispatch(getTableOptions(cat.name.toLowerCase()))
+  })
+})
+store.dispatch(logoutAPI())
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>

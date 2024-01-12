@@ -1,0 +1,80 @@
+[
+    {
+        "model": "app_indecol.team",
+        "pk": 1,
+        "fields": {
+            "first_name":"Konstantin",
+            "last_name":"Stadler",
+            "url":"https://www.ntnu.edu/employees/konstantin.stadler",
+            "img_url":"https://backends.it.ntnu.no/user-profile-service/rest/files/71680569-4233-3586-b21b-d037fb2e5f6f",
+            "role":"Manager and Lead Researcher of the Digital Laboratory, Industrial Ecology Programme",
+            "email":"konstantin.stadler@ntnu.no",
+            "phone":""
+        }
+    },
+    {
+        "model": "app_indecol.team",
+        "pk": 2,
+        "fields": {
+            "first_name":"Ruslan",
+            "last_name":"Zhuravchak",
+            "url":"https://www.ntnu.edu/employees/ruslan.zhuravchak",
+            "img_url":"https://backends.it.ntnu.no/user-profile-service/rest/files/74bba804-b2d0-3854-903b-94d135936718",
+            "role":"Research Software Engineer, Industrial Ecology Digital Lab",
+            "email":"ruslan.zhuravchak@ntnu.no",
+            "phone":"+4748642053"
+        }
+    },
+    {
+        "model": "app_indecol.team",
+        "pk": 3,
+        "fields": {
+            "first_name":"Candy",
+            "last_name":"Deck",
+            "url":"https://www.ntnu.edu/employees/candy.deck",
+            "img_url":"https://backends.it.ntnu.no/user-profile-service/rest/files/5da1ebb1-24f8-39d0-bc89-8b3e879e3ec9",
+            "role":"Senior Engineer",
+            "email":"candy.deck@ntnu.no",
+            "phone":""
+        }
+    },
+    {
+        "model": "app_indecol.team",
+        "pk": 4,
+        "fields": {
+            "first_name":"Mohamed",
+            "last_name":"Badr",
+            "url":"https://www.ntnu.edu/employees/mohamed.badr",
+            "img_url":"https://backends.it.ntnu.no/user-profile-service/rest/files/e6621d53-1b84-38db-8916-6e75ee192af1",
+            "role":"PhD Candidate",
+            "email":"mohamed.badr@ntnu.no",
+            "phone":"+4792242904"
+        }
+    },
+    {
+        "model": "app_indecol.team",
+        "pk": 5,
+        "fields": {
+            "first_name":"Esme",
+            "last_name":"Maxwell",
+            "url":"https://www.ntnu.edu/employees/peter.maxwell",
+            "img_url":"https://backends.it.ntnu.no/user-profile-service/rest/files/cd4316e4-7fba-3d24-b5fd-b6358a7dd3b6",
+            "role":"Staff Engineer",
+            "email":"peter.maxwell@ntnu.no",
+            "phone":""
+        }
+    },
+    {
+        "model": "app_indecol.team",
+        "pk": 6,
+        "fields": {
+            "first_name":"Hazim",
+            "last_name":"Hussein",
+            "url":"https://www.ntnu.edu/employees/hazim.hussein",
+            "img_url":"https://backends.it.ntnu.no/user-profile-service/rest/files/1aa4f10d-d5c9-3ccd-aa85-4f4fd079f340",
+            "role":"Staff Engineer",
+            "email":"hazim.hussein@ntnu.no",
+            "phone":"+4740557058"
+        }
+    }
+]

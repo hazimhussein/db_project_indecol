@@ -29,3 +29,9 @@
 .col-sm-10 {
   margin: auto;
 }
+
+@media (max-width: 768px){
+  .MuiPaper-root {
+    width: 80% !important;
+  }
+}

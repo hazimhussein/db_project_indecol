@@ -3,7 +3,7 @@ import { createSlice} from "@reduxjs/toolkit"
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { capitalizeFirstLetter } from '../utils/helpers'
-import { getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI } from "../utils/api"
+import { getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI, getTableOptions } from "../utils/api"
 
 /////////////////////////
 // import { RECEIVE_DATA, ADD_DATA, UPDATE_DATA, REMOVE_DATA} from "../actions/data"
@@ -13,7 +13,8 @@ const initialState = {
   value:{},
   user:null,
   status: false,
-  error:null
+  error:null,
+  options: {}
 }
 
 // export const getTableData = createAsyncThunk('data/getDatas', async (table) =>{
@@ -57,6 +58,13 @@ const dataSlice = createSlice({
             // Add any fetched posts to the array
             state.value[action.payload.category] = action.payload.data
         })
+        .addCase(getTableOptions.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+
+            // Add any fetched posts to the array
+            console.log(action.payload.data)
+            state.options[action.payload.category] = action.payload.data.actions.POST
+        })
         .addCase(getTableData.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
@@ -84,10 +92,9 @@ const dataSlice = createSlice({
       })
         .addCase(updateTableRow.fulfilled, (state, action) => {
           state.status = 'succeeded'
-          let nonEdit = state.value[action.payload.category].filter(row=> row.id!=action.payload.rowId)
 
           // Add any fetched posts to the array
-          state.value[action.payload.category] = nonEdit.concat([action.payload.data])
+          state.value[action.payload.category] = action.payload.data
       })
         .addCase(updateTableRow.rejected, (state, action) => {
           state.status = 'failed'
@@ -135,6 +142,7 @@ const dataSlice = createSlice({
 }
 })
 export const dataData = (state) => state.data.value
+export const dataOptions = (state) => state.data.options
 export const statusData = (state) => state.data.status
 export const errorData = (state) => state.data.error
 export const authedUser = (state) => state.data.user

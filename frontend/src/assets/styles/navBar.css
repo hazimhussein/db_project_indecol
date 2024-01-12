@@ -112,6 +112,9 @@ ul.navbar-nav.m-auto{
     background-color: #bbb;
 }
 
+nav {
+  height: 80px;
+}
 @media (max-width: 992px){
   #bottomNav {
     display: flex;
@@ -122,5 +125,18 @@ ul.navbar-nav.m-auto{
   }
   .nav-user{
     margin:auto;
+  }
+}
+@media (max-width: 768px){
+  nav span {
+    max-width: 50%;
+    max-height: 90%;
+    line-height: 1;
+  }
+  nav {
+    height: 150px;
+  }
+  #loginForm {
+    width: 60%;
   }
 }

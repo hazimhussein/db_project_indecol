@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-let fetchingURL = 'http://127.0.0.1:8000/api/'
+// let fetchingURL = 'http://10.50.41.100:8000/api/'
+let fetchingURL = '/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
@@ -11,12 +12,17 @@ const client = axios.create({
 })
 
 
-////////////////////////////////////////
 
-const categories = ["user", "person", "group", "partner", "ressource", "project"]
+////////////////////////////////////////
 
 export const getTableData = createAsyncThunk(`data/getData`, async (table) =>{
     const response = await client.get(`${table}/`);
+    
+    return {data:response.data, category:table}
+  })
+
+export const getTableOptions = createAsyncThunk(`data/getOptions`, async (table) =>{
+    const response = await client.options(`${table}/`);
     
     return {data:response.data, category:table}
   })
@@ -59,7 +65,8 @@ export const updateTableRow = createAsyncThunk(`data/updateData`, async ({table,
   
   try{
     const response = await client.patch(table+`/${rowId}/`, row);
-    return {data:response.data, rowId:rowId, category:table, row:row}
+    const new_data = await client.get(`${table}/`);
+    return {data:new_data.data, category:table}
   }catch (err) {
     let error = err // cast the error for access
     if (!error.response) {

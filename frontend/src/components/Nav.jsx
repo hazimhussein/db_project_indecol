@@ -13,7 +13,6 @@ import {Button} from '@mui/material';
 function NavTop(){
     let dispatch = useDispatch()
     const current_user = useSelector(authedUser)
-    console.log(current_user)
 
     let [showLogin, setShowLogin] = useState(false)
     let [loginState, setLoginState] = useState(true)
@@ -36,7 +35,7 @@ function NavTop(){
 
     return(
         <>
-        <Navbar className="bg-body-tertiary border-bottom m-0" data-bs-theme="light" style={{height:"80px"}}>
+        <Navbar className="bg-body-tertiary border-bottom m-0" data-bs-theme="light">
         <Container className='h-100'>
         <Navbar.Brand as={Link} to="/dashboard" className='d-flex'>
             <img
@@ -48,7 +47,7 @@ function NavTop(){
             />
             <span className="d-flex align-items-center ms-2">IndEcX</span>
           </Navbar.Brand>     
-          {current_user ? <Navbar.Collapse className="justify-content-end h-100 align-items-center">
+          {current_user ? <Navbar.Collapse className="justify-content-end h-100 align-items-center ms-5">
           <Navbar.Text>
           <img
                 src="/assets/images/user_icon.png"
@@ -58,18 +57,18 @@ function NavTop(){
                 height="40"
             />          
           </Navbar.Text>
-          <Navbar.Text className="d-flex align-items-center ms-2 navbar-text h-100 p-3">
+          <Navbar.Text className="d-flex align-items-center ms-md-2 navbar-text h-100 p-3">
             <div >
                 {`${current_user && current_user.first_name} ${current_user && current_user.last_name}`}
             </div>           
           </Navbar.Text>
-          <Navbar.Text onClick={() => logout()} className="d-flex align-items-center ms-4 navbar-text h-100 p-3 nav-link">
+          <Navbar.Text onClick={() => logout()} className="d-flex align-items-center ms-md-4 navbar-text h-100 p-md-3 p-0 pe-1 nav-link">
             <div>Logout</div>
           </Navbar.Text>
         </Navbar.Collapse> 
         : showLogin ? 
         <form id="loginForm" onSubmit={(e)=>login(e)}>
-            <Row className='d-flex align-items-center h-100'>
+            <Row className='d-flex align-items-center h-100 me-2'>
             <Col xs="auto">
             <Form.Control
                 id="username"

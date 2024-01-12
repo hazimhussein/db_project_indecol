@@ -8,10 +8,8 @@ import { useSort } from '@table-library/react-table-library/sort';
 import { usePagination } from '@table-library/react-table-library/pagination';
 import {
   Stack,
-  TextField,
   Checkbox,
   Modal,
-  IconButton,
   Button,
   Box,
   Typography,
@@ -20,19 +18,17 @@ import {
   FormControlLabel,
   TablePagination,
 } from '@mui/material';
-import { FaPen, FaChevronRight, FaChevronDown, FaChevronUp, FaRegTrashAlt, FaPlusSquare } from 'react-icons/fa';
-import { capitalizeFirstLetter } from '../utils/helpers';
+import { FaChevronRight, FaChevronDown, FaChevronUp, FaPlusSquare } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
 import Details from './Details';
-
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { dataData, authedUser } from '../reducers/data';
+import { dataData, authedUser, dataOptions } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
-import FormPicker from "./FormPicker"
+import GeneralForm from "./GeneralForm"
 import { removeTableRow, getTableData } from "../utils/api";
-
-
+import SearchGlob from './elements/search';
+import { col_func, search_row_builder, modify_nodes } from './utils';
 
 const key = 'Table';
 
@@ -40,42 +36,54 @@ function TableView({table}){
   let dispatch = useDispatch();
   const current_user = useSelector(authedUser)
   const list_selector = useSelector(dataData)
+  const list_options = useSelector(dataOptions)
   let list = list_selector[table] ? list_selector[table] : []
+
+  //* Search *//
+  let search_cols = Object.fromEntries(Object.keys(list_options[table]).filter(col=>col!="id"&& col!="").map(col=>
+    col.includes("date")
+    ? [col,{start:null, end:null}]
+    :[col,""]))
+ 
+   const [search, setSearch] = useState(search_cols);
+   let search_row = search_row_builder(search, setSearch)
+
   
-  const list_filt = list.map(dat=>Object.fromEntries(Object.keys(dat).filter(key=>dat[key] && dat[key].constructor !== Array).map(x=> [x, dat[x]])));
+  const [data, setData] = useState({nodes:[search_row].concat(list)});
+
+  useCustom('search', data, {
+    state: { search },
+    onChange: onSearchChange,
+  });
+
+  function onSearchChange(action, state) {
+    console.log(action, state);
+    pagination.fns.onSetPage(0);
+  }
   
-  const [data, setData] = useState({nodes:list});
+  function customSetData(d){
+    let n = [search_row].concat(d)
+    setData({nodes:n})
+    setModifiedNodes(modify_nodes(n, search))
+  }
+
   useEffect(()=>{
+    let shown_cols = COLUMNS.filter(col => !hiddenColumns.includes(col.label) && col.label!="Id" && col.label!="")
+    if (window.innerWidth <= 768 && shown_cols.length >= 3){
+      shown_cols = shown_cols.filter(col=>!shown_cols.slice(0,3).map(c=>c.label).includes(col.label)).map(col=>col.label)
+        setHiddenColumns(shown_cols)
+    } else if (window.innerWidth > 768 && shown_cols.length >= 6){
+      shown_cols = shown_cols.filter(col=>!shown_cols.slice(0,6).map(c=>c.label).includes(col.label)).map(col=>col.label)
+        setHiddenColumns(shown_cols)
+    }
     dispatch(getTableData(table))
-    .then((res)=>setData({nodes: res.payload.data}))
+    .then((res)=>{customSetData(res.payload.data)})
   }, [dispatch, table])
 
-  //* Theme *//
-
-  const materialTheme = getTheme({
-    ...DEFAULT_OPTIONS,
-    striped: true,
-    highlightOnHover: true,
-  });
-  
-  const customTheme = {
-    Table: `
-      --data-table-library_grid-template-columns:  repeat(${Object.keys(list_filt[0]).length}, minmax(0, ${100/(Object.keys(list_filt[0]).length)}%));
-
-      margin: 16px 0px;
-    `,
-    Cell:`
-      background-color: none;
-    `
-  };
-  const theme = useTheme([materialTheme, customTheme]);
-
    //* Resize *//
-
    const resize = { resizerHighlight: '#dee2e6' };
 
    //* Pagination *//
- 
    const pagination = usePagination(data, {
      state: {
        page: 0,
@@ -89,7 +97,6 @@ function TableView({table}){
    }
  
    //* Select *//
- 
    const select = useRowSelect(data, {
      onChange: onSelectChange,
    });
@@ -99,7 +106,6 @@ function TableView({table}){
    }
  
    //* Tree *//
- 
    const tree = useTree(
      data,
      {
@@ -122,7 +128,6 @@ function TableView({table}){
    }
  
    //* Sort *//
- 
    const sort = useSort(
      data,
      {
@@ -149,7 +154,6 @@ function TableView({table}){
    }
  
    //* Drawer *//
- 
    const [drawerId, setDrawerId] = useState(null);
 
    const handleCancel = () => {
@@ -158,7 +162,6 @@ function TableView({table}){
    };
  
    //* Modal *//
- 
    const [modalOpened, setModalOpened] = useState(false);
 
   ////// Expand
@@ -176,13 +179,14 @@ function TableView({table}){
   };
 
   const ROW_OPTIONS = {
-    renderAfterRow: (item) => ((ids.includes(item.id) && list.filter(d=>d.id==item.id)[0]) && (<Details data={data.nodes.filter(d=>d.id==item.id)[0]}/>)),
+    renderAfterRow: (item) => ((ids.includes(item.id) && list.filter(d=>d.id==item.id)[0]) 
+    && (<tr className="d-flex w-100" style={{gridColumn: "1 / -1" }}><td><Details data={data.nodes.filter(d=>d.id==item.id)[0]} table={table}/></td></tr>)),
   };
 
   ////////////Delete
   const handleRemove = (tableName, rowId) =>{
     dispatch(removeTableRow({table:tableName, rowId:rowId}))
-    setData({nodes: list_selector[tableName].filter(row=>row.id!=rowId)})
+    customSetData(list_selector[tableName].filter(row=>row.id!=rowId))
   }
   
   ////////////Edit
@@ -193,7 +197,7 @@ function TableView({table}){
   }
 
   //////// Hide Columns
-  const [hiddenColumns, setHiddenColumns] = useState([]);
+  let [hiddenColumns, setHiddenColumns] = useState([]);
   const toggleColumn = (column) => {
     if (hiddenColumns.includes(column)) {
       setHiddenColumns(hiddenColumns.filter((v) => v !== column));
@@ -203,68 +207,13 @@ function TableView({table}){
   };
 
   //* Columns *//
-
-  let COLUMNS = list_filt.length > 0 ? Object.keys(list_filt[0]).map((lab)=> {
-    if (lab == "id") {
-      return {
-        label: 'Id',
-        renderCell: (item) => item.id,
-        hide: true,
-      }
-    }
-    return {label: capitalizeFirstLetter(lab), renderCell: (item) => item[lab], resize,
-      sort: { sortKey: lab.toUpperCase() },  hide: hiddenColumns.includes(capitalizeFirstLetter(lab)), }})
-  : []
-
-  if (list.length != 0 && table != "user"){
-    COLUMNS.push({
-      label: '',
-      renderCell: (item) => (
-        current_user && item.users.map(usr=>usr.id).includes(current_user.id) && <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <IconButton onClick={() => handleEditable(table,item.id)}>
-            <FaPen size={14} />
-          </IconButton>
-          {current_user.is_superuser && <IconButton onClick={() => handleRemove(table,item.id)}>
-            <FaRegTrashAlt size={14} />
-          </IconButton>}
-        </div>
-      ),
-      resize,
-    })
-  }
-
-  
-   //* Search *//
-   let search_cols = Object.fromEntries(COLUMNS.filter(col=>col.label!="Id"&& col.label!="").map(col=>[col.label.toLowerCase(),""]))
- 
-   const [search, setSearch] = useState(search_cols);
- 
-   useCustom('search', data, {
-     state: { search },
-     onChange: onSearchChange,
-   });
- 
-   function onSearchChange(action, state) {
-     console.log(action, state);
-     pagination.fns.onSetPage(0);
-   }
+  let COLUMNS = col_func(data, list_options, table, current_user, hiddenColumns, resize, handleEditable, handleRemove)
  
    //* Custom Modifiers *//
- 
-   let modifiedNodes = data.nodes;
+   let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
    // search
-   modifiedNodes = modifiedNodes.filter((node) =>{
-    for (const [key, value] of Object.entries(search)){
-      if (value != "" && typeof node[key] == "string"){
-        if (!node[key].toLowerCase().includes(value.toLowerCase())){
-          return false
-        }
-      }
-    }
-    return  true
-  }
-   );
+   modifiedNodes = modify_nodes(modifiedNodes, search)
 
    ////////Print
    const printRef = useRef();
@@ -283,24 +232,45 @@ function TableView({table}){
     pdf.save("print.pdf");
   };
 
+  //* Theme *//
 
-  
+  const materialTheme = getTheme({
+    ...DEFAULT_OPTIONS,
+    striped: true,
+    highlightOnHover: true,
+  });
+
+  let shown_col_num = COLUMNS.filter((col)=>col.label!="Id" && col.label!="").length 
+  - hiddenColumns.filter(c=>c!="").length 
+  + ((current_user && table != "user") ? 1 : 0)
+
+  const customTheme = {
+    Table: `
+      --data-table-library_grid-template-columns:  repeat(${shown_col_num}, minmax(0, ${100/shown_col_num}%));
+
+      margin: 16px 0px;
+    `,
+    Cell:`
+      background-color: none;
+    `
+  };
+  const theme = useTheme([materialTheme, customTheme]);
 
    return (
     <>
     <div className='w-100 p-2'></div>
-      <Modal open={modalOpened} onClose={() => setModalOpened(false)}>
+      <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>
         <Box
           style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 500,
             backgroundColor: '#ffffff',
             border: '1px solid #e0e0e0',
             borderRadius: '4px',
             padding: '10px',
+            height: '90%',
           }}
         >
           <Typography variant="h6" component="h2">
@@ -315,23 +285,15 @@ function TableView({table}){
       {/* Form */}
 
       <Stack className='py-3' spacing={1} direction="row">
-        {current_user && table != "user" && <Button variant="contained" className='bg-success' onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
+      <Button variant="contained" className='m-auto ms-0 me-1' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
+          Columns
+        </Button>
+        {current_user && table != "user" && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-1":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
+        <SearchGlob modifiedNodes={[search_row].concat(list)} setModifiedNodes={setModifiedNodes} />
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
-        </Button>
-      </Stack>
-      <Stack spacing={1} direction="row">
-        
-        {Object.entries(search).filter(([key, value])=>(!hiddenColumns.includes(capitalizeFirstLetter(key)))).map(([key, value])=>(
-        <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
-        className='me-1'
-        size='small'
-              defaultValue={value}
-              onChange={(event) => setSearch({...search, [key]: event.target.value})}/>))}
-        <Button variant="contained" className='m-auto me-0' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
-          Columns
         </Button>
       </Stack>
 
@@ -343,7 +305,7 @@ function TableView({table}){
         columns={COLUMNS}
         data={{ ...data, nodes: modifiedNodes }}
         theme={theme}
-        layout={{ custom: true }}
+        layout={{ custom: true}}
         select={select}
         tree={tree}
         sort={sort}
@@ -354,8 +316,11 @@ function TableView({table}){
 
       <br />
       <Stack spacing={10}>
+        <table>
+        <tbody>
+          <tr>
         <TablePagination
-          count={modifiedNodes.length}
+          count={modifiedNodes.length-1}
           page={pagination.state.page}
           rowsPerPage={pagination.state.size}
           rowsPerPageOptions={[ 2, 5, 10, 20]}
@@ -364,10 +329,13 @@ function TableView({table}){
           }
           onPageChange={(event, page) => pagination.fns.onSetPage(page)}
         />
+        </tr>
+        </tbody>
+        </table>
       </Stack>
 
       <Drawer
-        open={drawerId}
+        open={drawerId ? true : false}
         onClose={handleCancel}
         title="Edit"
         anchor="right"
@@ -376,7 +344,7 @@ function TableView({table}){
         }}
       >
         <Stack spacing={1}>
-          <FormPicker table={table} setData={setData} data={editable}/>
+          <GeneralForm table={table} setData={customSetData} data={editable}/>
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

@@ -21,18 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!&sijha!jgr(rbgq^hjcvm!s9)66elec(7^n-^%lq#0=z*@n%)"
+SECRET_KEY = os.getenv('SECRET_KEY') or "hbuhbu"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') or True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True   
 CORS_ALLOW_CREDENTIALS = True
-SESSION_COOKIE_DOMAIN = "127.0.0.1"
+# SESSION_COOKIE_DOMAIN = "10.50.225.177"
+# SESSION_COOKIE_SAMESITE = None
 #ALLOWED_HOSTS = [    ]
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-
+# LOGIN_REDIRECT_URL = '/admin'
+CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100']
 
 # Application definition
 
@@ -131,16 +133,19 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = "static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = './static'
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+#     '/var/www/static/',
+# ]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "app_indecol.User"
 
