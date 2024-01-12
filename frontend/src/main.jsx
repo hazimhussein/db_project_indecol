@@ -22,6 +22,7 @@ const store = configureStore({
   }).concat(logger).concat(loadingBarMiddleware()),
 })
 store.dispatch(getTableData("category")).then((res)=>{
+  store.dispatch(getTableOptions("category"))
   res.payload.data.map((cat)=> {
     store.dispatch(getTableData(cat.name.toLowerCase()))
     store.dispatch(getTableOptions(cat.name.toLowerCase()))

@@ -1,18 +1,18 @@
 import { TextField, MenuItem, FormControl, InputLabel, OutlinedInput, Select, ListSubheader } from "@mui/material"
 import Form from 'react-bootstrap/Form';
 import { useTheme } from '@mui/material/styles';
-import { capitalizeFirstLetter } from "../../../utils/helpers";
+import { capitalizeFirstLetter } from "../../utils/helpers";
 import { useState, useRef } from "react";
 import { FaPlusSquare } from 'react-icons/fa';
 
 
 function getStyles(name, id, theme) {
   let check = id 
-  ? (typeof id != "object" ? id == name : id.indexOf(name) === -1)
+  ? (typeof id != "object" ? id == name : id.indexOf(name) !== -1)
   : false
     return {
       fontWeight:
-        check
+        !check
           ? theme.typography.fontWeightRegular
           : theme.typography.fontWeightMedium,
     };
@@ -33,7 +33,6 @@ function getStyles(name, id, theme) {
 function SelectSearch({table, add, field, options, setOptions, data, parameter, setModalOpened, multi, list, error, filter_id}){
     const theme = useTheme();
 
-    //_id
     const [filter, setFilter] = useState("")
     let inputRef = useRef(undefined);
 
@@ -54,7 +53,6 @@ function SelectSearch({table, add, field, options, setOptions, data, parameter, 
     return (
         <FormControl className="py-2 w-100">
       <Form.Group>
-        {/* <InputLabel id={`${table}sLabel`}>{table == "project"? "Related":capitalizeFirstLetter(table)}</InputLabel> */}
         <InputLabel required={field.val.name != "user" ? field.val.required : false} id={`${field.key}sLabel`}>{field.val.label}</InputLabel>
         <Select
           labelId={`${field.key}sLabel`}
@@ -99,7 +97,6 @@ function SelectSearch({table, add, field, options, setOptions, data, parameter, 
               {val.name}
             </MenuItem>
           ))}
-         {/* : data.filter(val=>(`${val[0]} ${val[1]}`).toLowerCase().includes(filter.toLowerCase())).map(val=><MenuItem key={val[0]} value={val[0]}>{val[1]}</MenuItem>)} */}
         </Select>
         {add_option && <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
         onClick={()=>setModalOpened(field.val.name)}><FaPlusSquare /></button>}

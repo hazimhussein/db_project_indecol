@@ -51,11 +51,15 @@ class ProjectAdmin(admin.ModelAdmin):
     def assigned_partners(self, obj):
         return format_html("{}", mark_safe([f"<a href='../partner/{partner.id}'>{partner}</a>" for partner in obj.partners.all()]))
         
+class CategoryAdmin(admin.ModelAdmin):
+
+    list_display = ["id", "name"]
+    
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Person)
 # admin.site.register(Person, PersonAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Group)
 admin.site.register(Partner)
 admin.site.register(Resource)

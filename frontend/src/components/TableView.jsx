@@ -25,7 +25,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { dataData, authedUser, dataOptions } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
-import FormPicker from "./FormPicker"
+import GeneralForm from "./GeneralForm"
 import { removeTableRow, getTableData } from "../utils/api";
 import SearchGlob from './elements/search';
 import { col_func, search_row_builder, modify_nodes } from './utils';
@@ -259,7 +259,7 @@ function TableView({table}){
    return (
     <>
     <div className='w-100 p-2'></div>
-      <Modal open={modalOpened ? modalOpened : false} onClose={() => setModalOpened(false)}>
+      <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>
         <Box
           style={{
             position: 'absolute',
@@ -335,7 +335,7 @@ function TableView({table}){
       </Stack>
 
       <Drawer
-        open={drawerId ? drawerId : false}
+        open={drawerId ? true : false}
         onClose={handleCancel}
         title="Edit"
         anchor="right"
@@ -344,7 +344,7 @@ function TableView({table}){
         }}
       >
         <Stack spacing={1}>
-          <FormPicker table={table} setData={customSetData} data={editable}/>
+          <GeneralForm table={table} setData={customSetData} data={editable}/>
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

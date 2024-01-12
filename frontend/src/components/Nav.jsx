@@ -68,7 +68,7 @@ function NavTop(){
         </Navbar.Collapse> 
         : showLogin ? 
         <form id="loginForm" onSubmit={(e)=>login(e)}>
-            <Row className='d-flex align-items-center h-100'>
+            <Row className='d-flex align-items-center h-100 me-2'>
             <Col xs="auto">
             <Form.Control
                 id="username"

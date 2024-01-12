@@ -26,15 +26,19 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', "first_name", "last_name", "email", "is_superuser")
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ("__all__")
 
 class FieldOptionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = FieldOptions
         fields = ("__all__")
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ("__all__")
+    
+    def to_representation(self, instance):
+        self.fields['table'] =  CategorySerializer(many=False, read_only=True)
+        return super(FieldOptionsSerializer, self).to_representation(instance)
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
