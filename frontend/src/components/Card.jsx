@@ -43,16 +43,16 @@ function Card({ table, data }) {
           </figure>
           {table == "team" && <div className='card--social'>
                     <ul>
-                      <li className='instagram'>
+                      {phone != "" && <li className='instagram'>
                         <a href={`tel:${phone}`} onClick={((e)=>{e.stopPropagation();})} className='insta'>
                           <i className='fa fa-phone'></i>
                         </a>
-                      </li>
-                      <li className='codepen'>
+                      </li>}
+                      {email != "" && <li className='codepen'>
                         <a href={`mailto:${email}`} onClick={((e)=>{e.stopPropagation();})}>
                           <i className='fa fa-envelope-o'></i>
                         </a>
-                      </li>
+                      </li>}
                     </ul>
                   </div>}
           <div className="card--title">

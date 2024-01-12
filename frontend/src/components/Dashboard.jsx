@@ -10,6 +10,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 import { Modal, Box, IconButton, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import {tables_order, admin_tables, main_developers} from "../config"
+import About from "./About";
 
 function Dashboard() {
   let { category } = useParams();
@@ -51,37 +52,7 @@ function Dashboard() {
           >
             <CloseIcon fontSize="large" />
           </IconButton>
-          <div
-            className="container-fluid row px-5 m-auto"
-            style={{ maxWidth: "1320px" }}
-          >
-            {main_developers.map((nam)=>
-              team.map((n)=>n.last_name.toLowerCase()).includes(nam.toLowerCase()) &&
-                team.filter(
-                  (n) => n.last_name.toLowerCase() == nam.toLowerCase()
-                )
-                .map((cat) => 
-                  <Card
-                    key={cat.id}
-                    id={cat.id}
-                    table="team"
-                    data={cat}
-                  />
-                )) 
-            } 
-            {team.filter(
-                  (nam) => !main_developers.map(n=>n.toLowerCase()).includes(nam.last_name.toLowerCase())
-                )
-                .map((cat) => 
-                  <Card
-                    key={cat.id}
-                    id={cat.id}
-                    table="team"
-                    data={cat}
-                  />
-                )
-            } 
-          </div>
+          <About/>
         </Box>
       </Modal>
       <div className="dashboard">
