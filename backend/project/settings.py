@@ -34,7 +34,7 @@ CORS_ALLOW_CREDENTIALS = True
 #ALLOWED_HOSTS = [    ]
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 # LOGIN_REDIRECT_URL = '/admin'
-CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100']
+CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100', 'http://*.indecx.indecol.no']
 
 # Application definition
 
