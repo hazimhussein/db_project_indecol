@@ -14,8 +14,8 @@
         "pk": 2,
         "fields": {
             "name":8,
-            "start_date":"2000-01-01",
-            "persons":[3],
+            "start_date":"2016-07-01",
+            "persons":[2, 6, 5, 4],
             "users":[1]
         }
     }

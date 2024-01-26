@@ -1,15 +1,10 @@
 version: '3.7'
 
 services:
-  db:
-    image: nouchka/sqlite3:latest
-    volumes:
-      - ./data/db:/root/db
-    environment:
-      - SQLITE3_DB=db.sqlite3
   backend:
     volumes:
       - static:/static
+      - ./data/db:/data/db
     env_file:
       - .env
     build:

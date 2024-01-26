@@ -25,7 +25,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class FieldOptions(models.Model):
+class FieldOption(models.Model):
     name = models.CharField(
         unique=False,
         null=False,
@@ -36,7 +36,7 @@ class FieldOptions(models.Model):
         unique=False,
         null=False,
         blank=True,
-        max_length=50
+        max_length=60
     )
     table = models.ForeignKey(Category, on_delete=models.CASCADE)
 
@@ -136,7 +136,7 @@ class Person(models.Model):
         blank = True
     )
 
-    roles = models.ManyToManyField(FieldOptions)
+    roles = models.ManyToManyField(FieldOption)
     
     users = models.ManyToManyField(User)
     
@@ -145,7 +145,7 @@ class Person(models.Model):
     
 class Group(models.Model):
 
-    name = models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="group_name_field")
+    name = models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="group_name_field")
 
 
     start_date= models.DateField(
@@ -170,7 +170,7 @@ class Group(models.Model):
 class Partner(models.Model):
 
 
-    name= models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="partner_name_field")
+    name= models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="partner_name_field")
 
     description = models.TextField(
         null = False,
@@ -184,7 +184,7 @@ class Partner(models.Model):
         max_length=200
         )
 
-    type= models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="partner_type_field")
+    type= models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="partner_type_field")
     
     users = models.ManyToManyField(User)
 
@@ -213,7 +213,7 @@ class Resource(models.Model):
         max_length=200
         )
 
-    type= models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="resource_type_field")
+    type= models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="resource_type_field")
     
     users = models.ManyToManyField(User)
 
@@ -253,10 +253,10 @@ class Project(models.Model):
         blank = True
     )
 
-    keywords = models.ManyToManyField(FieldOptions, related_name="project_keywords_field")
-    methods = models.ManyToManyField(FieldOptions, related_name="project_methods_field")
+    keywords = models.ManyToManyField(FieldOption, related_name="project_keywords_field")
+    methods = models.ManyToManyField(FieldOption, related_name="project_methods_field")
 
-    type = models.ForeignKey(FieldOptions, on_delete=models.SET_NULL, null=True, related_name="project_type_field")
+    type = models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="project_type_field")
     
     persons = models.ManyToManyField(Person)
 

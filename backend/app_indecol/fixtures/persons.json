@@ -47,6 +47,54 @@
                 "roles":[66],
                 "users":[1]
         }
+    },
+    {
+        "model": "app_indecol.person",
+        "pk": 5,
+        "fields": {
+            "first_name":"Candy",
+                "middle_name":"",
+                "last_name":"Anquetil-Deck",
+                "start_date":"2020-12-01",
+                "roles":[68],
+                "users":[1]
+        }
+    },
+    {
+        "model": "app_indecol.person",
+        "pk": 6,
+        "fields": {
+            "first_name":"Ruslan",
+                "middle_name":"",
+                "last_name":"Zhuravchak",
+                "start_date":"2021-12-01",
+                "roles":[68],
+                "users":[1]
+        }
+    },
+    {
+        "model": "app_indecol.person",
+        "pk": 7,
+        "fields": {
+            "first_name":"Gibran",
+                "middle_name":"",
+                "last_name":"Vita",
+                "start_date":"2014-06-01",
+                "end_date":"2018-12-31",
+                "roles":[66],
+                "users":[1]
+        }
+    },
+    {
+        "model": "app_indecol.person",
+        "pk": 8,
+        "fields": {
+            "first_name":"Xia",
+                "middle_name":"",
+                "last_name":"Zhang",
+                "start_date":"2022-10-01",
+                "roles":[67],
+                "users":[1]
+        }
     }
-
 ]

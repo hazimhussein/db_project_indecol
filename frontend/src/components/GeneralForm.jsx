@@ -193,7 +193,7 @@ function GeneralForm({setData, data, table, child}){
                 field={{key:key, val:val}}
                 options={options} setOptions={setOptions} 
                 data={list[val.name].filter(v=>
-                  val.name == "fieldoptions" ? (v.table.name.toLowerCase() == table && v.field == key)
+                  val.name == "fieldoption" ? (v.table.name.toLowerCase() == table && v.field == key)
                   :val.name == "user" ? v.id!=current_user.id
                   :val.name == table ? data ? v.id != data.id : true
                   : true)}

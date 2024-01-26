@@ -42,7 +42,7 @@ function Details({data, child, table}){
                                                 return(
                                                 <div key={val.id}><br/>
                                                 {
-                                                    list_options[table][k].name != "fieldoptions"
+                                                    list_options[table][k].name != "fieldoption"
                                                     ? <Details data={val} child={true} table={list_options[table][k].name}/>
                                                     : val.name
                                                 }
@@ -50,11 +50,14 @@ function Details({data, child, table}){
                                             : typeof value == "object" 
                                             ? <div><br/>
                                             {
-                                                list_options[table][k].name != "fieldoptions"
+                                                list_options[table][k].name != "fieldoption"
                                                 ? <Details data={value} child={true} table={list_options[table][k].name}/>
                                                 : value.name
                                             }
                                             </div>
+                                            : (k.toLowerCase().includes("location") || k.toLowerCase().includes("url")) 
+                                            && value.includes("http")
+                                            ? <a href={value} target="_blank" rel="noopener noreferrer">{value}</a>
                                             : value}
                                             </span>
                                     </div>)

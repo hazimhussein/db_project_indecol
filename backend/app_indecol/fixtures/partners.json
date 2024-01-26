@@ -1,0 +1,12 @@
+[
+    {
+        "model": "app_indecol.partner",
+        "pk": 1,
+        "fields": {
+            "name":84,
+            "description":"Seri Plastica GmbH specializes in customized marking of rubber products such as tires, patches, drive belts, mats, hoses, conveyor belts and items in the technical rubber industry. We are a leading partner of the tire and motorsport industries. The automotive sector and the technical rubber industry are also among our customers, and as their development partner we provide them with support with a focus on solutions, partnership, service, and reliability. We market our labels and rubber markings, which are applied during or after vulcanization, throughout the world under the brand names Gummette®, Rubberette®, ID Coded Rubberette®, Vulkanette®, Mepolette® and Fixette®",
+            "url": "https://www.seriplastica.com/en/",
+            "type": 27
+        }
+    }
+]

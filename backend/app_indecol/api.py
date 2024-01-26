@@ -32,11 +32,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-class FieldOptionsViewSet(viewsets.ModelViewSet):
+class FieldOptionViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     metadata_class = MyMetaData
-    queryset = FieldOptions.objects.all()
-    serializer_class = FieldOptionsSerializer
+    queryset = FieldOption.objects.all()
+    serializer_class = FieldOptionSerializer
 class TeamViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     metadata_class = MyMetaData

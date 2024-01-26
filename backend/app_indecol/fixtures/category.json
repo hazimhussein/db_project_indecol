@@ -51,7 +51,7 @@
         "model": "app_indecol.category",
         "pk": 7,
         "fields": {
-            "name":"FieldOptions",
+            "name":"FieldOption",
             "description":"Options available for fields that have specific lists of options in the database"
         }
     },
