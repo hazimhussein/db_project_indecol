@@ -20,5 +20,38 @@
             "type":32,
             "users":[1]
         }
+    },
+    {
+        "model": "app_indecol.resource",
+        "pk": 3,
+        "fields": {
+            "full_name":"IndEcx webpage",
+            "description":"We can search in the database and also edit entries",
+            "location":"http://indecx.indecol.no/dashboard",
+            "type":32,
+            "users":[1]
+        }
+    },
+    {
+        "model": "app_indecol.resource",
+        "pk": 4,
+        "fields": {
+            "full_name":"Git repository indEcX",
+            "description":"Git repository of the whole project",
+            "location":"https://github.com/NTNU-IndEcol/db_project_indecol",
+            "type":32,
+            "users":[1]
+        }
+    },
+    {
+        "model": "app_indecol.resource",
+        "pk": 5,
+        "fields": {
+            "full_name":"Cordis Glamurs",
+            "description":"GLAMURS description in Cordis",
+            "location":"https://cordis.europa.eu/project/id/613420",
+            "type":32,
+            "users":[1]
+        }
     }
 ]

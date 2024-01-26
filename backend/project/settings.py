@@ -29,11 +29,7 @@ DEBUG = os.getenv('DEBUG') or True
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True   
 CORS_ALLOW_CREDENTIALS = True
-# SESSION_COOKIE_DOMAIN = "10.50.225.177"
-# SESSION_COOKIE_SAMESITE = None
-#ALLOWED_HOSTS = [    ]
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-# LOGIN_REDIRECT_URL = '/admin'
 CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100', 'http://*.indecx.indecol.no']
 
 # Application definition
@@ -96,7 +92,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR.parent / "data/db/db.sqlite3",
     }
 }
 

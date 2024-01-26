@@ -12,7 +12,7 @@ function Card({ table, data }) {
     }
   };
 
-  let name = data.name ? data.name: "";
+  let name = data.name ? data.name + "s": "";
   let description = data.description ? data.description : "";
   let img = table == "category" ? `/assets/images/${name.toLowerCase()}.png` : table
   
@@ -29,7 +29,7 @@ function Card({ table, data }) {
   } 
 
   return (
-    <div className="wrap" onClick={() => routeChange(table == "team"? url : name.toLowerCase())}>
+    <div className="wrap" onClick={() => routeChange(table == "team"? url : name.toLowerCase().slice(0, -1))}>
       {/* <Link onClick={type==='Services' ?(()=>this.handleLink(service.name))
                                             : (()=>this.handleLink("Staff", service.name))}
                   to={service !== null && `/${type}/${service.name}`} > */}
@@ -56,7 +56,7 @@ function Card({ table, data }) {
                     </ul>
                   </div>}
           <div className="card--title">
-            <h3>{capitalizeFirstLetter(name)}s</h3>
+            <h3>{capitalizeFirstLetter(name)}</h3>
             <p></p>
           </div>
           <div className="card--desc">

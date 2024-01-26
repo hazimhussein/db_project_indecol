@@ -97,6 +97,8 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
                     items.push(v)
                   })
                   val = items.join(", ")
+                  } else if ((lab.toLowerCase().includes("location") || lab.toLowerCase().includes("url")) && val.includes("http")){
+                    val = (<a href={item[lab]} target="_blank" rel="noopener noreferrer">{item[lab]}</a>)
                   }
                 return val
               }, 
