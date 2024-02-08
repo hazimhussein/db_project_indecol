@@ -22,7 +22,7 @@ A TLS certificate is created and set for autorenewal in `/etc/letsencrypt/live/i
 
 ### Updating the app:
 1. ssh into the VM
-1. find the app's repo in `/traefikmaster/db_project_db_project_indecol/`
+1. find the app's repo in `/traefikmaster/db_project_db/`
 1. fetch the changes from git
 1. if needed, update the traefik mangager's service definition (adaptation of `./docker-compose.yaml`)
 1. restart the traefik manager docker service
