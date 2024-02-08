@@ -12,3 +12,21 @@ python manage.py migrate
 ./manage.py ldap_sync_users <list of user lookups>
  ./manage.py ldap_promote <username>
  python manage.py loaddata <filename>
+
+
+# deployment/hosting
+
+The app joined a traefik manager's docker service (`/traefikmaster/rproxy-setup.yaml`) running at `misc4iedl` VM of IEDL's `stack.it.ntnu.no` (access details @ wiki).
+A DNS record `indecx.indecol.no` with A-record pointing at the VM's IP and the TXT record with ACME challege is public.
+A TLS certificate is created and set for autorenewal in `/etc/letsencrypt/live/indecx.indecol.no/`.
+
+### Updating the app:
+1. ssh into the VM
+1. find the app's repo in `/traefikmaster/db_project_db_project_indecol/`
+1. fetch the changes from git
+1. if needed, update the traefik mangager's service definition (adaptation of `./docker-compose.yaml`)
+1. restart the traefik manager docker service
+
+### database backup
+The content of `./data/db/` is synced into the mountpoint of IEDL's NAS drive at `./data/db_backup_mountp/` daily (9:01 AM).
+This routine is implemented in `./data/syncro.py`, which runs in a tmux session and needs the `APScheduler`, hence `pip3 install -r backup_requs.txt` prior to using. 
