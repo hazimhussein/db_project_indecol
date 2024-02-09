@@ -24,8 +24,12 @@ A TLS certificate is created and set for autorenewal in `/etc/letsencrypt/live/i
 1. ssh into the VM
 1. find the app's repo in `/traefikmaster/db_project_db/`
 1. fetch the changes from git
-1. if needed, update the traefik mangager's service definition (adaptation of `./docker-compose.yaml`)
-1. restart the traefik manager docker service
+1. if `./docker-compose.yaml` has updates - update the docker service `indecx.indecol.no` in `/traefikmaster/rproxy-setup.yaml` accordingly
+1. restart/rebuild the traefik manager and other running docker services:
+```bash
+docker compose -f /traefikmaster/rproxy-setup.yaml up -d # restarts the services
+docker compose -f /traefikmaster/rproxy-setup.yaml up -d --no-deps --build # rebuilds the containers and restarts the services
+```
 
 ### database backup
 The content of `./data/db/` is synced into the mountpoint of IEDL's NAS drive at `./data/db_backup_mountp/` daily (9:01 AM).
