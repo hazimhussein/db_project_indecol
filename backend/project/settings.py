@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True   
 CORS_ALLOW_CREDENTIALS = True
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100', 'http://*.indecx.indecol.no']
+CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100', 'http://*.indecx.indecol.no', 'https://*.indecx.indecol.no']
 
 # Application definition
 
