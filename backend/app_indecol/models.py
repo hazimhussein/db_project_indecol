@@ -22,6 +22,7 @@ class Faq(models.Model):
     )
 
     manual = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
 
     media = models.FileField(null=True, upload_to='media/')
 
