@@ -12,6 +12,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { loadingBarMiddleware } from 'react-redux-loading-bar'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
+// replace console.* for disable log on production
+if (import.meta.env.MODE === 'production') {
+  console.log = () => {}
+  console.error = () => {}
+  console.debug = () => {}
+}
+
 const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
