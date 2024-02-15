@@ -4,6 +4,7 @@ from app_indecol.views import BootstrapFilterView
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+router.register("faq", api.FaqViewSet)
 router.register("category", api.CategoryViewSet)
 router.register("fieldoption", api.FieldOptionViewSet)
 router.register("team", api.TeamViewSet)

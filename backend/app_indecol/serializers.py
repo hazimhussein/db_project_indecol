@@ -26,6 +26,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', "first_name", "last_name", "email", "is_superuser")
+
+class FaqSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Faq
+        fields = ("__all__")
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

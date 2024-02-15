@@ -59,6 +59,7 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Person)
 # admin.site.register(Person, PersonAdmin)
+admin.site.register(Faq)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Group)
 admin.site.register(Partner)

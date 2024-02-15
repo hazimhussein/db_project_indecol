@@ -26,6 +26,12 @@ class MyMetaData(SimpleMetadata):
             field_info['name'] = field.child_relation.queryset.model.__name__.lower()
         return field_info
 
+class FaqViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    metadata_class = MyMetaData
+    queryset = Faq.objects.all()
+    serializer_class = FaqSerializer
+
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     metadata_class = MyMetaData

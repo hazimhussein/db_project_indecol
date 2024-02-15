@@ -8,6 +8,23 @@ class User(AbstractUser):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
+class Faq(models.Model):
+    question = models.TextField(
+        null = False,
+        blank= False,
+        max_length=2000
+    )
+
+    answer = models.TextField(
+        null = True,
+        blank= True,
+        max_length=2000
+    )
+
+    manual = models.BooleanField(default=False)
+
+    media = models.FileField(null=True, upload_to='media/')
+
 class Category(models.Model):
     name = models.CharField(
         unique=False,
