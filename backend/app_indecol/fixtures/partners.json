@@ -3,10 +3,136 @@
         "model": "app_indecol.partner",
         "pk": 1,
         "fields": {
-            "name":84,
+            "name":"SERI GMBH",
             "description":"Seri Plastica GmbH specializes in customized marking of rubber products such as tires, patches, drive belts, mats, hoses, conveyor belts and items in the technical rubber industry. We are a leading partner of the tire and motorsport industries. The automotive sector and the technical rubber industry are also among our customers, and as their development partner we provide them with support with a focus on solutions, partnership, service, and reliability. We market our labels and rubber markings, which are applied during or after vulcanization, throughout the world under the brand names Gummette®, Rubberette®, ID Coded Rubberette®, Vulkanette®, Mepolette® and Fixette®",
             "url": "https://www.seriplastica.com/en/",
-            "type": 27
+            "type": 6
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"UNIVERSIDADE DA CORUNA"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"UNIVERSITY OF BATH"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"HELMHOLTZ-ZENTRUM FUR UMWELTFORSCHUNG GMBH - UFZ"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"TECHNISCHE UNIVERSITEIT DELFT"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"OTTO-VON-GUERICKE-UNIVERSITAET MAGDEBURG"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"UNIVERSITA DEGLI STUDI ROMA TRE"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"THE JAMES HUTTON INSTITUTE"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"TILBURG UNIVERSITY- UNIVERSITEIT VAN TILBURG"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"UNIVERSITATEA DE VEST DIN TIMISOARA"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Sintef"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Equinor"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Trondheim Kommune"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Pontificia Universidad Católica del Perú"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"ETH Zürich"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Sokoine University of Agriculture"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Government of the Netherlands"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Leiden University"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Africa Prolicy Research Institute"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"Vienna University of Economics and Business"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"SGS"
+        }
+    },
+    {
+        "model": "app_indecol.partner",
+        "fields": {
+            "name":"No External Partners"
         }
     }
 ]

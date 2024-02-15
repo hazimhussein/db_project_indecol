@@ -6,7 +6,7 @@
             "full_name":"HiTEA code repository",
             "description":"",
             "location":"https://gitlab.com/hitea",
-            "type":30,
+            "type":8,
             "users":[1]
         }
     },
@@ -17,7 +17,7 @@
             "full_name":"HiTEA project website",
             "description":"",
             "location":"https://hitea.iedl.no/",
-            "type":32,
+            "type":10,
             "users":[1]
         }
     },
@@ -28,7 +28,7 @@
             "full_name":"IndEcx webpage",
             "description":"We can search in the database and also edit entries",
             "location":"http://indecx.indecol.no/dashboard",
-            "type":32,
+            "type":10,
             "users":[1]
         }
     },
@@ -39,7 +39,7 @@
             "full_name":"Git repository indEcX",
             "description":"Git repository of the whole project",
             "location":"https://github.com/NTNU-IndEcol/db_project_indecol",
-            "type":32,
+            "type":10,
             "users":[1]
         }
     },
@@ -50,7 +50,7 @@
             "full_name":"Cordis Glamurs",
             "description":"GLAMURS description in Cordis",
             "location":"https://cordis.europa.eu/project/id/613420",
-            "type":32,
+            "type":10,
             "users":[1]
         }
     }

@@ -145,8 +145,12 @@ class Person(models.Model):
     
 class Group(models.Model):
 
-    name = models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="group_name_field")
-
+    name = models.CharField(
+        unique=True,
+        null=False,
+        blank=False,
+        max_length=100
+    )
 
     start_date= models.DateField(
         null = False,
@@ -170,17 +174,21 @@ class Group(models.Model):
 class Partner(models.Model):
 
 
-    name= models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="partner_name_field")
-
+    name= models.CharField(
+        unique=True,
+        null=False,
+        blank=False,
+        max_length=100
+    )
     description = models.TextField(
-        null = False,
-        blank= False,
+        null = True,
+        blank= True,
         max_length=2000
     )
 
     url= models.CharField(
-        null = False,
-        blank=False,
+        null = True,
+        blank=True,
         max_length=200
         )
 
