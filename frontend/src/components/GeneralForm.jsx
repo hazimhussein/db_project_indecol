@@ -1,14 +1,14 @@
-import { TextField, Button, FormControl, Modal, Box, Typography } from "@mui/material"
+import { TextField, Button, FormControl, Modal, Box, Typography, Switch, FormControlLabel } from "@mui/material"
 import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { addTableRow, updateTableRow } from "../utils/api";
 import { useSelector } from 'react-redux';
 import { dataData, authedUser, dataOptions } from '../reducers/data';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from 'dayjs';
 import SelectSearch from "./elements/selectSearch";
 import { capitalizeFirstLetter, order_dict } from "../utils/helpers";
-
+import InputFileUpload from "./elements/FileUpload";
 
 import {DatePicker} from "@mui/x-date-pickers"
 
@@ -185,6 +185,24 @@ function GeneralForm({setData, data, table, child}){
               error = {invalid[key] && true}>
                 {data && data[key]}
                 </DatePicker>
+                {invalid[key] && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid[key]}</p>}
+            </FormControl>)
+          } else if (val.type == "boolean"){
+            return (<FormControl key={key} className="align-items-start">
+              <FormControlLabel 
+              label={val.label} 
+              labelPlacement="start" 
+              control={<Switch checked={options[key] && options[key]} onChange={(e)=>{setOptions({...options, [key]: e.target.checked})}} />} 
+              required={val.required} />
+                {invalid[key] && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid[key]}</p>}
+            </FormControl>)
+          } else if (val.type == "file upload"){
+            return (<FormControl key={key} className="align-items-center">
+              <FormControlLabel 
+              label={val.label} 
+              labelPlacement="top" 
+              control={<InputFileUpload options={options} setOptions={setOptions} field={key} className="d-block mt-5" />} 
+              required={val.required} />
                 {invalid[key] && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid[key]}</p>}
             </FormControl>)
           } else if (val.type.includes("foreign_key")){

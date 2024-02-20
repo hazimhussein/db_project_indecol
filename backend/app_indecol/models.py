@@ -64,9 +64,6 @@ class FieldOption(models.Model):
         blank=False,
         max_length=50
     )
-
-    def __str__(self):
-        return self.name
     
 class Team(models.Model):
     first_name = models.CharField(

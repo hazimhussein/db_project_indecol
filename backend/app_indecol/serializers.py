@@ -65,7 +65,6 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ("__all__")
     
     def to_representation(self, instance):
-        self.fields['name'] =  FieldOptionSerializer(many=False, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         self.fields['persons'] =  PersonSerializer(many=True, read_only=True)
         return super(GroupSerializer, self).to_representation(instance)
@@ -77,7 +76,6 @@ class PartnerSerializer(serializers.ModelSerializer):
         fields = ("__all__")
     
     def to_representation(self, instance):
-        self.fields['name'] =  FieldOptionSerializer(many=False, read_only=True)
         self.fields['type'] =  FieldOptionSerializer(many=False, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         return super(PartnerSerializer, self).to_representation(instance)

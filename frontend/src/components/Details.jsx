@@ -2,8 +2,9 @@ import { capitalizeFirstLetter } from "../utils/helpers"
 import { dataData, dataOptions } from '../reducers/data';
 import { useSelector } from 'react-redux';
 import { useState } from "react";
-import { FaChevronRight, FaChevronDown } from 'react-icons/fa';
+import { FaChevronRight, FaChevronDown, FaCheck, FaTimes } from 'react-icons/fa';
 import { order_dict } from "../utils/helpers";
+import { img_ext, vid_ext } from "../config";
 
 function Details({data, child, table}){
     const list_selector = useSelector(dataData)
@@ -47,6 +48,16 @@ function Details({data, child, table}){
                                                     : val.name
                                                 }
                                                 </div>)})
+                                            : list_options[table][k].type == "boolean"
+                                            ?  (value ? <FaCheck/> : <FaTimes/>)
+                                            : list_options[table][k].type == "file upload"
+                                            ?  (value && img_ext.includes(value.slice(-6).split(".").at(-1)) 
+                                            ? <img src={value}/> 
+                                            : vid_ext.includes(value.slice(-6).split(".").at(-1)) 
+                                            ? (<video className="w-100" controls autoPlay>
+                                                <source src="movie.ogg" type="video/ogg" />
+                                                </video>)
+                                            : value)
                                             : typeof value == "object" 
                                             ? <div><br/>
                                             {
