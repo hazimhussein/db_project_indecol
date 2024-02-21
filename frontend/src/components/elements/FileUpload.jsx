@@ -46,7 +46,13 @@ export default function InputFileUpload({field, options, setOptions}) {
       Upload file
       <VisuallyHiddenInput type="file" onChange={(e)=>update_file(e.target.files[0])}/>
     </Button>
-    {file && <img src={file}/>}
+    {file && (file.includes("image")
+                                            ? <img src={file}/> 
+                                            : file.includes("video")
+                                            ? (<video className="w-100" controls autoPlay loop>
+                                                <source src={file} />
+                                                </video>)
+                                            : file)}
     </>
   );
 }

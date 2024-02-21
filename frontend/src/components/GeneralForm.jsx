@@ -192,7 +192,7 @@ function GeneralForm({setData, data, table, child}){
               <FormControlLabel 
               label={val.label} 
               labelPlacement="start" 
-              control={<Switch checked={options[key] && options[key]} onChange={(e)=>{setOptions({...options, [key]: e.target.checked})}} />} 
+              control={<Switch checked={options[key] ? options[key] : false} onChange={(e)=>{setOptions({...options, [key]: e.target.checked})}} />} 
               required={val.required} />
                 {invalid[key] && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid[key]}</p>}
             </FormControl>)

@@ -49,7 +49,7 @@ function Dashboard() {
           <IconButton
             onClick={() => setModalOpened(false)}
             className="position-absolute"
-            style={{ right: "10px" }}
+            style={{ right: "10px", zIndex: "9999" }}
           >
             <CloseIcon fontSize="large" />
           </IconButton>
