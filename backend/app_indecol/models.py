@@ -41,6 +41,8 @@ class Category(models.Model):
         max_length=2000
     )
 
+    icon = models.FileField(null=True, upload_to='media/')
+
     def __str__(self):
         return self.name
 

@@ -14,7 +14,7 @@ function Card({ table, data }) {
 
   let name = data.name ? data.name + "s": "";
   let description = data.description ? data.description : "";
-  let img = table == "category" ? `/assets/images/${data.name.toLowerCase()}.png` : table
+  let img = data.icon ? data.icon : table;
   
   let url = "";
   let email = "";
