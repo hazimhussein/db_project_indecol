@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { capitalizeFirstLetter } from "../../utils/helpers";
 import { useState, useRef } from "react";
 import { FaPlusSquare } from 'react-icons/fa';
+import { admin_tables } from "../../config";
 
 
 function getStyles(name, id, theme) {
@@ -48,7 +49,7 @@ function SelectSearch({table, add, field, options, setOptions, data, parameter, 
       ? {id: entry.id, name: entry.name[Object.keys(entry.name).filter(k=>k.includes("name"))[0]]}
       : entry )
 
-    let add_option = field.val.name != "fieldoption" && field.val.name != "user" && field.val.name != table
+    let add_option = field.val.name != "fieldoption" && field.val.name != "user" && !admin_tables.includes(field.val.name) && field.val.name != table
 
     return (
         <FormControl className="py-2 w-100">

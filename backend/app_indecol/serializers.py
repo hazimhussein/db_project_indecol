@@ -45,6 +45,12 @@ class FieldOptionSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields['table'] =  CategorySerializer(many=False, read_only=True)
         return super(FieldOptionSerializer, self).to_representation(instance)
+    
+class GpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ("id", "name", "start_date", "end_date", )
+
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
@@ -52,6 +58,7 @@ class PersonSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         self.fields['roles'] =  FieldOptionSerializer(many=True, read_only=True)
+        self.fields['groups'] =  GpSerializer(many=True, read_only=True)
         self.fields['users'] =  UserSerializer(many=True, read_only=True)
         return super(PersonSerializer, self).to_representation(instance)
 

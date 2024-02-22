@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 # Create your models here.
@@ -64,6 +65,9 @@ class FieldOption(models.Model):
         blank=False,
         max_length=50
     )
+
+    def __str__(self):
+        return self.name
     
 class Team(models.Model):
     first_name = models.CharField(
@@ -152,6 +156,7 @@ class Person(models.Model):
     )
 
     roles = models.ManyToManyField(FieldOption)
+    groups = models.ManyToManyField("Group", through="Group_persons", null=True, blank=True )
     
     users = models.ManyToManyField(User)
     
@@ -184,7 +189,7 @@ class Group(models.Model):
     users = models.ManyToManyField(User)
 
     def __str__(self):
-        return self.name.name
+        return self.name
     
 class Partner(models.Model):
 
@@ -212,7 +217,7 @@ class Partner(models.Model):
     users = models.ManyToManyField(User)
 
     def __str__(self):
-        return self.name.name
+        return self.name
 
 class Resource(models.Model):
 

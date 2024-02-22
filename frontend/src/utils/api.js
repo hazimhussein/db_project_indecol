@@ -19,7 +19,13 @@ const client = axios.create({
 function jsonToForm(json){
   let form_data = new FormData();
     Object.entries(json).map(([key,value])=>{
-      value != undefined && form_data.append(key,value)
+      if (value && value.constructor && value.constructor == Array){
+        value.forEach(item => {
+          form_data.append(key, item);
+         });
+      } else {
+        value != undefined && form_data.append(key,value)
+      }
     })
     return form_data
 }

@@ -63,7 +63,7 @@ function GeneralForm({setData, data, table, child}){
           entry[key] = (key.includes("date") && val)
           ? dayjs(val).format("YYYY-MM-DD")
           : key == "users" 
-          ? userIds
+          ? Array.from(new Set(userIds))
           : val
         )
 
