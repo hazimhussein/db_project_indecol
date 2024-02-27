@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-let fetchingURL = 'http://10.50.41.100:8000/api/'
-// let fetchingURL = '/api/'
+// let fetchingURL = 'http://10.50.41.100:8000/api/'
+let fetchingURL = '/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
