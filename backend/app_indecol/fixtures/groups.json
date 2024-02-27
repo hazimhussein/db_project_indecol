@@ -3,7 +3,7 @@
         "model": "app_indecol.group",
         "pk": 1,
         "fields": {
-            "name":4,
+            "name":"Edgar Hertwich Group",
             "start_date":"2000-01-01",
             "persons":[3],
             "users":[1]
@@ -13,7 +13,7 @@
         "model": "app_indecol.group",
         "pk": 2,
         "fields": {
-            "name":8,
+            "name":"IndEcol Digital Lab",
             "start_date":"2016-07-01",
             "persons":[2, 6, 5, 4],
             "users":[1]

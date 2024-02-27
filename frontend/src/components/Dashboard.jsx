@@ -11,6 +11,7 @@ import { Modal, Box, IconButton, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import {tables_order, admin_tables, main_developers} from "../config"
 import About from "./About";
+import Help from "./Help";
 
 function Dashboard() {
   let { category } = useParams();
@@ -31,7 +32,7 @@ function Dashboard() {
     <>
       <LoadingBar />
       <NavTop />
-      <Modal open={modalOpened} onClose={() => setModalOpened(false)}>
+      <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>
         <Box
           style={{
             position: "absolute",
@@ -48,11 +49,11 @@ function Dashboard() {
           <IconButton
             onClick={() => setModalOpened(false)}
             className="position-absolute"
-            style={{ right: "10px" }}
+            style={{ right: "10px", zIndex: "9999" }}
           >
             <CloseIcon fontSize="large" />
           </IconButton>
-          <About/>
+          {modalOpened == "about" ? <About/> : modalOpened == "help" && <Help/>}
         </Box>
       </Modal>
       <div className="dashboard">
@@ -118,10 +119,18 @@ function Dashboard() {
       <Fab
         variant="extended"
         style={{ position: "fixed", bottom: "15px", right: "15px" }}
-        onClick={() => setModalOpened(true)}
+        onClick={() => setModalOpened("about")}
       >
         <FaQuestionCircle className="h3 m-0 me-1" />
         About Us
+      </Fab>
+      <Fab
+        variant="extended"
+        style={{ position: "fixed", bottom: "15px", left: "15px" }}
+        onClick={() => setModalOpened("help")}
+      >
+        <FaQuestionCircle className="h3 m-0 me-1" />
+        Help
       </Fab>
     </>
   );

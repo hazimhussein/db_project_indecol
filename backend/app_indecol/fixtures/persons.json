@@ -7,7 +7,7 @@
             "middle_name":"",
             "last_name":"Wood",
             "start_date":"2009-01-01",
-            "roles":[70],
+            "roles":[48],
             "users":[1]
         }
     },
@@ -19,7 +19,7 @@
             "middle_name":"",
             "last_name":"Stadler",
             "start_date":"2012-01-01",
-            "roles":[67],
+            "roles":[48],
             "users":[1]
         }
     },
@@ -31,7 +31,7 @@
             "middle_name":"",
             "last_name":"Hertwich",
             "start_date":"2012-01-01",
-            "roles":[71],
+            "roles":[49],
             "users":[1]
         }
     },
@@ -44,7 +44,7 @@
                 "last_name":"Badr",
                 "start_date":"2021-08-02",
                 "end_date":"2025-08-02",
-                "roles":[66],
+                "roles":[44],
                 "users":[1]
         }
     },
@@ -56,7 +56,7 @@
                 "middle_name":"",
                 "last_name":"Anquetil-Deck",
                 "start_date":"2020-12-01",
-                "roles":[68],
+                "roles":[46],
                 "users":[1]
         }
     },
@@ -68,7 +68,7 @@
                 "middle_name":"",
                 "last_name":"Zhuravchak",
                 "start_date":"2021-12-01",
-                "roles":[68],
+                "roles":[46],
                 "users":[1]
         }
     },
@@ -81,7 +81,7 @@
                 "last_name":"Vita",
                 "start_date":"2014-06-01",
                 "end_date":"2018-12-31",
-                "roles":[66],
+                "roles":[44],
                 "users":[1]
         }
     },
@@ -93,7 +93,7 @@
                 "middle_name":"",
                 "last_name":"Zhang",
                 "start_date":"2022-10-01",
-                "roles":[67],
+                "roles":[45],
                 "users":[1]
         }
     }

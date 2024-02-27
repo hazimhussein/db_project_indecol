@@ -1,3 +1,5 @@
 export let tables_order = ["project", "person"]
-export let admin_tables = ["user", "fieldoption", "team"]
+export let admin_tables = ["user", "fieldoption", "team", "group", "faq"]
 export let main_developers = ["Hussein", "Deck", "Zhuravchak"]
+export let img_ext = ["jpg", "png"]
+export let vid_ext = ["mp4", "avi"]

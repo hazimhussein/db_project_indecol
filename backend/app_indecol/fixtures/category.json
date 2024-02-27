@@ -62,5 +62,13 @@
             "name":"Team",
             "description":"The team members responsible for developing the app"
         }
+    },
+    {
+        "model": "app_indecol.category",
+        "pk": 9,
+        "fields": {
+            "name":"Faq",
+            "description":"Helpful instructions to use the app and frequently asked questions"
+        }
     }
 ]

@@ -3,7 +3,6 @@ version: '3.7'
 services:
   backend:
     volumes:
-      - static:/static
       - ./data/db:/data/db
     env_file:
       - .env
@@ -21,6 +20,7 @@ services:
       context: ./nginx
     volumes:
       - static:/static
+      - ./data/media:/data/media
       - frontend:/var/www/frontend
     ports:
       - "0.0.0.0:80:80"
@@ -30,4 +30,5 @@ services:
 
 volumes:
   static:
+  data:
   frontend:

@@ -3,86 +3,6 @@
         "model": "app_indecol.fieldOption",
         "pk": 1,
         "fields": {
-            "name":"Francesco Cherubini Group",
-            "value":"Cherubini Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 2,
-        "fields": {
-            "name":"Francesca Verones Group",
-            "value":"Verones Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 3,
-        "fields": {
-            "name":"Anders Strømman Group",
-            "value":"Stømman Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 4,
-        "fields": {
-            "name":"Edgar Hertwich Group",
-            "value":"Hertwich Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 5,
-        "fields": {
-            "name":"Daniel Müller Group",
-            "value":"Müller Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 6,
-        "fields": {
-            "name":"Johan Pettersen Group",
-            "value":"Pettersen Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 7,
-        "fields": {
-            "name":"Juudit Ottelin Group",
-            "value":"Ottelin Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 8,
-        "fields": {
-            "name":"IndEcol Digital Lab",
-            "value":"IEDL Group",
-            "table":4,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 9,
-        "fields": {
             "name":"Master Project",
             "value":"Master Project",
             "table":1,
@@ -91,7 +11,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 10,
+        "pk": 2,
         "fields": {
             "name":"PhD Project",
             "value":"PhD Project",
@@ -101,7 +21,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 11,
+        "pk": 3,
         "fields": {
             "name":"PostDoc Project",
             "value":"PostDoc Project",
@@ -111,7 +31,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 12,
+        "pk": 4,
         "fields": {
             "name":"European Project",
             "value":"European Project",
@@ -121,137 +41,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 13,
-        "fields": {
-            "name":"Other types",
-            "value":"Other types",
-            "table":1,
-            "field":"type"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 14,
-        "fields": {
-            "name":"Sintef",
-            "value":"Sintef",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 15,
-        "fields": {
-            "name":"Equinor",
-            "value":"Equinor",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 16,
-        "fields": {
-            "name":"Trondheim Kommune",
-            "value":"TK",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 17,
-        "fields": {
-            "name":"Pontificia Universidad Católica del Perú",
-            "value":"PUCP",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 18,
-        "fields": {
-            "name":"ETH Zürich",
-            "value":"ETH",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 19,
-        "fields": {
-            "name":"Sokoine University of Agriculture",
-            "value":"SUA",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 20,
-        "fields": {
-            "name":"Government of the Netherlands",
-            "value":"Government of the Netherlands",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 21,
-        "fields": {
-            "name":"Leiden University",
-            "value":"Leiden University",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 22,
-        "fields": {
-            "name":"Africa Prolicy Research Institute",
-            "value":"APRI",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 23,
-        "fields": {
-            "name":"Vienna University of Economics and Business",
-            "value":"WU",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 24,
-        "fields": {
-            "name":"SGS",
-            "value":"SGS",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 25,
-        "fields": {
-            "name":"No External Partners",
-            "value":"No External Partners",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 26,
+        "pk": 5,
         "fields": {
             "name":"University",
             "value":"University",
@@ -261,7 +51,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 27,
+        "pk": 6,
         "fields": {
             "name":"Private sector",
             "value":"Private sector",
@@ -271,7 +61,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 28,
+        "pk": 7,
         "fields": {
             "name":"Industry",
             "value":"Industry",
@@ -281,17 +71,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 29,
-        "fields": {
-            "name":"N/A",
-            "value":"N/A",
-            "table":5,
-            "field":"type"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 30,
+        "pk": 8,
         "fields": {
             "name":"Software",
             "value":"Software",
@@ -301,7 +81,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 31,
+        "pk": 9,
         "fields": {
             "name":"Article",
             "value":"Article",
@@ -311,7 +91,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 32,
+        "pk": 10,
         "fields": {
             "name":"Website",
             "value":"Website",
@@ -321,7 +101,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 33,
+        "pk": 11,
         "fields": {
             "name":"Report",
             "value":"Report",
@@ -331,7 +111,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 34,
+        "pk": 12,
         "fields": {
             "name":"CIRCULAR ECONOMY",
             "value":"circular economy",
@@ -341,7 +121,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 35,
+        "pk": 13,
         "fields": {
             "name":"RESOURCES",
             "value":"resources",
@@ -351,7 +131,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 36,
+        "pk": 14,
         "fields": {
             "name":"MATERIALS",
             "value":"materials",
@@ -361,7 +141,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 37,
+        "pk": 15,
         "fields": {
             "name":"RECYCLING",
             "value":"recycling",
@@ -371,7 +151,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 38,
+        "pk": 16,
         "fields": {
             "name":"ENVIRONMENT",
             "value":"environment",
@@ -381,7 +161,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 39,
+        "pk": 17,
         "fields": {
             "name":"ECOSYSTEMS",
             "value":"ecosystems",
@@ -391,7 +171,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 40,
+        "pk": 18,
         "fields": {
             "name":"BIORESOURCES",
             "value":"bioresources",
@@ -401,7 +181,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 41,
+        "pk": 19,
         "fields": {
             "name":"BIODIVERSITY",
             "value":"biodiversity",
@@ -411,7 +191,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 42,
+        "pk": 20,
         "fields": {
             "name":"CLIMATE",
             "value":"climate",
@@ -421,7 +201,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 43,
+        "pk": 21,
         "fields": {
             "name":"BIOENERGY",
             "value":"bioenergy",
@@ -431,7 +211,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 44,
+        "pk": 22,
         "fields": {
             "name":"FOOD",
             "value":"food",
@@ -441,7 +221,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 45,
+        "pk": 23,
         "fields": {
             "name":"BIOMATERIALS",
             "value":"biomaterials",
@@ -451,7 +231,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 46,
+        "pk": 24,
         "fields": {
             "name":"ENERGY",
             "value":"energy",
@@ -461,7 +241,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 47,
+        "pk": 25,
         "fields": {
             "name":"TRANSPORT",
             "value":"transport",
@@ -471,7 +251,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 48,
+        "pk": 26,
         "fields": {
             "name":"BUILDINGS",
             "value":"buildings",
@@ -481,7 +261,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 49,
+        "pk": 27,
         "fields": {
             "name":"POLLUTION",
             "value":"pollution",
@@ -491,7 +271,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 50,
+        "pk": 28,
         "fields": {
             "name":"TRANSFORMATION PATHWAYS",
             "value":"transformation pathways",
@@ -501,7 +281,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 51,
+        "pk": 29,
         "fields": {
             "name":"HUMAN SETTLEMENT",
             "value":"human settlement",
@@ -511,7 +291,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 52,
+        "pk": 30,
         "fields": {
             "name":"SUSTAINABLE PRODUCTION",
             "value":"Sustainable Production",
@@ -521,7 +301,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 53,
+        "pk": 31,
         "fields": {
             "name":"CONSUMPTION",
             "value":"consumption",
@@ -531,7 +311,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 54,
+        "pk": 32,
         "fields": {
             "name":"PRODUCTION",
             "value":"production",
@@ -541,7 +321,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 55,
+        "pk": 33,
         "fields": {
             "name":"TRADE",
             "value":"trade",
@@ -551,7 +331,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 56,
+        "pk": 34,
         "fields": {
             "name":"ECONOMIC GROWTH",
             "value":"economic growth",
@@ -561,7 +341,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 57,
+        "pk": 35,
         "fields": {
             "name":"SUSTAINABILITY",
             "value":"sustainability",
@@ -571,7 +351,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 58,
+        "pk": 36,
         "fields": {
             "name":"EXIOBASE",
             "value":"exiobase",
@@ -581,7 +361,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 59,
+        "pk": 37,
         "fields": {
             "name":"DATABASE",
             "value":"database",
@@ -591,7 +371,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 60,
+        "pk": 38,
         "fields": {
             "name":"Life Cycle Assessment",
             "value":"lca",
@@ -601,7 +381,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 61,
+        "pk": 39,
         "fields": {
             "name":"Environmentally Extended Multi-Regional Input-Output analysis",
             "value":"eemrio",
@@ -611,7 +391,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 62,
+        "pk": 40,
         "fields": {
             "name":"Impact Assessment",
             "value":"ia",
@@ -621,7 +401,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 63,
+        "pk": 41,
         "fields": {
             "name":"Material Flow Analysis",
             "value":"mfa",
@@ -631,7 +411,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 64,
+        "pk": 42,
         "fields": {
             "name":"Sqlite",
             "value":"sqlite",
@@ -641,7 +421,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 65,
+        "pk": 43,
         "fields": {
             "name":"Master Student",
             "value":"Master Student",
@@ -651,7 +431,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 66,
+        "pk": 44,
         "fields": {
             "name":"PhD",
             "value":"PhD",
@@ -661,7 +441,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 67,
+        "pk": 45,
         "fields": {
             "name":"PostDoc",
             "value":"PostDoc",
@@ -671,7 +451,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 68,
+        "pk": 46,
         "fields": {
             "name":"Enginner",
             "value":"Enginner",
@@ -681,7 +461,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 69,
+        "pk": 47,
         "fields": {
             "name":"Associate Professor",
             "value":"Associate Professor",
@@ -691,7 +471,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 70,
+        "pk": 48,
         "fields": {
             "name":"Researcher",
             "value":"Researcher",
@@ -701,7 +481,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 71,
+        "pk": 49,
         "fields": {
             "name":"Professor",
             "value":"Professor",
@@ -711,7 +491,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 72,
+        "pk": 50,
         "fields": {
             "name":"MRIO",
             "value":"mrio",
@@ -721,7 +501,7 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 73,
+        "pk": 51,
         "fields": {
             "name":"7th framework programme of the EU Community for research",
             "value":"EU fp7",
@@ -731,112 +511,12 @@
     },
     {
         "model": "app_indecol.fieldOption",
-        "pk": 74,
+        "pk": 52,
         "fields": {
             "name":"The Research Council of Norway",
             "value":"The Research Council of Norway",
             "table":1,
             "field":"type"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 75,
-        "fields": {
-            "name":"UNIVERSIDADE DA CORUNA",
-            "value":"UNIVERSIDADE DA CORUNA",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 76,
-        "fields": {
-            "name":"UNIVERSITY OF BATH",
-            "value":"UNIVERSITY OF BATH",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 77,
-        "fields": {
-            "name":"HELMHOLTZ-ZENTRUM FUR UMWELTFORSCHUNG GMBH - UFZ",
-            "value":"HELMHOLTZ-ZENTRUM FUR UMWELTFORSCHUNG GMBH - UFZ",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 78,
-        "fields": {
-            "name":"TECHNISCHE UNIVERSITEIT DELFT",
-            "value":"TECHNISCHE UNIVERSITEIT DELFT",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 79,
-        "fields": {
-            "name":"OTTO-VON-GUERICKE-UNIVERSITAET MAGDEBURG",
-            "value":"OTTO-VON-GUERICKE-UNIVERSITAET MAGDEBURG",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 80,
-        "fields": {
-            "name":"UNIVERSITA DEGLI STUDI ROMA TRE",
-            "value":"UNIVERSITA DEGLI STUDI ROMA TRE",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 81,
-        "fields": {
-            "name":"THE JAMES HUTTON INSTITUTE",
-            "value":"THE JAMES HUTTON INSTITUTE",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 82,
-        "fields": {
-            "name":"TILBURG UNIVERSITY- UNIVERSITEIT VAN TILBURG",
-            "value":"TILBURG UNIVERSITY- UNIVERSITEIT VAN TILBURG",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 83,
-        "fields": {
-            "name":"UNIVERSITATEA DE VEST DIN TIMISOARA",
-            "value":"UNIVERSITATEA DE VEST DIN TIMISOARA",
-            "table":5,
-            "field":"name"
-        }
-    },
-    {
-        "model": "app_indecol.fieldOption",
-        "pk": 84,
-        "fields": {
-            "name":"SERI GMBH",
-            "value":"SERI",
-            "table":5,
-            "field":"name"
         }
     }
 ]

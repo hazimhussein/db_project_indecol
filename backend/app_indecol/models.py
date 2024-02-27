@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 # Create your models here.
@@ -7,6 +8,24 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+class Faq(models.Model):
+    question = models.TextField(
+        null = False,
+        blank= False,
+        max_length=2000
+    )
+
+    answer = models.TextField(
+        null = True,
+        blank= True,
+        max_length=2000
+    )
+
+    manual = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
+
+    media = models.FileField(null=True, upload_to='media/')
 
 class Category(models.Model):
     name = models.CharField(
@@ -21,6 +40,8 @@ class Category(models.Model):
         blank= False,
         max_length=2000
     )
+
+    icon = models.FileField(null=True, upload_to='media/')
 
     def __str__(self):
         return self.name
@@ -137,6 +158,7 @@ class Person(models.Model):
     )
 
     roles = models.ManyToManyField(FieldOption)
+    groups = models.ManyToManyField("Group", through="Group_persons", null=True, blank=True )
     
     users = models.ManyToManyField(User)
     
@@ -145,8 +167,12 @@ class Person(models.Model):
     
 class Group(models.Model):
 
-    name = models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="group_name_field")
-
+    name = models.CharField(
+        unique=True,
+        null=False,
+        blank=False,
+        max_length=100
+    )
 
     start_date= models.DateField(
         null = False,
@@ -165,22 +191,26 @@ class Group(models.Model):
     users = models.ManyToManyField(User)
 
     def __str__(self):
-        return self.name.name
+        return self.name
     
 class Partner(models.Model):
 
 
-    name= models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="partner_name_field")
-
+    name= models.CharField(
+        unique=True,
+        null=False,
+        blank=False,
+        max_length=100
+    )
     description = models.TextField(
-        null = False,
-        blank= False,
+        null = True,
+        blank= True,
         max_length=2000
     )
 
     url= models.CharField(
-        null = False,
-        blank=False,
+        null = True,
+        blank=True,
         max_length=200
         )
 
@@ -189,7 +219,7 @@ class Partner(models.Model):
     users = models.ManyToManyField(User)
 
     def __str__(self):
-        return self.name.name
+        return self.name
 
 class Resource(models.Model):
 

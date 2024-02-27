@@ -1,7 +1,7 @@
 
 import { capitalizeFirstLetter } from "../../utils/helpers"
 import { IconButton } from '@mui/material';
-import { FaPen, FaRegTrashAlt } from 'react-icons/fa';
+import { FaPen, FaRegTrashAlt, FaCheck, FaTimes } from 'react-icons/fa';
   
 
 function col_func(data, list_options, table, current_user, hiddenColumns, resize, handleEditable, handleRemove){
@@ -97,6 +97,8 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
                     items.push(v)
                   })
                   val = items.join(", ")
+                  } else if (field.type == "boolean"){
+                    val = (val ? <FaCheck/> : <FaTimes/>)
                   } else if ((lab.toLowerCase().includes("location") || lab.toLowerCase().includes("url")) && val.includes("http")){
                     val = (<a href={item[lab]} target="_blank" rel="noopener noreferrer">{item[lab]}</a>)
                   }

@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True   
 CORS_ALLOW_CREDENTIALS = True
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100', 'http://*.indecx.indecol.no']
+CSRF_TRUSTED_ORIGINS = ['http://*.localhost','http://*.127.0.0.1', 'http://*.0.0.0.0', 'http://*.10.50.225.177', 'http://*.10.50.41.100', 'http://*.indecx.indecol.no', 'https://*.indecx.indecol.no']
 
 # Application definition
 
@@ -133,10 +133,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = './static'
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-#     '/var/www/static/',
-# ]
+
+# Base url for media files 
+MEDIA_URL = 'https://indecx.indecol.no/'
+
+# Path where media is to be stored
+MEDIA_ROOT = BASE_DIR.parent / "data"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

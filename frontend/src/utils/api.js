@@ -6,6 +6,8 @@ let fetchingURL = '/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
+axios.defaults.headers.post['Content-Type'] = "multipart/form-data";
+axios.defaults.headers.patch['Content-Type'] = "multipart/form-data";
 
 const client = axios.create({
   baseURL:fetchingURL
@@ -14,6 +16,19 @@ const client = axios.create({
 
 
 ////////////////////////////////////////
+function jsonToForm(json){
+  let form_data = new FormData();
+    Object.entries(json).map(([key,value])=>{
+      if (value && value.constructor && value.constructor == Array){
+        value.forEach(item => {
+          form_data.append(key, item);
+         });
+      } else {
+        value != undefined && form_data.append(key,value)
+      }
+    })
+    return form_data
+}
 
 export const getTableData = createAsyncThunk(`data/getData`, async (table) =>{
     const response = await client.get(`${table}/`);
@@ -43,7 +58,7 @@ export const logoutAPI = createAsyncThunk(`data/logout`, async () =>{
 export const addTableRow = createAsyncThunk(`data/addData`, async ({table, row}, { rejectWithValue }) =>{
 
   try{
-    const response = await client.post(`${table}/`, row);
+    const response = await client.post(`${table}/`, jsonToForm(row));
     return {data:response.data, category:table}
   }catch (err) {
     let error = err // cast the error for access
@@ -64,7 +79,7 @@ export const removeTableRow = createAsyncThunk(`data/removeData`, async ({table,
 export const updateTableRow = createAsyncThunk(`data/updateData`, async ({table, row, rowId}, { rejectWithValue }) =>{
   
   try{
-    const response = await client.patch(table+`/${rowId}/`, row);
+    const response = await client.patch(table+`/${rowId}/`, jsonToForm(row));
     const new_data = await client.get(`${table}/`);
     return {data:new_data.data, category:table}
   }catch (err) {
