@@ -13,11 +13,12 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
 // replace console.* for disable log on production
-// if (import.meta.env.MODE === 'production') {
-//   console.log = () => {}
-//   console.error = () => {}
-//   console.debug = () => {}
-// }
+if (import.meta.env.MODE === 'production') {
+  console.log = () => {}
+  console.error = () => {}
+  console.debug = () => {}
+  console.group = () => {}
+}
 
 const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
