@@ -3,6 +3,6 @@
 *.pyc
 __pycache__
 /venv
-/data/db_backup_mountp/
-/data/db/db.sqlite3
-/data/db/media/*
+data/db_backup_mountp/
+data/db/db.sqlite3
+data/db/media/*
