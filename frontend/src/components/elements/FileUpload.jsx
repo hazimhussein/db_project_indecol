@@ -30,7 +30,10 @@ export default function InputFileUpload({field, options, setOptions}) {
 
     useEffect(()=>{
         options && options[field] && options[field].constructor == File ? update_file(options[field])
-        : typeof options[field] == "string" && options[field].includes("http") && fetch(options[field]).then(res=>res.blob()).then(blob=> update_file(new File([blob], {type:blob.type})))
+        : typeof options[field] == "string" && options[field].includes("http") && fetch(options[field]).then(res=>res.blob()).then(blob=> {
+          const new_file = new File([blob], options[field].split('/').pop(), {type: blob.type})
+          update_file(new_file)
+        })
       }, [])
 
   return (
@@ -52,7 +55,9 @@ export default function InputFileUpload({field, options, setOptions}) {
                                             ? (<video className="w-100" controls autoPlay loop>
                                                 <source src={file} />
                                                 </video>)
-                                            : file)}
+                                            : file.constructor == File
+                                            ? file.name
+                                            : typeof file == "string" && file.split('/').pop())}
     </>
   );
 }
