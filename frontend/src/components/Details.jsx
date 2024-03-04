@@ -39,7 +39,7 @@ function Details({className, data, child, table}){
                                 {(!child || show) && data && data.map(([k, value])=>
                                     (table != "faq" || (k != "manual" && k != "admin")) && (<div key={`${k}detail`} className="d-flex ms-3 mt-3">
                                         {table != "faq" && <span><strong>{`${capitalizeFirstLetter(k)}:`} </strong></span>}
-                                        <span className={`ms-4 ${table == "faq" && k =="media" && "w-100 d-flex justify-content-center"}`} >
+                                        <span className={`ms-4 ${table == "faq" && k =="media" && "w-100 d-flex justify-content-center"}`} style={{ whiteSpace: "pre-wrap" }} >
                                             {value && value.constructor === Array 
                                             ? (
                                                 <><br/>

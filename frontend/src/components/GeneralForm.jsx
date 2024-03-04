@@ -147,7 +147,7 @@ function GeneralForm({setData, data, table, child}){
       </Modal>
       {
         order_dict(list_options, options_dict=true).filter(([key, val])=>key!="id").map(([key, val])=>{
-          if (key.toLowerCase().includes("desc")){
+          if (key.toLowerCase().includes("desc") || (val.type == "string" && val.max_length > 200)){
             return (<FormControl key={key}>
               <Form.Label htmlFor={key}>{val.label}</Form.Label>
               <textarea id={key} 
