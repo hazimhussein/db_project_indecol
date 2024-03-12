@@ -20,7 +20,7 @@ if (import.meta.env.MODE === 'production') {
   console.group = () => {}
 }
 
-const store = configureStore({
+export const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {

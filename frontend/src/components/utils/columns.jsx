@@ -5,9 +5,10 @@ import { FaPen, FaRegTrashAlt, FaCheck, FaTimes } from 'react-icons/fa';
   
 
 function col_func(data, list_options, table, current_user, hiddenColumns, resize, handleEditable, handleRemove){
-    let columns = data.nodes.length > 1 ? Object.keys(data.nodes[1]).filter((lab)=>
-    lab.toLowerCase().includes("id")
-    && !lab.toLowerCase().includes("name")
+    let columns = data.nodes.length > 1 ? 
+    Object.keys(data.nodes[1]).filter((lab)=>
+    lab.toLowerCase().startsWith("id")
+    || lab.toLowerCase().endsWith("id")
     )
     .map((lab)=> {
         return {
@@ -56,7 +57,8 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
       )
       .concat(
         Object.keys(data.nodes[1]).filter((lab)=>
-        !lab.toLowerCase().includes("id")
+        !lab.toLowerCase().startsWith("id")
+        && !lab.toLowerCase().endsWith("id")
         && !lab.toLowerCase().includes("name")
         && !lab.toLowerCase().includes("desc")
         && lab.toLowerCase() != "users"
@@ -99,6 +101,8 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
                   val = items.join(", ")
                   } else if (field.type == "boolean"){
                     val = (val ? <FaCheck/> : <FaTimes/>)
+                  } else if (field.type == "file upload"){
+                    val = val.split('/').pop()
                   } else if ((lab.toLowerCase().includes("location") || lab.toLowerCase().includes("url")) && val.includes("http")){
                     val = (<a href={item[lab]} target="_blank" rel="noopener noreferrer">{item[lab]}</a>)
                   }

@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState, useEffect } from 'react';
+import ReactLoading from "react-loading";
+import { img_ext, vid_ext } from '../../config';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -17,27 +19,39 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export default function InputFileUpload({field, options, setOptions}) {
+    const [isLoading, setIsLoading] = useState(false)
     const [file, setFile] = useState()
     
     const update_file = (fil) => {
         setOptions({...options, [field]: fil})
-        var fr = new FileReader();
-        fr.onload = function () {
-            setFile(fr.result)
+        if ((fil.type.includes("image") || fil.type.includes("video")) && fil.size < 20000000){
+          setIsLoading(true)
+          var fr = new FileReader();
+          fr.onload = function () {
+              setFile(fr.result)
+              setIsLoading(false)
+          }
+          fr.readAsDataURL(fil);
+        } else {
+          setFile(fil.name)
         }
-        fr.readAsDataURL(fil);
+        
     }
 
     useEffect(()=>{
         options && options[field] && options[field].constructor == File ? update_file(options[field])
-        : typeof options[field] == "string" && options[field].includes("http") && fetch(options[field]).then(res=>res.blob()).then(blob=> {
+        : typeof options[field] == "string" && options[field].includes("http") 
+        && ((img_ext.includes(options[field].slice(-6).split(".").at(-1)) || vid_ext.includes(options[field].slice(-6).split(".").at(-1)))
+        ? fetch(options[field]).then(res=>res.blob()).then(blob=> {
           const new_file = new File([blob], options[field].split('/').pop(), {type: blob.type})
           update_file(new_file)
         })
+        : setFile(options[field]))
       }, [])
 
   return (
-    <>
+    isLoading ? <ReactLoading type="bars" color="#0f0" />
+      :<>
     <Button
       component="label"
       className='my-3'
