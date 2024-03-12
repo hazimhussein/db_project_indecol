@@ -237,14 +237,14 @@ class Resource(models.Model):
         )
 
     description = models.TextField(
-        null = False,
-        blank= False,
+        null = True,
+        blank= True,
         max_length=2000
     )
 
     location= models.CharField(
-        null = False,
-        blank=False,
+        null = True,
+        blank=True,
         max_length=200
         )
 
