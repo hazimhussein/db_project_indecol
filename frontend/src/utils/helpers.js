@@ -55,13 +55,13 @@ export function capitalizeFirstLetter(string) {
 
 export function order_dict(dict, options_dict=false){
   let data = Object.entries(dict)
-  let ordered_data = data && data.filter(([key, val])=>key.toLowerCase().includes("id") && !key.toLowerCase().includes("name"))
+  let ordered_data = data && data.filter(([key, val])=>key.toLowerCase().startsWith("id") || key.toLowerCase().endsWith("id"))
   .concat(data.filter(([key, val])=>key.toLowerCase().includes("name")))
   .concat(data.filter(([key, val])=>key.toLowerCase().includes("desc")))
   .concat(data.filter(([key, val])=>key.toLowerCase().includes("question")))
   .concat(data.filter(([key, val])=>key.toLowerCase().includes("answer")))
-  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().includes("id") && !key.toLowerCase().includes("desc") && !key.toLowerCase().includes("question") && !key.toLowerCase().includes("answer") && (options_dict ? !val.type.includes("many") : typeof val != "object")))
-  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().includes("id") && !key.toLowerCase().includes("desc") && !key.toLowerCase().includes("question") && !key.toLowerCase().includes("answer") && (options_dict ? val.type.includes("many") : typeof val == "object")))
+  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().startsWith("id") && !key.toLowerCase().endsWith("id") && !key.toLowerCase().includes("desc") && !key.toLowerCase().includes("question") && !key.toLowerCase().includes("answer") && (options_dict ? !val.type.includes("many") : typeof val != "object")))
+  .concat(data.filter(([key, val])=>!key.toLowerCase().includes("name") && !key.toLowerCase().startsWith("id") && !key.toLowerCase().endsWith("id") && !key.toLowerCase().includes("desc") && !key.toLowerCase().includes("question") && !key.toLowerCase().includes("answer") && (options_dict ? val.type.includes("many") : typeof val == "object")))
 
   return ordered_data
 }

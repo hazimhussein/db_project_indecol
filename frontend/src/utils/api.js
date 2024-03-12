@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { store } from '../main';
 
 // let fetchingURL = 'http://10.50.41.100:8000/api/'
 let fetchingURL = '/api/'
@@ -8,6 +9,8 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = "multipart/form-data";
 axios.defaults.headers.patch['Content-Type'] = "multipart/form-data";
+axios.defaults.onUploadProgress = progressFunc
+axios.defaults.onDownloadProgress = progressFunc
 
 const client = axios.create({
   baseURL:fetchingURL
@@ -29,6 +32,16 @@ function jsonToForm(json){
     })
     return form_data
 }
+
+function progressFunc (progressEvent) {
+  const progress = (progressEvent.progress * 100).toFixed(0)
+  store.dispatch(getProgress(progress))
+}
+
+export const getProgress = createAsyncThunk(`data/getProgress`, async (progress) =>{
+       
+    return progress ? progress : 100
+  })
 
 export const getTableData = createAsyncThunk(`data/getData`, async (table) =>{
     const response = await client.get(`${table}/`);

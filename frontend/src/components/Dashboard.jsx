@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "./Card";
 import TableView from "./TableView";
-import { dataData, authedUser } from "../reducers/data";
+import { dataData, authedUser, statusData } from "../reducers/data";
 import { useParams } from "react-router-dom";
 import NavTop from "./Nav";
 import LoadingBar from "react-redux-loading-bar";
@@ -12,12 +12,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import {tables_order, admin_tables, main_developers} from "../config"
 import About from "./About";
 import Help from "./Help";
+import Progress from "./Progress";
 
 function Dashboard() {
   let { category } = useParams();
   category = category ? category : "category";
 
   const data = useSelector(dataData);
+  const status = useSelector(statusData);
   const team = data["team"] ? data["team"] : []
 
   let data_current = data[category] ? data[category] : [];
@@ -30,6 +32,7 @@ function Dashboard() {
 
   return (
     <>
+      {status == "loading" && <Progress />}
       <LoadingBar />
       <NavTop />
       <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>

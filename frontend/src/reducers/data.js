@@ -1,5 +1,5 @@
 import { createSlice} from "@reduxjs/toolkit"
-import { getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI, getTableOptions } from "../utils/api"
+import { getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI, getTableOptions, getProgress } from "../utils/api"
 
 /////////////////////////
 
@@ -7,6 +7,7 @@ const initialState = {
   value:{},
   user:null,
   status: false,
+  progress: 100,
   error:null,
   options: {}
 }
@@ -21,14 +22,34 @@ const dataSlice = createSlice({
         .addCase(getTableData.pending, (state, action) => {
             state.status = 'loading'
         })
+        .addCase(getTableOptions.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(addTableRow.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(removeTableRow.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(updateTableRow.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(loginAPI.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(logoutAPI.pending, (state, action) => {
+            state.status = 'loading'
+        })
         .addCase(getTableData.fulfilled, (state, action) => {
             state.status = 'succeeded'
+            state.progress = 100
 
             // Add any fetched posts to the array
             state.value[action.payload.category] = action.payload.data
         })
         .addCase(getTableOptions.fulfilled, (state, action) => {
             state.status = 'succeeded'
+            state.progress = 100
 
             // Add any fetched posts to the array
             console.log(action.payload.data)
@@ -36,16 +57,19 @@ const dataSlice = createSlice({
         })
         .addCase(getTableData.rejected, (state, action) => {
             state.status = 'failed'
+            state.progress = 100
             state.error = action.error.message
         })
         .addCase(addTableRow.fulfilled, (state, action) => {
           state.status = 'succeeded'
+          state.progress = 100
 
           // Add any fetched posts to the array
           state.value[action.payload.category].push(action.payload.data)
       })
         .addCase(addTableRow.rejected, (state, action) => {
           state.status = 'failed'
+          state.progress = 100
           if (action.payload) {
             state.error = action.payload.errorMessage
           } else {
@@ -54,18 +78,21 @@ const dataSlice = createSlice({
       })
         .addCase(removeTableRow.fulfilled, (state, action) => {
           state.status = 'succeeded'
+          state.progress = 100
 
           // Add any fetched posts to the array
           state.value[action.payload.category] = state.value[action.payload.category].filter(row=> row.id!=action.payload.rowId)
       })
         .addCase(updateTableRow.fulfilled, (state, action) => {
           state.status = 'succeeded'
+          state.progress = 100
 
           // Add any fetched posts to the array
           state.value[action.payload.category] = action.payload.data
       })
         .addCase(updateTableRow.rejected, (state, action) => {
           state.status = 'failed'
+          state.progress = 100
           if (action.payload) {
             state.error = action.payload.errorMessage
           } else {
@@ -74,18 +101,30 @@ const dataSlice = createSlice({
       })
         .addCase(loginAPI.fulfilled, (state, action) => {
           state.status = 'succeeded'
+          state.progress = 100
 
           state.user = action.payload
       })
+        .addCase(loginAPI.rejected, (state, action) => {
+          state.status = 'failed'
+          state.progress = 100
+
+          state.user = null
+      })
         .addCase(logoutAPI.fulfilled, (state, action) => {
           state.status = 'succeeded'
+          state.progress = 100
           state.user = null
+      })
+        .addCase(getProgress.fulfilled, (state, action) => {
+          state.progress = action.payload
       })
 }
 })
 export const dataData = (state) => state.data.value
 export const dataOptions = (state) => state.data.options
 export const statusData = (state) => state.data.status
+export const progressData = (state) => state.data.progress
 export const errorData = (state) => state.data.error
 export const authedUser = (state) => state.data.user
 export default dataSlice.reducer

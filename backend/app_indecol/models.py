@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericRelation
-
+from datetime import datetime
 
 # Create your models here.
 
@@ -221,6 +221,11 @@ class Partner(models.Model):
     def __str__(self):
         return self.name
 
+def resource_path(instance, filename):
+    now = datetime.now()
+
+    current_time = now.strftime("%Y.%m.%d_%H.%M.%S")
+    return 'files/{0}/{1}/{2}'.format(instance.full_name, current_time, filename)
 class Resource(models.Model):
 
 
@@ -244,6 +249,10 @@ class Resource(models.Model):
         )
 
     type= models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="resource_type_field")
+
+    confidential = models.BooleanField(default=False)
+
+    file = models.FileField(null=True, upload_to=resource_path)
     
     users = models.ManyToManyField(User)
 
