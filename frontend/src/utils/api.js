@@ -34,7 +34,7 @@ function jsonToForm(json){
 }
 
 function progressFunc (progressEvent) {
-  const progress = (progressEvent.progress * 100).toFixed(0)
+  const progress = progressEvent.progress < 0.98 ? (progressEvent.progress * 100).toFixed(0) : 98
   store.dispatch(getProgress(progress))
 }
 
