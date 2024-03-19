@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useState, useEffect } from 'react';
 import ReactLoading from "react-loading";
 import { img_ext, vid_ext } from '../../config';
@@ -24,7 +25,7 @@ export default function InputFileUpload({field, options, setOptions}) {
     
     const update_file = (fil) => {
         setOptions({...options, [field]: fil})
-        if ((fil.type.includes("image") || fil.type.includes("video")) && fil.size < 20000000){
+        if (fil != "" && (fil.type.includes("image") || fil.type.includes("video")) && fil.size < 20000000){
           setIsLoading(true)
           var fr = new FileReader();
           fr.onload = function () {
@@ -32,8 +33,10 @@ export default function InputFileUpload({field, options, setOptions}) {
               setIsLoading(false)
           }
           fr.readAsDataURL(fil);
-        } else {
+        } else if (fil != "") {
           setFile(fil.name)
+        } else {
+          setFile(fil)
         }
         
     }
@@ -52,6 +55,22 @@ export default function InputFileUpload({field, options, setOptions}) {
   return (
     isLoading ? <ReactLoading type="bars" color="#0f0" />
       :<>
+      <div>
+      {file && 
+      <Button
+      component="label"
+      className='my-3 me-2'
+      variant="contained"
+      color="error"
+      onClick={(e)=>{
+        e.stopPropagation()
+        e.preventDefault()
+        update_file("")}
+      }
+      startIcon={<DeleteForeverIcon />}
+    >
+      Delete file
+    </Button>}
     <Button
       component="label"
       className='my-3'
@@ -63,6 +82,7 @@ export default function InputFileUpload({field, options, setOptions}) {
       Upload file
       <VisuallyHiddenInput type="file" onChange={(e)=>update_file(e.target.files[0])}/>
     </Button>
+    </div>
     {file && (file.includes("image")
                                             ? <img src={file}/> 
                                             : file.includes("video")
