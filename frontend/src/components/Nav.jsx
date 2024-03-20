@@ -8,7 +8,8 @@ import {Form,
 Col,
 Navbar,
 Container} from 'react-bootstrap';
-import {Button} from '@mui/material';
+import {Button, TextField} from '@mui/material';
+import PasswordInput from './elements/PasswordInput';
 
 function NavTop(){
     let dispatch = useDispatch()
@@ -17,10 +18,13 @@ function NavTop(){
     let [showLogin, setShowLogin] = useState(false)
     let [loginState, setLoginState] = useState(true)
 
+    let [username, setUserName] = useState()
+    let [password, setPassword] = useState()
+
     const login=()=>{
-        let user = document.getElementById("username").value
-        let pass = document.getElementById("password").value
-        dispatch(loginAPI({"username":user, "password": pass}))
+        // let user = document.getElementById("username").value
+        // let pass = document.getElementById("password").value
+        dispatch(loginAPI({"username":username, "password": password}))
         .then(res=>
             {if (res.error){
                 setLoginState(false)
@@ -70,22 +74,24 @@ function NavTop(){
         <form id="loginForm" onSubmit={(e)=>login(e)}>
             <Row className='d-flex align-items-center h-100 me-2'>
             <Col xs="auto">
-            <Form.Control
-                id="username"
-                placeholder="Username"
-                aria-label="Username"
-                aria-describedby="basic-addon1"
-                onKeyDown={(e) => (e.key === "Enter") && login()}
-            />
+            <TextField
+            size="small"
+            label="Username"
+            onChange={(e)=>setUserName(e.target.value)}
+            required={true}
+            onKeyDown={(e) => (e.key === "Enter") && login()}
+            fullWidth
+          />
             </Col>
             <Col xs="auto">
-                <Form.Control
-                id="password"
-                type="password"
-                placeholder="password"
-                className=" mr-sm-2"
-                onKeyDown={(e) => (e.key === "Enter") && login()}
-                />
+            <PasswordInput
+            size="small"
+              className='my-2 my-md-0'
+              label="Password"
+              handlePassword={(e)=>setPassword(e.target.value)}
+              handleKeyDown={(e) => (e.key === "Enter") && login()}
+              required={true}
+              />
             </Col>
             <Col xs="auto">
             <Button type='button' variant="contained" className='m-auto me-0' onClick={()=>login()}>

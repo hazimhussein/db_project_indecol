@@ -6,17 +6,20 @@ from datetime import datetime
 # Create your models here.
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True, null=True)
+
     def save(self, **kwargs):
         super().save(**kwargs)
 
         person_dict ={}
         for key, value in self.__dict__.items():
-            if key in [f.name for f in Person._meta.get_fields()] and key != "id":
+            if key in [f.name for f in Person._meta.get_fields()] and key != "id" and value != "":
                 person_dict[key] = value
         # person_dict["users"] = [self]
-        person = Person(**person_dict)
-        person.save()
-        person.users.set([self.id])
+        if person_dict != {}:
+            person = Person(**person_dict)
+            person.save()
+            person.users.set([self.id])
         
 
     def __str__(self):
@@ -170,8 +173,8 @@ class Person(models.Model):
         blank = True
     )
 
-    roles = models.ManyToManyField(FieldOption, null=True, blank=True)
-    groups = models.ManyToManyField("Group", through="Group_persons", null=True, blank=True )
+    roles = models.ManyToManyField(FieldOption, blank=True)
+    groups = models.ManyToManyField("Group", through="Group_persons", blank=True )
     
     users = models.ManyToManyField(User)
     
@@ -305,14 +308,14 @@ class Project(models.Model):
         blank = True
     )
 
-    keywords = models.ManyToManyField(FieldOption, related_name="project_keywords_field", null=True, blank=True)
-    methods = models.ManyToManyField(FieldOption, related_name="project_methods_field", null=True, blank=True)
+    keywords = models.ManyToManyField(FieldOption, related_name="project_keywords_field", blank=True)
+    methods = models.ManyToManyField(FieldOption, related_name="project_methods_field", blank=True)
 
     type = models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="project_type_field")
     
-    persons = models.ManyToManyField(Person, null=True, blank=True)
+    persons = models.ManyToManyField(Person, blank=True)
 
-    groups = models.ManyToManyField(Group, null=True, blank=True)
+    groups = models.ManyToManyField(Group, blank=True)
     partners = models.ManyToManyField(
         Partner,
         blank=True

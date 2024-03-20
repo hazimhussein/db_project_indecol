@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import SelectSearch from "./elements/selectSearch";
 import { capitalizeFirstLetter, order_dict } from "../utils/helpers";
 import InputFileUpload from "./elements/FileUpload";
+import PasswordInput from "./elements/PasswordInput";
 
 import {DatePicker} from "@mui/x-date-pickers"
 
@@ -147,7 +148,18 @@ function GeneralForm({setData, data, table, child}){
       </Modal>
       {
         order_dict(list_options, options_dict=true).filter(([key, val])=>key!="id").map(([key, val])=>{
-          if (key.toLowerCase().includes("desc") || (val.type == "string" && val.max_length > 200)){
+          if (val.type == "password"){
+            return (<FormControl key={key}>
+              <PasswordInput
+              className='my-2'
+              label={val.label}
+              handlePassword={(e)=>setOptions({...options, [key]: e.target.value})}
+              required={val.required}
+              error = {invalid[key] && true}
+              />
+          {invalid[key] && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid[key]}</p>}
+            </FormControl>)
+          } else if (key.toLowerCase().includes("desc") || (val.type == "string" && val.max_length > 200)){
             return (<FormControl key={key}>
               <Form.Label htmlFor={key}>{val.label}</Form.Label>
               <textarea id={key} 
@@ -158,7 +170,7 @@ function GeneralForm({setData, data, table, child}){
               onChange={(e)=>setOptions({...options, [key]: e.target.value})}/>
               {invalid[key] && <p className={`text-danger small m-0 mb-2`} style={{textAlign:"left"}}>{invalid[key]}</p>}
             </FormControl>)
-          } else if (val.type == "string" || val.type == "integer"){
+          } else if (val.type == "string" || val.type == "integer" || val.type == "email"){
             return (<FormControl key={key}>
               <TextField
             label={val.label}
