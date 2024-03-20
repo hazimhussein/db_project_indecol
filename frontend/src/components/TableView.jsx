@@ -288,7 +288,7 @@ function TableView({table}){
       <Button variant="contained" className='m-auto ms-0 me-1' style={{minWidth:"80px"}} onClick={() => setModalOpened(true)}>
           Columns
         </Button>
-        {current_user && table != "user" && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-1":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
+        {current_user && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-1":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
         <SearchGlob modifiedNodes={[search_row].concat(list)} setModifiedNodes={setModifiedNodes} />

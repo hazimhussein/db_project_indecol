@@ -6,6 +6,19 @@ from datetime import datetime
 # Create your models here.
 
 class User(AbstractUser):
+    def save(self, **kwargs):
+        super().save(**kwargs)
+
+        person_dict ={}
+        for key, value in self.__dict__.items():
+            if key in [f.name for f in Person._meta.get_fields()] and key != "id":
+                person_dict[key] = value
+        # person_dict["users"] = [self]
+        person = Person(**person_dict)
+        person.save()
+        person.users.set([self.id])
+        
+
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
@@ -36,8 +49,8 @@ class Category(models.Model):
     )
 
     description = models.TextField(
-        null = False,
-        blank= False,
+        null = True,
+        blank= True,
         max_length=2000
     )
 
@@ -55,7 +68,7 @@ class FieldOption(models.Model):
     )
     value = models.CharField(
         unique=False,
-        null=False,
+        null=True,
         blank=True,
         max_length=60
     )
@@ -102,7 +115,7 @@ class Team(models.Model):
 
     role = models.CharField(
         unique=False,
-        null=False,
+        null=True,
         blank=True,
         max_length=100
     )
@@ -148,8 +161,8 @@ class Person(models.Model):
     )
 
     start_date= models.DateField(
-        null = False,
-        blank=False
+        null = True,
+        blank=True
     )
 
     end_date= models.DateField(
@@ -157,7 +170,7 @@ class Person(models.Model):
         blank = True
     )
 
-    roles = models.ManyToManyField(FieldOption)
+    roles = models.ManyToManyField(FieldOption, null=True, blank=True)
     groups = models.ManyToManyField("Group", through="Group_persons", null=True, blank=True )
     
     users = models.ManyToManyField(User)
@@ -175,8 +188,8 @@ class Group(models.Model):
     )
 
     start_date= models.DateField(
-        null = False,
-        blank=False
+        null = True,
+        blank=True
     )
 
     end_date= models.DateField(
@@ -277,14 +290,14 @@ class Project(models.Model):
     )
 
     description = models.TextField(
-        null = False,
-        blank= False,
+        null = True,
+        blank= True,
         max_length=2000
     )
 
     start_date= models.DateField(
-        null = False,
-        blank=False
+        null = True,
+        blank=True
     )
 
     end_date= models.DateField(
@@ -292,14 +305,14 @@ class Project(models.Model):
         blank = True
     )
 
-    keywords = models.ManyToManyField(FieldOption, related_name="project_keywords_field")
-    methods = models.ManyToManyField(FieldOption, related_name="project_methods_field")
+    keywords = models.ManyToManyField(FieldOption, related_name="project_keywords_field", null=True, blank=True)
+    methods = models.ManyToManyField(FieldOption, related_name="project_methods_field", null=True, blank=True)
 
     type = models.ForeignKey(FieldOption, on_delete=models.SET_NULL, null=True, related_name="project_type_field")
     
-    persons = models.ManyToManyField(Person)
+    persons = models.ManyToManyField(Person, null=True, blank=True)
 
-    groups = models.ManyToManyField(Group)
+    groups = models.ManyToManyField(Group, null=True, blank=True)
     partners = models.ManyToManyField(
         Partner,
         blank=True
