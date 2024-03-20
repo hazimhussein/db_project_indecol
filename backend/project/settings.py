@@ -138,7 +138,7 @@ STATIC_ROOT = './static'
 MEDIA_URL = 'https://indecx.indecol.no/'
 
 # Path where media is to be stored
-MEDIA_ROOT = BASE_DIR.parent / "data/db_backup_mountp"
+MEDIA_ROOT = BASE_DIR.parent / "data/db"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

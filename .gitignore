@@ -3,7 +3,4 @@
 *.pyc
 __pycache__
 /venv
-data/db_backup_mountp/
-data/db/*
-data/media/*
-data/files/*
+data/*
