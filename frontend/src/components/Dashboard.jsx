@@ -33,7 +33,7 @@ function Dashboard() {
 
   return (
     <>
-      {status == "loading" && <Progress />}
+      {(status == "loading" || !loaded) && <Progress />}
       <LoadingBar />
       <NavTop />
       <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>
