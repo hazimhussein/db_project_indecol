@@ -2,7 +2,7 @@ import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { store } from '../main';
 
-// let fetchingURL = 'http://10.50.41.100:8000/api/'
+// let fetchingURL = 'http://10.66.60.218:8000/api/'
 let fetchingURL = '/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -41,6 +41,11 @@ function progressFunc (progressEvent) {
 export const getProgress = createAsyncThunk(`data/getProgress`, async (progress) =>{
        
     return progress ? progress : 100
+  })
+
+export const finishLoading = createAsyncThunk(`data/loaded`, async () =>{
+       
+    return true
   })
 
 export const getTableData = createAsyncThunk(`data/getData`, async (table) =>{

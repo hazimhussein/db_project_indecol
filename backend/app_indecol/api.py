@@ -24,6 +24,8 @@ class MyMetaData(SimpleMetadata):
         elif isinstance(field, (RelatedField, ManyRelatedField)):
             field_info['type'] = "foreign_key_many"
             field_info['name'] = field.child_relation.queryset.model.__name__.lower()
+        if field_info["label"] and "password" in field_info["label"].lower():
+            field_info["type"] = "password"
         return field_info
 
 class FaqViewSet(viewsets.ModelViewSet):

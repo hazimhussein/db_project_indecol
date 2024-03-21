@@ -40,7 +40,7 @@ function Help() {
     >
 
     <Typography className='mb-3' variant='h2'>FAQs</Typography>
-    {faqs.filter((f)=>!f["manual"] && ((current_user && current_user.is_superuser) ? true : f["admin"])).map((f)=> 
+    {faqs.filter((f)=>!f["manual"] && ((current_user && current_user.is_superuser) ? true : !f["admin"])).map((f)=> 
       <div key={f["id"]} className='position-relative w-100'>
       {current_user && current_user.is_superuser && f["admin"] && <Typography className='d-block w-100 position-absolute text-end pe-3 mt-2 text-danger' variant='small'>admin</Typography>}
       <Details className={current_user && current_user.is_superuser && f["admin"] && "admin"} data={f} child={true} table={"faq"}/>

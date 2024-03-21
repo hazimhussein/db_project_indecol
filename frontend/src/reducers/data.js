@@ -1,5 +1,5 @@
 import { createSlice} from "@reduxjs/toolkit"
-import { getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI, getTableOptions, getProgress } from "../utils/api"
+import { finishLoading, getTableData, addTableRow, removeTableRow, updateTableRow, loginAPI, logoutAPI, getTableOptions, getProgress } from "../utils/api"
 
 /////////////////////////
 
@@ -8,6 +8,7 @@ const initialState = {
   user:null,
   status: false,
   progress: 100,
+  loaded: false,
   error:null,
   options: {}
 }
@@ -119,6 +120,9 @@ const dataSlice = createSlice({
         .addCase(getProgress.fulfilled, (state, action) => {
           state.progress = action.payload
       })
+        .addCase(finishLoading.fulfilled, (state, action) => {
+          state.loaded = action.payload
+      })
 }
 })
 export const dataData = (state) => state.data.value
@@ -127,6 +131,7 @@ export const statusData = (state) => state.data.status
 export const progressData = (state) => state.data.progress
 export const errorData = (state) => state.data.error
 export const authedUser = (state) => state.data.user
+export const dataLoaded = (state) => state.data.loaded
 export default dataSlice.reducer
 
 /////////////////

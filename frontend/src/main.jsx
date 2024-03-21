@@ -4,7 +4,7 @@ import App from './components/App'
 import './index.css'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import { getTableData, logoutAPI, getTableOptions } from './utils/api'
+import { finishLoading, getTableData, logoutAPI, getTableOptions } from './utils/api'
 import dataReduce from './reducers/data'
 import logger from 'redux-logger'
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -33,7 +33,9 @@ store.dispatch(getTableData("category")).then((res)=>{
   store.dispatch(getTableOptions("category"))
   res.payload.data.map((cat)=> {
     store.dispatch(getTableData(cat.name.toLowerCase()))
-    store.dispatch(getTableOptions(cat.name.toLowerCase()))
+    store.dispatch(getTableOptions(cat.name.toLowerCase())).then(()=>
+    cat.name == res.payload.data[res.payload.data.length - 1].name && store.dispatch(finishLoading())
+    )
   })
 })
 store.dispatch(logoutAPI())
