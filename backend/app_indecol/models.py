@@ -8,6 +8,27 @@ from datetime import datetime
 class User(AbstractUser):
     email = models.EmailField(unique=True, null=True)
 
+    middle_name = models.CharField(
+        unique=False,
+        null=True,
+        blank=True,
+        max_length=50
+    )
+
+    start_date= models.DateField(
+        null = True,
+        blank=True
+    )
+
+    end_date= models.DateField(
+        null=True,
+        blank = True
+    )
+
+    roles = models.ManyToManyField("FieldOption", blank=True)
+    groups = models.ManyToManyField("Group", through="Group_users", blank=True )
+    
+
     def save(self, **kwargs):
         super().save(**kwargs)
 
@@ -15,11 +36,13 @@ class User(AbstractUser):
         for key, value in self.__dict__.items():
             if key in [f.name for f in Person._meta.get_fields()] and key != "id" and value != "":
                 person_dict[key] = value
-        # person_dict["users"] = [self]
+
         if person_dict != {}:
-            person = Person(**person_dict)
-            person.save()
-            person.users.set([self.id])
+            found_person = list(Person.objects.filter(**person_dict))
+            if len(found_person) == 0:
+                person = Person(**person_dict)
+                person.save()
+                person.users.set([self.id])
         
 
     def __str__(self):
@@ -162,6 +185,8 @@ class Person(models.Model):
         blank=False,
         max_length=50
     )
+
+    email = models.EmailField(null=True)
 
     start_date= models.DateField(
         null = True,

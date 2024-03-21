@@ -33,11 +33,21 @@ class UserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = User
-        fields = ('id', 'username', "password", "first_name", "last_name", "email", "is_superuser")
+        fields = ('id', 'username', "password", "first_name", "middle_name", "last_name", "email", "start_date", "end_date", "roles", "groups", "is_superuser")
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data.get('password'))
         return super(UserSerializer, self).create(validated_data)
+    
+    def update(self, instance, validated_data):
+        validated_data['password'] = make_password(validated_data.get('password'))
+        return super(UserSerializer, self).update(instance, validated_data)
+    
+    def to_representation(self, instance):
+        self.fields['roles'] =  FieldOptionSerializer(many=True, read_only=True)
+        self.fields['groups'] =  GpSerializer(many=True, read_only=True)
+        return super(UserSerializer, self).to_representation(instance)
+
 
 class FaqSerializer(serializers.ModelSerializer):
     class Meta:
@@ -138,7 +148,6 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField()
     def check_user(self, clean_data):
         user = authenticate(username=clean_data['username'], password=clean_data['password'])
-        
         if not user:
             raise LookupError('user not found')
         return user

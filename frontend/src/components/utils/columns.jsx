@@ -116,7 +116,7 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
       )
       : []
   
-    if (data.nodes.length != 0 && table != "user"){
+    if (data.nodes.length != 0){
       columns.push({
         label: '',
         renderCell: (item) => {

@@ -26,7 +26,7 @@ import { jsPDF } from "jspdf";
 import { dataData, authedUser, dataOptions } from '../reducers/data';
 import { useSelector, useDispatch } from 'react-redux';
 import GeneralForm from "./GeneralForm"
-import { removeTableRow, getTableData } from "../utils/api";
+import { removeTableRow, getTableData, getTableOptions } from "../utils/api";
 import SearchGlob from './elements/search';
 import { col_func, search_row_builder, modify_nodes } from './utils';
 
@@ -34,6 +34,8 @@ const key = 'Table';
 
 function TableView({table}){
   let dispatch = useDispatch();
+  
+  
   const current_user = useSelector(authedUser)
   const list_selector = useSelector(dataData)
   const list_options = useSelector(dataOptions)
@@ -68,6 +70,8 @@ function TableView({table}){
   }
 
   useEffect(()=>{
+    dispatch(getTableData(table))
+    .then((res)=>{customSetData(res.payload.data)})
     let shown_cols = COLUMNS.filter(col => !hiddenColumns.includes(col.label) && col.label!="Id" && col.label!="")
     if (window.innerWidth <= 768 && shown_cols.length >= 3){
       shown_cols = shown_cols.filter(col=>!shown_cols.slice(0,3).map(c=>c.label).includes(col.label)).map(col=>col.label)
@@ -76,8 +80,6 @@ function TableView({table}){
       shown_cols = shown_cols.filter(col=>!shown_cols.slice(0,6).map(c=>c.label).includes(col.label)).map(col=>col.label)
         setHiddenColumns(shown_cols)
     }
-    dispatch(getTableData(table))
-    .then((res)=>{customSetData(res.payload.data)})
   }, [dispatch, table])
 
    //* Resize *//
@@ -208,6 +210,7 @@ function TableView({table}){
 
   //* Columns *//
   let COLUMNS = col_func(data, list_options, table, current_user, hiddenColumns, resize, handleEditable, handleRemove)
+  
  
    //* Custom Modifiers *//
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
@@ -323,7 +326,7 @@ function TableView({table}){
           count={modifiedNodes.length-1}
           page={pagination.state.page}
           rowsPerPage={pagination.state.size}
-          rowsPerPageOptions={[ 2, 5, 10, 20]}
+          rowsPerPageOptions={[ 5, 10, 20, 50]}
           onRowsPerPageChange={(event) =>
             pagination.fns.onSetSize(parseInt(event.target.value, 10))
           }

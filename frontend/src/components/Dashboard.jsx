@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "./Card";
 import TableView from "./TableView";
-import { dataData, authedUser, statusData } from "../reducers/data";
+import { dataData, authedUser, statusData, dataLoaded } from "../reducers/data";
 import { useParams } from "react-router-dom";
 import NavTop from "./Nav";
 import LoadingBar from "react-redux-loading-bar";
@@ -20,11 +20,12 @@ function Dashboard() {
 
   const data = useSelector(dataData);
   const status = useSelector(statusData);
+  const loaded = useSelector(dataLoaded);
   const team = data["team"] ? data["team"] : []
 
   let data_current = data[category] ? data[category] : [];
   const current_user = useSelector(authedUser);
-
+  
   //* Modal *//
   const [modalOpened, setModalOpened] = useState(false);
 
@@ -116,7 +117,7 @@ function Dashboard() {
               )}
           </div>
         ) : (
-          <TableView key={category} table={category} />
+          loaded && <TableView key={category} table={category} />
         )}
       </div>
       <Fab

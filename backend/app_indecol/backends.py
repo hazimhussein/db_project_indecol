@@ -1,24 +1,25 @@
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
+from .models import User
+from django.contrib.auth.backends import BaseBackend
 
-class EmailOrUsernameModelBackend(ModelBackend):
+class EmailOrUsernameModelBackend(BaseBackend):
     """
     This is a ModelBacked that allows authentication
     with either a username or an email address.
     
     """
-    def authenticate(self, username=None, password=None):
-        UserModel = get_user_model()
-        print(f"username: {username}")
+    def authenticate(self, request, username=None, password=None):
         if '@' in username:
             kwargs = {'email': username}
         else:
             kwargs = {'username': username}
         try:
-            user = UserModel.objects.get(**kwargs)
+            user = User.objects.get(**kwargs)
+            print(user.password)
+            print(password)
             if user.check_password(password):
                 return user
-        except UserModel.DoesNotExist:
+        except User.DoesNotExist:
             return None
+        return None
     
