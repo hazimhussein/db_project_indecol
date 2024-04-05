@@ -13,12 +13,12 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
 // replace console.* for disable log on production
-if (import.meta.env.MODE === 'production') {
-  console.log = () => {}
-  console.error = () => {}
-  console.debug = () => {}
-  console.group = () => {}
-}
+// if (import.meta.env.MODE === 'production') {
+//   console.log = () => {}
+//   console.error = () => {}
+//   console.debug = () => {}
+//   console.group = () => {}
+// }
 
 export const store = configureStore({
   reducer:{data:dataReduce, loadingBar: loadingBarReducer},
@@ -38,7 +38,7 @@ store.dispatch(getTableData("category")).then((res)=>{
     )
   })
 })
-store.dispatch(logoutAPI())
+// store.dispatch(logoutAPI())
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
