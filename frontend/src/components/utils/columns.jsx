@@ -14,6 +14,7 @@ function col_func(data, list_options, table, current_user, hiddenColumns, resize
         return {
           label: capitalizeFirstLetter(lab),
           renderCell: (item) => item[lab],
+          sort: { sortKey: lab.toUpperCase() },
           hide: lab == "id" ? true : false,
         }
       })

@@ -28,7 +28,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import GeneralForm from "./GeneralForm"
 import { removeTableRow, getTableData, getTableOptions } from "../utils/api";
 import SearchGlob from './elements/search';
-import { col_func, search_row_builder, modify_nodes } from './utils';
+import { col_func, search_row_builder, modify_nodes, sort_cols } from './utils';
 
 const key = 'Table';
 
@@ -48,7 +48,7 @@ function TableView({table}){
     :[col,""]))
  
    const [search, setSearch] = useState(search_cols);
-   let search_row = search_row_builder(search, setSearch)
+   let search_row = search_row_builder(search, setSearch, list_options, table)
 
   
   const [data, setData] = useState({nodes:list});
@@ -65,7 +65,7 @@ function TableView({table}){
   
   function customSetData(d){
     setData({nodes:d})
-    setModifiedNodes(modify_nodes(d, search))
+    setModifiedNodes(modify_nodes(list_options, table, d, search))
   }
 
   useEffect(()=>{
@@ -123,11 +123,11 @@ function TableView({table}){
        },
      },
    );
- 
+   
    function onTreeChange(action, state) {
      console.log(action, state);
    }
- 
+   
    //* Sort *//
    const sort = useSort(
      data,
@@ -140,13 +140,8 @@ function TableView({table}){
          iconUp: <FaChevronUp />,
          iconDown: <FaChevronDown />,
        },
-       sortFns: {
-        TASK: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
-        DEADLINE: (array) => array.sort((a, b) => a.deadline - b.deadline),
-        TYPE: (array) => array.sort((a, b) => a.type.localeCompare(b.type)),
-        COMPLETE: (array) => array.sort((a, b) => a.isComplete - b.isComplete),
-        TASKS: (array) => array.sort((a, b) => (a.nodes || []).length - (b.nodes || []).length),
-      },
+       sortFns: sort_cols(list_options, table)
+      ,
      },
    );
  
@@ -214,7 +209,7 @@ function TableView({table}){
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
    // search
-   modifiedNodes = modify_nodes(modifiedNodes, search)
+   modifiedNodes = modify_nodes(list_options, table, modifiedNodes, search)
 
    ////////Print
    const printRef = useRef();
@@ -328,7 +323,7 @@ function TableView({table}){
         <tbody>
           <tr>
         <TablePagination
-          count={modifiedNodes.length-1}
+          count={modifiedNodes.length}
           page={pagination.state.page}
           rowsPerPage={pagination.state.size}
           rowsPerPageOptions={[ 5, 10, 20, 50]}

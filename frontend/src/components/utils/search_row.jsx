@@ -1,13 +1,15 @@
 
 import { capitalizeFirstLetter } from "../../utils/helpers"
 import { DatePicker } from '@mui/x-date-pickers'
-import { TextField } from "@mui/material"
+import { TextField, Switch } from "@mui/material"
   
 
-function search_row_builder(search, setSearch){
+function search_row_builder(search, setSearch, list_options, table){
   let row = {id:"search", search:true}
-  Object.entries(search).map(([key, value])=>(
-    key.includes("date")?
+  Object.entries(search).map(([key, value])=>
+    {
+      let type = list_options[table][key].type
+    type == "date" ?
     row[key] = <div key={`search${key}`} className='d-flex flex-column mb-1'>
       <h6 className='small'>Search range...</h6>
       <DatePicker 
@@ -34,11 +36,15 @@ function search_row_builder(search, setSearch){
         {value.end && value.end.format("YYYY-MM-DD")}
         </DatePicker>
     </div>
-    :row[key] = <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
+    :type == "boolean" ?
+      row[key] = <Switch onChange={(event) => setSearch((prevSearch) => ({...prevSearch, [key]: event.target.checked}))}/>
+    : (type == "string" || type == "email" || type == "foreign_key" || type == "foreign_key_many") && 
+    (row[key] = <TextField key={`search${key}`} label={<small>{[`${capitalizeFirstLetter(key)}`]}</small>}
     size='small'
           defaultValue={value}
-          onChange={(event) => setSearch((prevSearch) => ({...prevSearch, [key]: event.target.value}))}/>
-          ))
+          onChange={(event) => setSearch((prevSearch) => ({...prevSearch, [key]: event.target.value}))}/>)
+        }
+          )
     return row
 }
 
