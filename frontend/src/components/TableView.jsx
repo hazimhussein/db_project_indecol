@@ -51,7 +51,7 @@ function TableView({table}){
    let search_row = search_row_builder(search, setSearch)
 
   
-  const [data, setData] = useState({nodes:[search_row].concat(list)});
+  const [data, setData] = useState({nodes:list});
 
   useCustom('search', data, {
     state: { search },
@@ -64,9 +64,8 @@ function TableView({table}){
   }
   
   function customSetData(d){
-    let n = [search_row].concat(d)
-    setData({nodes:n})
-    setModifiedNodes(modify_nodes(n, search))
+    setData({nodes:d})
+    setModifiedNodes(modify_nodes(d, search))
   }
 
   useEffect(()=>{
@@ -210,8 +209,7 @@ function TableView({table}){
 
   //* Columns *//
   let COLUMNS = col_func(data, list_options, table, current_user, hiddenColumns, resize, handleEditable, handleRemove)
-  
- 
+   
    //* Custom Modifiers *//
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
@@ -302,6 +300,13 @@ function TableView({table}){
 
       {/* Table */}
 
+      <CompactTable
+        key="Search"
+        columns={COLUMNS.map(c => Object.fromEntries(Object.entries(c).filter(([k, v]) => k != "label")))}
+        data={{nodes: [search_row] }}
+        theme={theme}
+        layout={{ custom: true}}
+      />
       <CompactTable
        ref={printRef}
         key={key}
