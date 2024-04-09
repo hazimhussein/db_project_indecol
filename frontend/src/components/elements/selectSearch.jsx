@@ -7,9 +7,9 @@ import { FaPlusSquare } from 'react-icons/fa';
 import { admin_tables } from "../../config";
 
 
-function getStyles(name, id, theme) {
-  let check = id 
-  ? (typeof id != "object" ? id == name : id.indexOf(name) !== -1)
+function getStyles(current, selected, theme, list) {
+  let check = current 
+  ? (list ? selected.indexOf(name) !== -1 : selected == current)
   : false
     return {
       fontWeight:
@@ -31,7 +31,7 @@ function getStyles(name, id, theme) {
     },
   };
 
-function SelectSearch({table, add, field, options, setOptions, data, parameter, setModalOpened, multi, list, error, filter_id}){
+function SelectSearch({table, field, admin, options, setOptions, data, setModalOpened, error, tables}){
     const theme = useTheme();
 
     const [filter, setFilter] = useState("")
@@ -49,8 +49,8 @@ function SelectSearch({table, add, field, options, setOptions, data, parameter, 
       ? {id: entry.id, name: entry.name[Object.keys(entry.name).filter(k=>k.includes("name"))[0]]}
       : entry )
 
-    let add_option = field.val.name != "fieldoption" && field.val.name != "user" && !admin_tables.includes(field.val.name) && field.val.name != table
-
+    let add_option = (!admin_tables.includes(field.val.name) || admin) && field.val.name != table
+    
     return (
         <FormControl className="py-2 w-100">
       <Form.Group>
@@ -61,7 +61,7 @@ function SelectSearch({table, add, field, options, setOptions, data, parameter, 
           name={`${field.key}`}
           style={add_option ? {width:"85%"} : {width:"100%"}}
           multiple = {field.val.type.includes("many")}
-          value={options[field.key]}
+          value={(field.val.type == "foreign_key" && !options[field.key]) ? "" : options[field.key]}
           onChange={(e)=>setOptions({...options, [field.key]: e.target.value})}
           input={<OutlinedInput label={`${capitalizeFirstLetter(field.val.label)}s`} />}
           MenuProps={MenuProps}
@@ -93,14 +93,18 @@ function SelectSearch({table, add, field, options, setOptions, data, parameter, 
             <MenuItem
               key={val.id}
               value={val.id}
-              style={getStyles(val.id, options[field.key], theme)}
+              style={getStyles(val.id, options[field.key], theme, field.val.type.includes("many"))}
             >
               {val.name}
             </MenuItem>
           ))}
         </Select>
         {add_option && <button className="h1 btn-success d-inline-flex align-items-end position-absolute rounded m-0 mt-1 ms-4"
-        onClick={()=>setModalOpened(field.val.name)}><FaPlusSquare /></button>}
+        onClick={()=>{setModalOpened({table: field.val.name, 
+        field: {name: field.key, list: field.val.type.includes("many")},
+        data: field.val.name == "fieldoption" 
+        ? {field: field.key, table: tables.filter(t=> t.name.toLowerCase() == table)[0]}
+        : null})}}><FaPlusSquare /></button>}
         </Form.Group>
       </FormControl>
     )
