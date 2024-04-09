@@ -135,7 +135,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = './static'
 
 # Base url for media files 
-MEDIA_URL = '/'
+MEDIA_URL = 'https://indecx.indecol.no/'
 
 # Path where media is to be stored
 MEDIA_ROOT = BASE_DIR.parent / "data/db"
