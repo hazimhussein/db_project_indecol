@@ -215,17 +215,28 @@ function TableView({table}){
    const printRef = useRef();
 
   const handleDownloadPdf = async () => {
-    const element = printRef.current;
-    const canvas = await html2canvas(element);
-    const data = canvas.toDataURL("image/png");
+    let jsPdf = new jsPDF({
+      orientation: 'p',
+      unit: 'px',
+      format: 'a4',
+      hotfixes: ['px_scaling'],
+    });
+    const opt = {
+        callback: function (jsPdf) {
+            jsPdf.save("print.pdf");
+        },
+        margin: [20, 20, 20, 20],
+        autoPaging: 'text',
+        html2canvas: {
+            allowTaint: true,
+            letterRendering: true,
+            logging: false,
+            useCORS: true,
+            scale: .9
+        }
+    };
 
-    const pdf = new jsPDF();
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-
-    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("print.pdf");
+    jsPdf.html(printRef.current, opt);
   };
 
   //* Theme *//
