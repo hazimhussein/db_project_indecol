@@ -17,6 +17,7 @@ import {
   FormGroup,
   FormControlLabel,
   TablePagination,
+  TextField,
 } from '@mui/material';
 import { FaChevronRight, FaChevronDown, FaChevronUp, FaPlusSquare } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
@@ -46,6 +47,8 @@ function TableView({table}){
     col.includes("date")
     ? [col,{start:null, end:null}]
     :[col,""]))
+
+  search_cols["global_search"] = ""
  
    const [search, setSearch] = useState(search_cols);
    let search_row = search_row_builder(search, setSearch, list_options, table)
@@ -209,7 +212,7 @@ function TableView({table}){
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
    // search
-   modifiedNodes = modify_nodes(list_options, table, modifiedNodes, search)
+   modifiedNodes = modify_nodes(list_options, table, data.nodes, search)
 
    ////////Print
    const printRef = useRef();
@@ -298,7 +301,10 @@ function TableView({table}){
         {current_user && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-1":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
-        <SearchGlob modifiedNodes={[search_row].concat(list)} setModifiedNodes={setModifiedNodes} />
+        <TextField label="Search"
+            className='w-100 my-3 me-3'
+            size="small"
+            onChange={(event) => setSearch((prevSearch) => ({...prevSearch, global_search: event.target.value}))}/>
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
         </Button>

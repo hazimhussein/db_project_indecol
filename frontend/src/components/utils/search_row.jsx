@@ -6,7 +6,7 @@ import { TextField, Switch } from "@mui/material"
 
 function search_row_builder(search, setSearch, list_options, table){
   let row = {id:"search", search:true}
-  Object.entries(search).map(([key, value])=>
+  Object.entries(search).filter(([k,v])=>k!="global_search").map(([key, value])=>
     {
       let type = list_options[table][key].type
     type == "date" ?
