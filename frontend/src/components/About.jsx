@@ -46,7 +46,16 @@ function About() {
             pb: 6,
           }}
         >
-          <Container>
+          <Container align="center">
+          <Box
+            component="img"
+            sx={{
+              maxWidth: { xs: 250, md: 250 },
+            }}
+            align="center"
+            alt="Industrial Ecology Digital Lab Logo"
+            src="/assets/images/IEDL-logo.png"
+          />
             <Typography
               component="h1"
               variant="h2"

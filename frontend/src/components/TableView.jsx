@@ -17,6 +17,7 @@ import {
   FormGroup,
   FormControlLabel,
   TablePagination,
+  TextField,
 } from '@mui/material';
 import { FaChevronRight, FaChevronDown, FaChevronUp, FaPlusSquare } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
@@ -46,6 +47,8 @@ function TableView({table}){
     col.includes("date")
     ? [col,{start:null, end:null}]
     :[col,""]))
+
+  search_cols["global_search"] = ""
  
    const [search, setSearch] = useState(search_cols);
    let search_row = search_row_builder(search, setSearch, list_options, table)
@@ -209,23 +212,34 @@ function TableView({table}){
    let [modifiedNodes, setModifiedNodes] = useState(data.nodes)
  
    // search
-   modifiedNodes = modify_nodes(list_options, table, modifiedNodes, search)
+   modifiedNodes = modify_nodes(list_options, table, data.nodes, search)
 
    ////////Print
    const printRef = useRef();
 
   const handleDownloadPdf = async () => {
-    const element = printRef.current;
-    const canvas = await html2canvas(element);
-    const data = canvas.toDataURL("image/png");
+    let jsPdf = new jsPDF({
+      orientation: 'p',
+      unit: 'px',
+      format: 'a4',
+      hotfixes: ['px_scaling'],
+    });
+    const opt = {
+        callback: function (jsPdf) {
+            jsPdf.save("print.pdf");
+        },
+        margin: [20, 20, 20, 20],
+        autoPaging: 'text',
+        html2canvas: {
+            allowTaint: true,
+            letterRendering: true,
+            logging: false,
+            useCORS: true,
+            scale: .9
+        }
+    };
 
-    const pdf = new jsPDF();
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-
-    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("print.pdf");
+    jsPdf.html(printRef.current, opt);
   };
 
   //* Theme *//
@@ -287,7 +301,10 @@ function TableView({table}){
         {current_user && <Button variant="contained" className={`bg-success m-auto ${table=="project"? "me-1":"ms-0"}`} onClick={() => setDrawerId(true)} startIcon={<FaPlusSquare />}>
           Add
         </Button>}
-        <SearchGlob modifiedNodes={[search_row].concat(list)} setModifiedNodes={setModifiedNodes} />
+        <TextField label="Search"
+            className='w-100 my-3 me-3'
+            size="small"
+            onChange={(event) => setSearch((prevSearch) => ({...prevSearch, global_search: event.target.value}))}/>
         <Button variant="contained" className='bg-light text-dark m-auto me-0' onClick={handleDownloadPdf}>
           Print
         </Button>

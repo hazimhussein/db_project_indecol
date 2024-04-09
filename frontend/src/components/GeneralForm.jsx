@@ -14,7 +14,7 @@ import PasswordInput from "./elements/PasswordInput";
 import {DatePicker} from "@mui/x-date-pickers"
 
   
-function GeneralForm({setData, data, table, child}){
+function GeneralForm({setData, data, table, child, parentOptions, setParentOptions, parentField}){
     let dispatch = useDispatch();
 
     let list = useSelector(dataData)
@@ -47,7 +47,12 @@ function GeneralForm({setData, data, table, child}){
     const [invalid, setInvalid] = useState(invalid_dict)
     const [formState, setFormState] = useState("")
 
-    const handleSave = () => {
+    const handleSave = (e) => {
+      if(e){
+        e.preventDefault()
+        e.stopPropagation()
+      }
+      
         let userIds = []
 
         if (options.users){
@@ -70,7 +75,7 @@ function GeneralForm({setData, data, table, child}){
 
         let param = {table:table, row: entry}
         
-        if (data == null){
+        if (data == null || child){
             dispatch(addTableRow(param))
             .then((res)=>{
               if (res.error){
@@ -89,6 +94,11 @@ function GeneralForm({setData, data, table, child}){
               setFormState("success")
               if (!child){
                 setData([...list[table], res.payload.data])
+              } else {
+                setParentOptions({...parentOptions, [parentField.name]: 
+                  parentField.list 
+                  ? parentOptions[parentField.name].concat([res.payload.data.id])
+                  : res.payload.data.id})
               }
             }
               })
@@ -118,11 +128,13 @@ function GeneralForm({setData, data, table, child}){
 
 
       // Modal
-      const [modalOpened, setModalOpened] = useState(false);
+      const defaultModal = {table: false, field: {name: "", list: false}, data: null}
+      const [modalOpened, setModalOpened] = useState(defaultModal);
 
     return (
-        <>
-        <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>
+        <div className="d-flex flex-column" tabIndex="0" onKeyDown={(e) => (e.key === "Enter") && handleSave(e)}>
+        <Modal open={modalOpened.table ? true : false} 
+        onClose={() => setModalOpened(defaultModal)}>
         <Box
           style={{
             position: 'absolute',
@@ -138,10 +150,11 @@ function GeneralForm({setData, data, table, child}){
           className="d-flex flex-column"
         >
             <Typography variant="h6" component="h2">
-              Add a new {modalOpened} record ...
+              Add a new {modalOpened.table} record ...
             </Typography>
-            <GeneralForm setData={setData} child={true} table={modalOpened}/>
-            <Button variant="outlined" onClick={()=>setModalOpened(false)}>
+            <GeneralForm setData={setData} data={modalOpened.data} child={true} table={modalOpened.table} parentOptions={options} setParentOptions={setOptions} parentField={modalOpened.field}/>
+            <Button variant="outlined" 
+            onClick={()=>setModalOpened(defaultModal)}>
             Cancel
           </Button>
         </Box>
@@ -221,7 +234,9 @@ function GeneralForm({setData, data, table, child}){
             return (<FormControl key={key}>
               <SelectSearch table={table}
                 field={{key:key, val:val}}
-                options={options} setOptions={setOptions} 
+                admin={(current_user && current_user.is_superuser)?true:false}
+                tables={list["category"]}
+                options={options} setOptions={setOptions}
                 data={list[val.name].filter(v=>
                   val.name == "fieldoption" ? (v.table.name.toLowerCase() == table && v.field == key)
                   :val.name == "user" ? v.id!=current_user.id
@@ -246,7 +261,7 @@ function GeneralForm({setData, data, table, child}){
               {formState=="fail" ? `${data==null? "Adding": "Updating"} record failed, please confirm your inputs are in correct format and you have filled all required fields`
               :`${data==null? "Adding": "Updating"} record succeeded`}
             </p>}
-        </>
+        </div>
     )
 }
 

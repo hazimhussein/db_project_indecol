@@ -62,6 +62,7 @@ function Card({ table, data }) {
           <div className="card--desc">
             <hr />
             <p>{description}</p>
+            {table == "team" && <p>{email}<br/>{phone}</p>}
           </div>
         </div>
       </div>

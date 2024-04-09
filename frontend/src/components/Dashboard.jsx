@@ -125,7 +125,13 @@ function Dashboard() {
         style={{ position: "fixed", bottom: "15px", right: "15px" }}
         onClick={() => setModalOpened("about")}
       >
-        <FaQuestionCircle className="h3 m-0 me-1" />
+        <img
+              alt=""
+              src="/assets/images/IEDL-logo-v2.png"
+              width="50"
+              height="50"
+              className="d-inline-block align-top"
+            />
         About Us
       </Fab>
       <Fab
