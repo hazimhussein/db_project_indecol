@@ -1,13 +1,15 @@
 import dayjs from "dayjs";
 
-function modify_nodes(nodes, search){
+function modify_nodes(list_options, table, nodes, search){
   return nodes.filter((node) =>{
     if (node.search){
       return true
     }
     for (const [key, value] of Object.entries(search)){
-      if (value != "" && typeof node[key] == "string"){
-        if (key.toLowerCase().includes("date")) {
+      let type = list_options[table][key].type
+      if (value != ""&& type != "date" && (node[key] == null || node[key] == [])){
+        return false
+      } else if (value != "" && type == "date"){
             let val = dayjs(node[key])
             if (value.start && val < value.start){
               return false
@@ -15,42 +17,32 @@ function modify_nodes(nodes, search){
             if (value.end && val > value.end){
               return false
             }
-          } else if (!node[key].toLowerCase().includes(value.toLowerCase())){
+        } else if (value != "" && (type == "string" || type == "email")) {
+          if (!node[key].toLowerCase().includes(value.toLowerCase())) {
             return false
           }
-        } else if (typeof node[key] == "object"){
-          if (node[key] && node[key].constructor == Array){
+        } else if (value && value != "" && type == "foreign_key_many"){
             let final_str = ""
               for (const entry of node[key]){
-                  for (const [k, v] of Object.entries(entry)){
-                      if (v && typeof v == "object"){
-                          for (const [key_c, val_c] of Object.entries(v)){
-                              if (typeof val_c == "string"){
-                                  final_str += val_c
-                              }
-                          }
-                        }
-                      else if (typeof v == "string"){
-                          final_str += v
-                        }
+                let name_fields = Object.keys(list_options[list_options[table][key].name]).filter(col => col.includes("name"))
+                if (name_fields.length > 0){
+                  let name_field =  name_fields.includes("last_name") ? "last_name" : name_fields.slice(0,1)
+                  final_str += entry[name_field]
+              }}
+
+              if (!final_str.toLowerCase().includes(value.toLowerCase())){
+                return false
+              }
+            } else if (type == "foreign_key") {
+              let name_fields = Object.keys(list_options[list_options[table][key].name]).filter(col => col.includes("name"))
+                if (name_fields.length > 0){
+                  let name_field =  name_fields.includes("last_name") ? "last_name" : name_fields.slice(0,1)
+                  if (node[key] && !node[key][name_field].toLowerCase().includes(value.toLowerCase())){
+                    return false
                   }
-              }
-              if (!final_str.toLowerCase().includes(value.toLowerCase())){
-                return false
-              }
-          } else if (node[key]) {
-            let final_str = ""
-              for (const [k, v] of Object.entries(node[key])){
-                  if (typeof v == "string"){
-                      final_str += v
-                    }
-              }
-              if (!final_str.toLowerCase().includes(value.toLowerCase())){
-                return false
-              }
+                }
           }
       }
-    }
     return  true
   }
    );

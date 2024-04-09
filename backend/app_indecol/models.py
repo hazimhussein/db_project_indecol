@@ -52,13 +52,13 @@ class Faq(models.Model):
     question = models.TextField(
         null = False,
         blank= False,
-        max_length=2000
+        max_length=5000
     )
 
     answer = models.TextField(
         null = True,
         blank= True,
-        max_length=2000
+        max_length=5000
     )
 
     manual = models.BooleanField(default=False)
@@ -77,7 +77,7 @@ class Category(models.Model):
     description = models.TextField(
         null = True,
         blank= True,
-        max_length=2000
+        max_length=5000
     )
 
     icon = models.FileField(null=True, upload_to='media/')
@@ -246,7 +246,7 @@ class Partner(models.Model):
     description = models.TextField(
         null = True,
         blank= True,
-        max_length=2000
+        max_length=5000
     )
 
     url= models.CharField(
@@ -280,7 +280,7 @@ class Resource(models.Model):
     description = models.TextField(
         null = True,
         blank= True,
-        max_length=2000
+        max_length=5000
     )
 
     location= models.CharField(
@@ -320,7 +320,7 @@ class Project(models.Model):
     description = models.TextField(
         null = True,
         blank= True,
-        max_length=2000
+        max_length=5000
     )
 
     start_date= models.DateField(

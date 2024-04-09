@@ -38,7 +38,7 @@ store.dispatch(getTableData("category")).then((res)=>{
     )
   })
 })
-store.dispatch(logoutAPI())
+// store.dispatch(logoutAPI())
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>

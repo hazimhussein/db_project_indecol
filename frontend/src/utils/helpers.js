@@ -56,7 +56,9 @@ export function capitalizeFirstLetter(string) {
 export function order_dict(dict, options_dict=false){
   let data = Object.entries(dict)
   let ordered_data = data && data.filter(([key, val])=>key.toLowerCase().startsWith("id") || key.toLowerCase().endsWith("id"))
-  .concat(data.filter(([key, val])=>key.toLowerCase().includes("name")))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("name") && key.toLowerCase().includes("last")))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("name") && key.toLowerCase().includes("first")))
+  .concat(data.filter(([key, val])=>key.toLowerCase().includes("name") && !key.toLowerCase().includes("last") && !key.toLowerCase().includes("first")))
   .concat(data.filter(([key, val])=>options_dict ? val.type.includes("email") : false))
   .concat(data.filter(([key, val])=>options_dict ? val.type.includes("password") : false))
   .concat(data.filter(([key, val])=>key.toLowerCase().includes("desc")))
