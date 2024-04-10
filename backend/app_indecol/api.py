@@ -1,15 +1,10 @@
-from django.contrib.auth import authenticate, login, logout
-from rest_framework.authentication import SessionAuthentication
+from django.contrib.auth import login, logout
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import render
 from rest_framework import permissions, status, viewsets
 from .models import *
 from .serializers import *
-from django.contrib.sessions.models import Session
-from importlib import import_module
 from  django.contrib.auth.middleware import get_user
-from django.http import HttpRequest
 from rest_framework.metadata import SimpleMetadata
 from rest_framework.relations import ManyRelatedField, RelatedField, PrimaryKeyRelatedField
 
@@ -90,7 +85,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class LDAPLogin(APIView):
     permission_classes = (permissions.AllowAny,)
-    # authentication_classes = (SessionAuthentication,)
+
     def post(self, request):
         data = request.data
         serializer = UserLoginSerializer(data=data)
@@ -114,9 +109,7 @@ class LDAPLogout(APIView):
     
 class UserView(APIView):
     permission_classes = (permissions.AllowAny,)
-    # permission_classes = (permissions.IsAuthenticated,)
-    # authentication_classes = (SessionAuthentication,)
-    ##
+
     def get(self, request):
         serializer = UserSerializer(request.user)
         user = get_user(request) 
