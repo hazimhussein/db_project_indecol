@@ -2,6 +2,7 @@ import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { store } from '../main';
 
+// Basic options for API requests
 // let fetchingURL = 'http://10.66.60.218:8000/api/'
 let fetchingURL = '/api/'
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -19,6 +20,7 @@ const client = axios.create({
 
 
 ////////////////////////////////////////
+// Convert any data sent to API requests to FormData Type
 function jsonToForm(json){
   let form_data = new FormData();
     Object.entries(json).map(([key,value])=>{
@@ -60,10 +62,20 @@ export const getTableOptions = createAsyncThunk(`data/getOptions`, async (table)
     return {data:response.data, category:table}
   })
 
-export const loginAPI = createAsyncThunk(`data/login`, async (cred) =>{
-    const response = await client.post(`login`, cred)
+export const loginAPI = createAsyncThunk(`data/login`, async (cred, { rejectWithValue }) =>{
     
-    return response.data
+    try{
+      const response = await client.post(`login`, cred)
+    
+      return response.data
+    }catch (err) {
+      let error = err // cast the error for access
+      if (!error.response) {
+        throw err
+      }
+      // We got validation errors, let's return those so we can reference in our component and set form errors
+      return rejectWithValue(error.response.data)
+    }
   })
 export const logoutAPI = createAsyncThunk(`data/logout`, async () =>{
     const response = await client.post(`logout`);

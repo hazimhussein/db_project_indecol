@@ -9,7 +9,7 @@ import LoadingBar from "react-redux-loading-bar";
 import { FaQuestionCircle } from "react-icons/fa";
 import { Modal, Box, IconButton, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import {tables_order, admin_tables, main_developers} from "../config"
+import { tables_order, admin_tables } from "../config";
 import About from "./About";
 import Help from "./Help";
 import Progress from "./Progress";
@@ -21,11 +21,10 @@ function Dashboard() {
   const data = useSelector(dataData);
   const status = useSelector(statusData);
   const loaded = useSelector(dataLoaded);
-  const team = data["team"] ? data["team"] : []
 
   let data_current = data[category] ? data[category] : [];
   const current_user = useSelector(authedUser);
-  
+
   //* Modal *//
   const [modalOpened, setModalOpened] = useState(false);
 
@@ -36,7 +35,10 @@ function Dashboard() {
       {(status == "loading" || !loaded) && <Progress />}
       <LoadingBar />
       <NavTop />
-      <Modal open={modalOpened ? true : false} onClose={() => setModalOpened(false)}>
+      <Modal
+        open={modalOpened ? true : false}
+        onClose={() => setModalOpened(false)}
+      >
         <Box
           style={{
             position: "absolute",
@@ -57,7 +59,11 @@ function Dashboard() {
           >
             <CloseIcon fontSize="large" />
           </IconButton>
-          {modalOpened == "about" ? <About/> : modalOpened == "help" && <Help/>}
+          {modalOpened == "about" ? (
+            <About />
+          ) : (
+            modalOpened == "help" && <Help />
+          )}
         </Box>
       </Modal>
       <div className="dashboard">
@@ -75,34 +81,39 @@ function Dashboard() {
                 />
               </div>
             </div>
-            {tables_order.filter((dat)=>dat.toLowerCase().includes(searchInput.toLowerCase())).map((dat)=>
-              data_current.map((d)=>d.name.toLowerCase()).includes(dat.toLowerCase()) &&
-                data_current.filter(
-                  (d) => d.name.toLowerCase() == dat.toLowerCase()
-                )
-                .map((cat) => 
-                  <Card
-                    key={cat.id}
-                    id={cat.id}
-                    table={category}
-                    data={cat}
-                  />
-                )) 
-            }
+            {tables_order
+              .filter((dat) =>
+                dat.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .map(
+                (dat) =>
+                  data_current
+                    .map((d) => d.name.toLowerCase())
+                    .includes(dat.toLowerCase()) &&
+                  data_current
+                    .filter((d) => d.name.toLowerCase() == dat.toLowerCase())
+                    .map((cat) => (
+                      <Card
+                        key={cat.id}
+                        id={cat.id}
+                        table={category}
+                        data={cat}
+                      />
+                    ))
+              )}
             {data_current
               .filter(
                 (dat) =>
                   dat.name.toLowerCase().includes(searchInput.toLowerCase()) &&
-                  !tables_order.map(d=>d.toLowerCase()).includes(dat.name.toLowerCase())
+                  !tables_order
+                    .map((d) => d.toLowerCase())
+                    .includes(dat.name.toLowerCase())
               )
               .map((cat) =>
-                !admin_tables.map(d=>d.toLowerCase()).includes(cat.name.toLowerCase()) ? (
-                  <Card
-                    key={cat.id}
-                    id={cat.id}
-                    table={category}
-                    data={cat}
-                  />
+                !admin_tables
+                  .map((d) => d.toLowerCase())
+                  .includes(cat.name.toLowerCase()) ? (
+                  <Card key={cat.id} id={cat.id} table={category} data={cat} />
                 ) : (
                   current_user &&
                   current_user.is_superuser && (
@@ -126,12 +137,12 @@ function Dashboard() {
         onClick={() => setModalOpened("about")}
       >
         <img
-              alt=""
-              src="/assets/images/IEDL-logo-v2.png"
-              width="50"
-              height="50"
-              className="d-inline-block align-top"
-            />
+          alt=""
+          src="/assets/images/IEDL-logo-v2.png"
+          width="50"
+          height="50"
+          className="d-inline-block align-top"
+        />
         About Us
       </Fab>
       <Fab
