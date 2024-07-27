@@ -15,6 +15,8 @@ class User(AbstractUser):
 
     roles = models.ManyToManyField("FieldOption", blank=True)
     groups = models.ManyToManyField("Group", through="Group_users", blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.full_name
@@ -29,6 +31,8 @@ class Faq(models.Model):
     admin = models.BooleanField(default=False)
 
     media = models.FileField(null=True, upload_to="media/")
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class Category(models.Model):
@@ -70,6 +74,8 @@ class Team(models.Model):
     email = models.CharField(unique=False, null=True, blank=True, max_length=50)
 
     phone = models.CharField(unique=False, null=True, blank=True, max_length=15)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -91,6 +97,8 @@ class Person(models.Model):
 
     roles = models.ManyToManyField(FieldOption, blank=True)
     groups = models.ManyToManyField("Group", through="Group_persons", blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     users = models.ManyToManyField(User)
 
@@ -107,6 +115,8 @@ class Group(models.Model):
     end_date = models.DateField(null=True, blank=True)
 
     persons = models.ManyToManyField(Person)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     users = models.ManyToManyField(User)
 
@@ -127,6 +137,8 @@ class Partner(models.Model):
         null=True,
         related_name="partner_type_field",
     )
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     users = models.ManyToManyField(User)
 
@@ -160,6 +172,8 @@ class Resource(models.Model):
     confidential = models.BooleanField(default=False)
 
     file = models.FileField(null=True, upload_to=resource_path)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     users = models.ManyToManyField(User)
 
@@ -200,6 +214,8 @@ class Project(models.Model):
     resources = models.ManyToManyField(Resource, blank=True)
 
     related = models.ManyToManyField("self", blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     users = models.ManyToManyField(User)
 

@@ -47,8 +47,7 @@ function Details({ className, data, child, table }) {
         k != "treeXLevel" &&
         k != "treeYLevel" &&
         k != "parentNode" &&
-        k != "ancestors" &&
-        k != "users"
+        k != "ancestors"
     );
 
   let start = [];
@@ -98,7 +97,7 @@ function Details({ className, data, child, table }) {
                     <div key={`${k}detail`} className="d-flex ms-3 mt-3">
                       {table != "faq" && (
                         <span>
-                          <strong>{`${capitalizeFirstLetter(k)}:`} </strong>
+                          <strong>{`${capitalizeFirstLetter(k=="users"?"managed by":k)}:`} </strong>
                         </span>
                       )}
                       <span

@@ -1,6 +1,7 @@
 import { capitalizeFirstLetter } from "../../utils/helpers";
 import { IconButton } from "@mui/material";
 import { FaPen, FaRegTrashAlt, FaCheck, FaTimes } from "react-icons/fa";
+import dayjs from "dayjs";
 
 function col_func(
   data,
@@ -90,6 +91,9 @@ function col_func(
                     }
                     let field = list_options[table][lab];
                     let val = item[lab];
+                    if(lab.includes("date") && val?.length>12){
+                      val = val? dayjs(val).format('YYYY-MM-DD HH:mm:ss'):null
+                    }
                     if (val == null) {
                       return "";
                     }
@@ -146,7 +150,34 @@ function col_func(
                   sort: { sortKey: lab.toUpperCase() },
                   hide: hiddenColumns.includes(capitalizeFirstLetter(lab)),
                 };
+              }).concat(
+                Object.keys(data.nodes[1])
+              .filter(
+                (lab) =>
+                  lab.toLowerCase() == "users"
+              )
+              .map((lab) => {
+                return {
+                  label: "Managed by",
+                  renderCell: (item) => {
+                    if (item.search) {
+                      return item[lab];
+                    }
+                    let val = item[lab];
+                    let items = [];
+                    val?.map((value) => {
+                      let v = value["last_name"] ?? value["email"] ?? value["full_name"] ?? value["username"];
+                      items.push(v);
+                    }) ?? [];
+                    val = items.join(", ");
+                  return val;
+                  },
+                  resize,
+                  sort: { sortKey: lab.toUpperCase() },
+                  hide: hiddenColumns.includes(capitalizeFirstLetter(lab)),
+                };
               })
+              )
           )
       : [];
 
