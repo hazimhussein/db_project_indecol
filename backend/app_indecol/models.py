@@ -107,6 +107,9 @@ class FieldOption(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        unique_together = ('name', 'table', 'field')
     
 class Team(models.Model):
     first_name = models.CharField(

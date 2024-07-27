@@ -105,6 +105,13 @@ function GeneralForm({
             res.payload.includes("<title>")
           ) {
             setFormState(res.payload.split("<title>")[1].split("</title>")[0]);
+          } else if (
+            res.payload["non_field_errors"] &&
+            res.payload["non_field_errors"][0].includes("unique")
+          ) {
+            setFormState(
+              `This value already exists, ${res.payload["non_field_errors"]}`
+            );
           } else {
             Object.keys(invalid).map((key) => {
               if (Object.keys(res.payload).includes(key)) {

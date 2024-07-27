@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "app_indecol.apps.AppIndecolConfig",
     "rest_framework",
     "corsheaders",
-    'django_python3_ldap'
+    'django_python3_ldap',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = './static'
 
 # Base url for media files 
-MEDIA_URL = 'https://indecx.indecol.no/'
+MEDIA_URL = '/'
 
 # Path where media is to be stored
 MEDIA_ROOT = BASE_DIR.parent / "data/db"
