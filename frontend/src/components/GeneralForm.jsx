@@ -182,7 +182,6 @@ function GeneralForm({
     <div
       className="d-flex flex-column"
       tabIndex="0"
-      onKeyDown={(e) => e.key === "Enter" && handleSave(e)}
     >
       <Modal
         open={modalOpened.table ? true : false}
