@@ -17,7 +17,7 @@ class User(AbstractUser):
     groups = models.ManyToManyField("Group", through="Group_users", blank=True)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.full_name
 
 
 class Faq(models.Model):

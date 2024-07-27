@@ -179,6 +179,7 @@ LDAP_AUTH_USER_FIELDS = {
     "first_name": "givenName",
     "last_name": "sn",
     "email": "mail",
+    "full_name": "cn",
 }
 
 # A tuple of django model fields used to uniquely identify a user.

@@ -135,8 +135,7 @@ function col_func(
                         <a
                           href={item[lab]}
                           target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                          rel="noopener noreferrer">
                           {item[lab]}
                         </a>
                       );
@@ -158,6 +157,13 @@ function col_func(
         if (item.search) {
           return "";
         }
+        const delMsg = `Are you sure you want to delete "${
+          item[
+            Object.keys(item).find((k) => k.includes("name")) ??
+              Object.keys(item).find((k) => k.includes("question")) ??
+              Object.keys(item).find((k) => k.includes("id"))
+          ]
+        }" from "${capitalizeFirstLetter(table)}" table?`;
         return (
           current_user &&
           ((item.users &&
@@ -168,13 +174,15 @@ function col_func(
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}
-            >
+              }}>
               <IconButton onClick={() => handleEditable(table, item.id)}>
                 <FaPen size={14} />
               </IconButton>
               {current_user.is_superuser && (
-                <IconButton onClick={() => handleRemove(table, item.id)}>
+                <IconButton
+                  onClick={() =>
+                    handleRemove("Confirm Deletion", delMsg, table, item.id)
+                  }>
                   <FaRegTrashAlt size={14} />
                 </IconButton>
               )}

@@ -15,8 +15,6 @@ class EmailOrUsernameModelBackend(BaseBackend):
             kwargs = {'username': username}
         try:
             user = User.objects.get(**kwargs)
-            print(user.password)
-            print(password)
             if user.check_password(password):
                 return user
         except User.DoesNotExist:

@@ -40,6 +40,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GeneralForm from "./GeneralForm";
 import { removeTableRow, getTableData } from "../utils/api";
 import { col_func, search_row_builder, modify_nodes, sort_cols } from "./utils";
+import AlertBox from "./elements/AlertBox";
 
 function TableView({ table }) {
   let dispatch = useDispatch();
@@ -47,6 +48,7 @@ function TableView({ table }) {
   const current_user = useSelector(authedUser);
   const list_selector = useSelector(dataData);
   const list_options = useSelector(dataOptions);
+  const [dialogOpt, setDialogOpt] = useState(null);
   let list = list_selector[table] ? list_selector[table] : [];
 
   //* Search *//
@@ -206,6 +208,15 @@ function TableView({ table }) {
   const handleRemove = (tableName, rowId) => {
     dispatch(removeTableRow({ table: tableName, rowId: rowId }));
     customSetData(list_selector[tableName].filter((row) => row.id != rowId));
+    setDialogOpt(null)
+  };
+  const handleRemoveDialog = (title, message, tableName, rowId) => {
+    setDialogOpt({
+      title: title,
+      message: message,
+      confirmAction: () => handleRemove(tableName, rowId),
+      cancelAction: () => setDialogOpt(null),
+    });
   };
 
   ////////////Edit
@@ -234,7 +245,7 @@ function TableView({ table }) {
     hiddenColumns,
     resize,
     handleEditable,
-    handleRemove
+    handleRemoveDialog
   );
 
   //* Filtering according to search *//
@@ -323,8 +334,7 @@ function TableView({ table }) {
       {/* Modal for changing visible columns */}
       <Modal
         open={modalOpened ? true : false}
-        onClose={() => setModalOpened(false)}
-      >
+        onClose={() => setModalOpened(false)}>
         <Box
           style={{
             position: "absolute",
@@ -336,8 +346,7 @@ function TableView({ table }) {
             borderRadius: "4px",
             padding: "10px",
             height: "90%",
-          }}
-        >
+          }}>
           <Typography variant="h6" component="h2">
             Select the columns you would like to display ...
           </Typography>
@@ -359,6 +368,15 @@ function TableView({ table }) {
           </FormGroup>
         </Box>
       </Modal>
+      {dialogOpt && (
+        <AlertBox
+          openSignal={dialogOpt ? true : false}
+          title={dialogOpt.title}
+          message={dialogOpt.message}
+          confirmAction={dialogOpt.confirmAction}
+          cancelAction={dialogOpt.cancelAction}
+        />
+      )}
 
       {/* Global Search and top buttons */}
 
@@ -367,8 +385,7 @@ function TableView({ table }) {
           variant="contained"
           className="m-auto ms-0 me-1"
           style={{ minWidth: "80px" }}
-          onClick={() => setModalOpened(true)}
-        >
+          onClick={() => setModalOpened(true)}>
           Columns
         </Button>
         {current_user && (
@@ -378,8 +395,7 @@ function TableView({ table }) {
               table == "project" ? "me-1" : "ms-0"
             }`}
             onClick={() => setDrawerId(true)}
-            startIcon={<FaPlusSquare />}
-          >
+            startIcon={<FaPlusSquare />}>
             Add
           </Button>
         )}
@@ -397,8 +413,7 @@ function TableView({ table }) {
         <Button
           variant="contained"
           className="bg-light text-dark m-auto me-0"
-          onClick={handleDownloadPdf}
-        >
+          onClick={handleDownloadPdf}>
           Print
         </Button>
       </Stack>
@@ -461,8 +476,7 @@ function TableView({ table }) {
         anchor="right"
         PaperProps={{
           sx: { width: "50%", padding: "20px" },
-        }}
-      >
+        }}>
         <Stack spacing={1}>
           <GeneralForm table={table} setData={customSetData} data={editable} />
           <Button variant="outlined" onClick={handleCancel}>
