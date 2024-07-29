@@ -8,6 +8,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=True)
 
     middle_name = models.CharField(unique=False, null=True, blank=True, max_length=50)
+    full_name = models.CharField(unique=False, max_length=100, default="Undefined")
 
     start_date = models.DateField(null=True, blank=True)
 
@@ -19,7 +20,7 @@ class User(AbstractUser):
     last_modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.full_name
+        return f"{self.full_name}"
 
 
 class Faq(models.Model):

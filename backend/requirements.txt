@@ -4,3 +4,4 @@ djangorestframework==3.14.0
 gunicorn==20.1.0
 django-python3-ldap==0.15.5
 unipath==1.1.0
+django-extensions==3.2.3

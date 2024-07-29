@@ -18,15 +18,15 @@ These documentation provides details and description of the code used for buildi
 <!-- {: .warning }
 > This website documents the features of the current `main` branch of the Just the Docs theme. See [the CHANGELOG] for a list of releases, new features, and bug fixes. -->
 
-## IndEcx 
+## IndEcX 
 Industrial Ecology Projects Database : Aimed to facilitate storage, access, and retrieval of the different projects created by the Industrial Ecology Group at NTNU.
 
 ## Basic Structure
 The code for the IndEcX is divided into:
-- backend: reponsible for creating the database and serving it as an API
+- backend: responsible for creating the database and serving it as an API
 - data: where the database file, and uploaded files are stored
 - frontend: responsible for creating the website where the database is accessed from
-- production files (no specific folder for them): these are the files reponsible for creating the servers to serve the previous parts and combining them into a docker container
+- production files (no specific folder for them): these are the files responsible for creating the servers to serve the previous parts and combining them into a docker container
 
 ##########
 
@@ -100,10 +100,11 @@ Just the Docs is committed to fostering a welcoming community.
 [source file for this page]: https://github.com/just-the-docs/just-the-docs/blob/main/index.md
 [Just the Docs Template]: https://just-the-docs.github.io/just-the-docs-template/
 [Just the Docs]: https://just-the-docs.com
-[Indecx repo]: https://github.com/NTNU-IndEcol/IndEcX
 [Just the Docs README]: https://github.com/just-the-docs/just-the-docs/blob/main/README.md
 [GitHub Pages]: https://pages.github.com/
 [Template README]: https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md
 [GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
 [use the template]: https://github.com/just-the-docs/just-the-docs-template/generate
+
 [Indecx website]: https://indecx.indecol.no/
+[Indecx repo]: https://github.com/NTNU-IndEcol/IndEcX

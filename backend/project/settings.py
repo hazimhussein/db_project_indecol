@@ -136,7 +136,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = './static'
 
 # Base url for media files 
-MEDIA_URL = '/'
+MEDIA_URL = 'http://localhost/'
 
 # Path where media is to be stored
 MEDIA_ROOT = BASE_DIR.parent / "data/db"
@@ -167,7 +167,7 @@ import ssl
 LDAP_AUTH_TLS_VERSION = ssl.PROTOCOL_TLSv1_2
 
 # The LDAP search base for looking up users.
-LDAP_AUTH_SEARCH_BASE = "ou=people,dc=ntnu,dc=no"
+LDAP_AUTH_SEARCH_BASE = "ou=users,dc=ntnu,dc=no"
 
 # The LDAP class that represents a user.
 LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"

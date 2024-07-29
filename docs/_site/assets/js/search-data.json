@@ -1,51 +1,296 @@
 {"0": {
+    "doc": "Admin",
+    "title": "Admin",
+    "content": "This is where the tables to view in django admin page and their properties are defined. No special modifications are done for this project. ",
+    "url": "/docs/backend/app_indecol/admin",
+    
+    "relUrl": "/docs/backend/app_indecol/admin"
+  },"1": {
+    "doc": "API Endpoits",
+    "title": "APIs",
+    "content": "This is where the API endpoints and their options are defined. Currently for all tables, a default view is used to return all fields without modifications except for the metadata and login/logout endpoints. ",
+    "url": "/docs/backend/app_indecol/api#apis",
+    
+    "relUrl": "/docs/backend/app_indecol/api#apis"
+  },"2": {
+    "doc": "API Endpoits",
+    "title": "Custom Metadata",
+    "content": "Django provide a request method named \"options\", instead of the tables values returned by the method \"get\" it returns metadata about the table fields. By default a foreign key field is given the type \"object\". This is modified to be \"foreign_key\" and \"foreign_key_many\". In addition to modifying password field type from \"text\" to \"password\". ",
+    "url": "/docs/backend/app_indecol/api#custom-metadata",
+    
+    "relUrl": "/docs/backend/app_indecol/api#custom-metadata"
+  },"3": {
+    "doc": "API Endpoits",
+    "title": "API Endpoits",
+    "content": " ",
+    "url": "/docs/backend/app_indecol/api",
+    
+    "relUrl": "/docs/backend/app_indecol/api"
+  },"4": {
+    "doc": "API",
+    "title": "API",
+    "content": " ",
+    "url": "/docs/frontend/utils/api",
+    
+    "relUrl": "/docs/frontend/utils/api"
+  },"5": {
+    "doc": "app_indecol",
+    "title": "app_indecol",
+    "content": "This is where the details of our database and API endpoints lie. | models.py: specifications for database tables and fields | serializer.py: middle man between database and API to define how the fields should be represented | api.py: define the different APIs and their options | admin.py: define the tables to be available through django admin page and their settings | urls.py: define the different url routes of the app | . ",
+    "url": "/backend/app_indecol/app_indecol.html",
+    
+    "relUrl": "/backend/app_indecol/app_indecol.html"
+  },"6": {
+    "doc": "Authentication",
+    "title": "Authentication (LDAP)",
+    "content": "This project utilizes authentication through NTNU Lightweight Active Directory (LDAP), explained by Esme Maxwell in indecol wiki, by using the third party tool django-python3-ldap to incorporate it into the django project. The settings for the tool are defined inside . ├───project │ │ settings.py . The variables related to it are: . | AUTH_USER_MODEL . where the table for storing and retrieving users is defined . | AUTHENTICATION_BACKENDS . the tool is added to the list of backends that django should use for authentication . | LDAP_AUTH_URL . where NTNU LDAP url is defined . | LDAP_AUTH_USE_TLS LDAP_AUTH_TLS_VERSION . to use secure connection while authentication . | LDAP_AUTH_SEARCH_BASE . to specify ldap search base, for NTNU there are two options . | “ou=people,dc=ntnu,dc=no”: returns many information (first/last name, email,…), but limited regarding the accounts publically available through it, as individuals have to allow it manually through studentweb. | “ou=users,dc=ntnu,dc=no”: restricted information (name, but no email) but encompass all NTNU accounts, this is the current used option | LDAP_AUTH_OBJECT_CLASS . the object to return from the ldap search . | LDAP_AUTH_USER_FIELDS . the field names in the database table and the corresponding name in the ldap object . | LDAP_AUTH_USER_LOOKUP_FIELDS . the field name (using the above defined fields) used to look for the user . | LDAP_AUTH_CONNECTION_USERNAME LDAP_AUTH_CONNECTION_PASSWORD . they are set to None as this is an unbound ldap query . | LDAP_AUTH_FORMAT_SEARCH_FILTERS . points to a custom function to use to modify the ldap search further. The function custom_format_search_filters is saved in: . ├───project │ ├───utils │ │ │ ldap_search.py . currently, there is no additional filters used. It was created to initialize the database with users from indecol using the filter \"(|(ntnuMemberOf=ioko))\", the code for it is commented in the function. To sync users into the database manually without them logging in, specify some filters in the above function, to not sync all NTNU accounts, and then run the command: python manage.py ldap_sync_users To grant any of the users admin permissions (recommended: to do it through the app GUI or admin page) through the terminal, run: python manage.py ldap_promote &lt;username&gt; . | LOGGING . to help debug ldap authentication in development . | . ",
+    "url": "/docs/backend/auth#authentication-ldap",
+    
+    "relUrl": "/docs/backend/auth#authentication-ldap"
+  },"7": {
+    "doc": "Authentication",
+    "title": "Authentication (Custom)",
+    "content": "A custom authentication method is created to allow manual addition of external users, not associated with NTNU, which allows authentication using email/username and password. This is implemented in: . ├───app_indecol │ │ backends.py . Then it was added to the project settings to the list of authentication backends, in the file: . ├───project │ │ settings.py . in the variable AUTHENTICATION_BACKENDS . ",
+    "url": "/docs/backend/auth#authentication-custom",
+    
+    "relUrl": "/docs/backend/auth#authentication-custom"
+  },"8": {
+    "doc": "Authentication",
+    "title": "Authentication",
+    "content": " ",
+    "url": "/docs/backend/auth",
+    
+    "relUrl": "/docs/backend/auth"
+  },"9": {
+    "doc": "Backend",
+    "title": "Backend (Django)",
+    "content": "The backend is built using Django framework which is a python framework for web development providing many convenient tools to build web servers, databases, API endpoints, .etc.. For this project some tools were used mainly Django rest framework to build API endpoints for data in the database. As the main aim of the backend in this project is to create the database and serve API endpoints to be used by the frontend. ",
+    "url": "/docs/backend#backend-django",
+    
+    "relUrl": "/docs/backend#backend-django"
+  },"10": {
+    "doc": "Backend",
+    "title": "General Structure",
+    "content": "Django utilizes a structure of main project with installed django apps according to needs, for this project, there is only one app named “app_indecol” where specifications for the database and different API endpoints are initialized. Thus, the backend is structured like so . │ manage.py ├───app_indecol ├───project └───static . | manage.py: is where the django project manager lies. Django incorporates a manager that is responsible to handle the different project actions and it usually follows the following format: python manage.py &lt;desired django command&gt; | app_indecol: where specifications for the database and different API endpoints are initialized. | project: is where the general configurations for the project is stored. | static: holds the static files (images, styles, javascript files) used by django services like the admin pages, .etc, but not by the main website as the website uses a seperate frontend. By default, this folder is not created inside the django project and in development, django doesn’t require to have it, while in production it is required to have to run the django services properly. This is done easily by running the following django command: python manage.py collectstatic | . ",
+    "url": "/docs/backend#general-structure",
+    
+    "relUrl": "/docs/backend#general-structure"
+  },"11": {
+    "doc": "Backend",
+    "title": "Important Django Commands",
+    "content": "Whenever new specifications are added to the database, django has to incorporate them into the database, this is done through: python manage.py makemigration This will create the code representing the changes that were implemented, and it is stored in a new file having the name “_\" in the following directory: . ├───app_indecol │ ├───migrations . It is rare that it needs to be checked and modified. Usually, the new implementation just needs to be implemented, so after creating the migration file, implement by running: python manage.py migrate If it ran successfully, the new changes should be reflected in the database and the app can be ran safely. ",
+    "url": "/docs/backend#important-django-commands",
+    
+    "relUrl": "/docs/backend#important-django-commands"
+  },"12": {
+    "doc": "Backend",
+    "title": "Helpful Django Commands",
+    "content": ". | To run the app in development, use the command: python manage.py runserver This will run the development server on 127.0.0.1:8000. To specify custom host and port, they can be added to the command as such: python manage.py runserver &lt;custom host&gt;:&lt;custom port&gt; . | As mentioned above, the static folder should be created before production, the app would run successfully without it but the the admin page would be loaded without styles, using the command: python manage.py collectstatic . | Data in the database can be exported or imported, e.g to have some data in the database while development, to export the data run: python manage.py dumpdata &gt; &lt;filename&gt;.json This will save the new file in the following directory: ├───app_indecol │ ├───fixtures . | To import data into the database, create the corresponding json files and save them in the above directory, then run: python manage.py loaddata &lt;filename&gt;.json | . ",
+    "url": "/docs/backend#helpful-django-commands",
+    
+    "relUrl": "/docs/backend#helpful-django-commands"
+  },"13": {
     "doc": "Backend",
     "title": "Backend",
-    "content": "The backend is To make it as easy as possible to write documentation in plain Markdown, most UI components are styled using default Markdown elements with few additional CSS classes needed. ",
+    "content": " ",
     "url": "/docs/backend",
     
     "relUrl": "/docs/backend"
-  },"1": {
+  },"14": {
+    "doc": "Components",
+    "title": "Components",
+    "content": " ",
+    "url": "/docs/frontend/components",
+    
+    "relUrl": "/docs/frontend/components"
+  },"15": {
+    "doc": "Frontend",
+    "title": "Frontend (React)",
+    "content": "The frontend is built using React framework, a javascript framework for web development, utilizing some tools like: redux, Material UI, React Bootstrap, and regular bootstrap. ",
+    "url": "/docs/frontend#frontend-react",
+    
+    "relUrl": "/docs/frontend#frontend-react"
+  },"16": {
+    "doc": "Frontend",
+    "title": "React",
+    "content": "Javascript framework for web development providing an extra level of abstraction summarized as follows: Web pages are composed of components and each component has it’s own state. States are monitored so when they are changed, components are checked if they should be changed and then change accordingly without reloading the whole page. States can affect their components and their child components. The states should only be changed using specific tools to detect the change in states, a convenient tool for that which were used extensively in the app is React hooks. Two of the most used hooks in the app are: . | useState: to define a new state and the function to change it | useEffect: define functions to run when the page is done loading and when specified variables values are changed. | . React is built on top of NodeJs as development server, therefore NodeJs and NPM should be installed. In addition as mentioned above, react is an abstarction level over regular Html, CSS, JS. Thus, a set of pre- and post- processors are used to convert the react code. There are many different combinations of these processors available in the market. For this project, the app is initialized using Vite, which provides convenient processors and settings with no need for further modification. ",
+    "url": "/docs/frontend#react",
+    
+    "relUrl": "/docs/frontend#react"
+  },"17": {
+    "doc": "Frontend",
+    "title": "Redux",
+    "content": "A state manager tool to provide and manage a global state shared by all components. ",
+    "url": "/docs/frontend#redux",
+    
+    "relUrl": "/docs/frontend#redux"
+  },"18": {
+    "doc": "Frontend",
+    "title": "Material UI/React Bootstrap",
+    "content": "These provide components with predefined set of CSS styles and JS functions for convenience . ",
+    "url": "/docs/frontend#material-uireact-bootstrap",
+    
+    "relUrl": "/docs/frontend#material-uireact-bootstrap"
+  },"19": {
+    "doc": "Frontend",
+    "title": "Bootstrap",
+    "content": "These provide Html classes with predefined set of CSS styles and JS functions which can be added to any element. ",
+    "url": "/docs/frontend#bootstrap",
+    
+    "relUrl": "/docs/frontend#bootstrap"
+  },"20": {
+    "doc": "Frontend",
+    "title": "General structure",
+    "content": "The structure of the frontend folder: . ├───node_modules ├───public │ └───assets │ ├───images │ │ └───1x │ └───styles └───src ├───components │ ├───elements │ └───utils ├───reducers └───utils . | public: includes static files (styles, images, js files, …) | src/reducers: includes the code for redux state manager | src/utils: includes helper functions and configurations for API methods (get, post, patch, delete, options) | . ",
+    "url": "/docs/frontend#general-structure",
+    
+    "relUrl": "/docs/frontend#general-structure"
+  },"21": {
+    "doc": "Frontend",
+    "title": "Frontend",
+    "content": " ",
+    "url": "/docs/frontend",
+    
+    "relUrl": "/docs/frontend"
+  },"22": {
+    "doc": "Helpers",
+    "title": "Helpers",
+    "content": " ",
+    "url": "/docs/frontend/utils/helpers",
+    
+    "relUrl": "/docs/frontend/utils/helpers"
+  },"23": {
     "doc": "Overview",
     "title": "IndEcx Documentation",
     "content": "These documentation provides details and description of the code used for building the IndEcx web app as well as instructions on how to edit and achieve certain editing goals. View the website View it on GitHub . ",
     "url": "/#indecx-documentation",
     
     "relUrl": "/#indecx-documentation"
-  },"2": {
+  },"24": {
     "doc": "Overview",
-    "title": "IndEcx",
+    "title": "IndEcX",
     "content": "Industrial Ecology Projects Database : Aimed to facilitate storage, access, and retrieval of the different projects created by the Industrial Ecology Group at NTNU. ",
     "url": "/#indecx",
     
     "relUrl": "/#indecx"
-  },"3": {
+  },"25": {
     "doc": "Overview",
     "title": "Basic Structure",
-    "content": "The code for the IndEcX is divided into: . | backend: reponsible for creating the database and serving it as an API | data: where the database file, and uploaded files are stored | frontend: responsible for creating the website where the database is accessed from | production files (no specific folder for them): these are the files reponsible for creating the servers to serve the previous parts and combining them into a docker container | . ########## . Just the Docs is a theme for generating static websites with Jekyll. You can write source files for your web pages using Markdown, the Liquid templating language, and HTML.1 Jekyll builds your site by converting all files that have front matter to HTML. Your Jekyll configuration file determines which theme to use, and sets general parameters for your site, such as the URL of its home page. Jekyll builds this Just the Docs theme docs website using the theme itself. These web pages show how your web pages will look by default when you use this theme. But you can easily [customize] the theme to make them look completely different! . Browse the docs to learn more about how to use this theme. ",
+    "content": "The code for the IndEcX is divided into: . | backend: responsible for creating the database and serving it as an API | data: where the database file, and uploaded files are stored | frontend: responsible for creating the website where the database is accessed from | production files (no specific folder for them): these are the files responsible for creating the servers to serve the previous parts and combining them into a docker container | . ########## . Just the Docs is a theme for generating static websites with Jekyll. You can write source files for your web pages using Markdown, the Liquid templating language, and HTML.1 Jekyll builds your site by converting all files that have front matter to HTML. Your Jekyll configuration file determines which theme to use, and sets general parameters for your site, such as the URL of its home page. Jekyll builds this Just the Docs theme docs website using the theme itself. These web pages show how your web pages will look by default when you use this theme. But you can easily [customize] the theme to make them look completely different! . Browse the docs to learn more about how to use this theme. ",
     "url": "/#basic-structure",
     
     "relUrl": "/#basic-structure"
-  },"4": {
+  },"26": {
     "doc": "Overview",
     "title": "Getting started",
     "content": "The Just the Docs Template provides the simplest, quickest, and easiest way to create a new website that uses the Just the Docs theme. To get started with creating a site, just click “use the template”! . To use the theme, you do not need to clone or fork the [Just the Docs repo]! You should do that only if you intend to browse the theme docs locally, contribute to the development of the theme, or develop a new theme based on Just the Docs. You can easily set the site created by the template to be published on GitHub Pages – the template README file explains how to do that, along with other details. If Jekyll is installed on your computer, you can also build and preview the created site locally. This lets you test changes before committing them, and avoids waiting for GitHub Pages.2 And you will be able to deploy your local build to a different platform than GitHub Pages. More specifically, the created site: . | uses a gem-based approach, i.e. uses a Gemfile and loads the just-the-docs gem | uses the GitHub Pages / Actions workflow to build and publish the site on GitHub Pages | . Other than that, you’re free to customize sites that you create with the template, however you like. You can easily change the versions of just-the-docs and Jekyll it uses, as well as adding further plugins. See the theme README for how to use the theme as a gem without creating a new site. ",
     "url": "/#getting-started",
     
     "relUrl": "/#getting-started"
-  },"5": {
+  },"27": {
     "doc": "Overview",
     "title": "About the project",
     "content": "Just the Docs is © 2017-2024 by Patrick Marsceill. License . Just the Docs is distributed by an MIT license. Contributing . When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change. Read more about becoming a contributor in our GitHub repo. Thank you to the contributors of Just the Docs! . Code of Conduct . Just the Docs is committed to fostering a welcoming community. View our Code of Conduct on our GitHub repository. | The source file for this page uses all three markup languages. &#8617; . | It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub. &#8617; . | . ",
     "url": "/#about-the-project",
     
     "relUrl": "/#about-the-project"
-  },"6": {
+  },"28": {
     "doc": "Overview",
     "title": "Overview",
     "content": " ",
     "url": "/",
     
     "relUrl": "/"
+  },"29": {
+    "doc": "Models",
+    "title": "Database Tables",
+    "content": "This is where the database tables are defined. Currently, the defined tables are: . | ",
+    "url": "/docs/backend/app_indecol/models#database-tables",
+    
+    "relUrl": "/docs/backend/app_indecol/models#database-tables"
+  },"30": {
+    "doc": "Models",
+    "title": "Admin tables",
+    "content": ". | Faq: items for the help section | Team: digital lab memebers to be viewed in the about section | ",
+    "url": "/docs/backend/app_indecol/models#admin-tables",
+    
+    "relUrl": "/docs/backend/app_indecol/models#admin-tables"
+  },"31": {
+    "doc": "Models",
+    "title": "Structural tables",
+    "content": ". | User: this is the table used for users authentication | Category: records for the different tables available in the app | FieldOption: stores the available options for fields in the other tables that require a predefined list of options | . | . | ",
+    "url": "/docs/backend/app_indecol/models#structural-tables",
+    
+    "relUrl": "/docs/backend/app_indecol/models#structural-tables"
+  },"32": {
+    "doc": "Models",
+    "title": "Public tables",
+    "content": ". | Person: people associated to projects | Group: indecol groups | Partner: External partenrs who contributed to projects | Resource: stores projects’ resources. It utilizes a custom function to store uploaded files in seperate folders following the structure \"files/&lt;name of the resource&gt;/&lt;creation date&gt;/&lt;filename&gt;\", so when the the files are modified, they are saved in new folders while keeping the old files. | Project: stores the project records | . | . ",
+    "url": "/docs/backend/app_indecol/models#public-tables",
+    
+    "relUrl": "/docs/backend/app_indecol/models#public-tables"
+  },"33": {
+    "doc": "Models",
+    "title": "Models",
+    "content": " ",
+    "url": "/docs/backend/app_indecol/models",
+    
+    "relUrl": "/docs/backend/app_indecol/models"
+  },"34": {
+    "doc": "Reducers",
+    "title": "Reducers",
+    "content": " ",
+    "url": "/docs/frontend/reducers",
+    
+    "relUrl": "/docs/frontend/reducers"
+  },"35": {
+    "doc": "Serilaizers",
+    "title": "Serializers",
+    "content": "In django process, this is a required middle man between the database and API, to validate how the tables fields should be represented. No special options are defined for this project, except for: . | UserSerializer: some function were modified to account for the ability to manually create users | UserLoginSerializer: this is a step needed to authenticate users | . ",
+    "url": "/docs/backend/app_indecol/serializer#serializers",
+    
+    "relUrl": "/docs/backend/app_indecol/serializer#serializers"
+  },"36": {
+    "doc": "Serilaizers",
+    "title": "Serilaizers",
+    "content": " ",
+    "url": "/docs/backend/app_indecol/serializer",
+    
+    "relUrl": "/docs/backend/app_indecol/serializer"
+  },"37": {
+    "doc": "General Configurations",
+    "title": "Structure",
+    "content": "The general configuration of the backend are saved inside the /project directory, like so: . ├───project │ │ asgi.py │ │ settings.py │ │ urls.py │ │ wsgi.py │ │ __init__.py │ │ │ ├───utils │ │ │ ldap_search.py . | asgi.py, wsgi.py, init.py: they contain some settings for django server, they are created automatically with django project and they were not modified for this project. | urls.py: they contain the endpoints of the project, any endpoints created in the apps should be pointed to in this file. | settings.py: contain the settings of the project, further details downward. | . ",
+    "url": "/docs/backend/settings#structure",
+    
+    "relUrl": "/docs/backend/settings#structure"
+  },"38": {
+    "doc": "General Configurations",
+    "title": "Settings",
+    "content": "Django settings works by defining a set of variables to modify different properties, the variables modified in this project are as follows: . | ALLOWED_HOSTS CORS_ORIGIN_ALLOW_ALL CORS_ALLOW_CREDENTIALS SESSION_ENGINE CSRF_TRUSTED_ORIGINS . These are used to define which hosts are allowed access to the backend endpoints. | INSTALLED_APPS . To specify additional apps or tools used in the project, for this project in addition to the default apps these are added: . | \"app_indecol.apps.AppIndecolConfig\", \"rest_framework\", \"corsheaders\", 'django_python3_ldap', 'django_extensions', . | “rest_framework”, “corsheaders”, “django_extensions”: are django tools used in the project | “app_indecol”: is the app we created in the project | “django_python3_ldap”: a third party app used to implement authentication using LDAP | . | . | MIDDLEWARE . Just added \"corsheaders.middleware.CorsMiddleware\" which is required by django corsheader tool: . | DATABASES . Specified that the type of database used is sqlite3 and added the path to the sql file. | STATIC_URL STATIC_ROOT MEDIA_URL MEDIA_ROOT . To specify the path to where static and media (uploaded) files are stored and the endpoints to reach them, in production the endpoints should be prefixed by the host url “/static\" and \"/\" for the media endpoint as django adds `media/` by default at the end of media endpoint. | . The remaining settings are for authentication using LDAP see Authentication (LDAP) for more details. ",
+    "url": "/docs/backend/settings#settings",
+    
+    "relUrl": "/docs/backend/settings#settings"
+  },"39": {
+    "doc": "General Configurations",
+    "title": "General Configurations",
+    "content": " ",
+    "url": "/docs/backend/settings",
+    
+    "relUrl": "/docs/backend/settings"
+  },"40": {
+    "doc": "URLs",
+    "title": "URLs",
+    "content": "This is where the urls’ routes for the app are defined. No special modification are done for this project. ",
+    "url": "/docs/backend/app_indecol/urls",
+    
+    "relUrl": "/docs/backend/app_indecol/urls"
+  },"41": {
+    "doc": "Utilities",
+    "title": "Utilities",
+    "content": " ",
+    "url": "/docs/frontend/utils",
+    
+    "relUrl": "/docs/frontend/utils"
   }
 }
