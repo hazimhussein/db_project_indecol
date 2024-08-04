@@ -4,7 +4,7 @@ title: Admin
 nav_order: 4
 parent: app_indecol
 grand_parent: Backend
-permalink: docs/backend/app_indecol/admin
+permalink: backend/app_indecol/admin
 ---
 
 Admin

@@ -4,7 +4,7 @@ title: API Endpoits
 nav_order: 3
 parent: app_indecol
 grand_parent: Backend
-permalink: docs/backend/app_indecol/api
+permalink: backend/app_indecol/api
 ---
 
 APIs

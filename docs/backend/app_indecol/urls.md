@@ -4,7 +4,7 @@ title: URLs
 nav_order: 5
 parent: app_indecol
 grand_parent: Backend
-permalink: docs/backend/app_indecol/urls
+permalink: backend/app_indecol/urls
 ---
 
 URLs

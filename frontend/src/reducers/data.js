@@ -53,7 +53,6 @@ const dataSlice = createSlice({
             state.progress = 100
 
             // Add any fetched posts to the array
-            console.log(action.payload.data)
             state.options[action.payload.category] = action.payload.data.actions.POST
         })
         .addCase(getTableData.rejected, (state, action) => {

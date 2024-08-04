@@ -15,6 +15,11 @@ services:
       context: ./frontend
     volumes:
       - frontend:/app/dist
+  docs:
+    build:
+      context: ./docs
+    volumes:
+      - docs:/app/_site
   nginx:
     build:
       context: ./nginx
@@ -22,13 +27,16 @@ services:
       - ./backend/static:/static
       - ./data:/data
       - frontend:/var/www/frontend
+      - docs:/var/www/docs
     ports:
       - "0.0.0.0:80:80"
     depends_on:
       - backend
       - frontend
+      - docs
 
 volumes:
   static:
   data:
   frontend:
+  docs:

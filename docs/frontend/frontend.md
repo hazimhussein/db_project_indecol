@@ -3,7 +3,7 @@ layout: default
 title: Frontend
 nav_order: 3
 has_children: true
-permalink: /docs/frontend
+permalink: frontend
 ---
 
 # Frontend ([React][react])
@@ -55,7 +55,17 @@ The structure of the frontend folder:
 - `public`: includes static files (styles, images, js files, ...)
 - [`src/reducers`][reducer]: includes the code for redux state manager
 - [`src/utils`][utils]: includes helper functions and configurations for API methods (get, post, patch, delete, options)
+- [`src/components`][components]: where the website components reside
 
+### General website process
+
+- APIs get data from the backend > data are sent to reducers > reducers update the global state > components use the data from the global state to build the website.  
+    
+<figure width="100%" style="text-align: center;">
+<img src="/docs/images/docs_frontend.png" width="75%" 
+     alt="General process">
+<figcaption>General process</figcaption>
+</figure>
 
 
 
@@ -72,3 +82,5 @@ The structure of the frontend folder:
 [hooks]:https://react.dev/reference/react/hooks
 [reducer]:/docs/frontend/reducers
 [utils]:/docs/frontend/utils
+[components]:/docs/frontend/components
+[reduxtk]:https://redux-toolkit.js.org/

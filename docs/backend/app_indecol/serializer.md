@@ -4,7 +4,7 @@ title: Serilaizers
 nav_order: 2
 parent: app_indecol
 grand_parent: Backend
-permalink: docs/backend/app_indecol/serializer
+permalink: backend/app_indecol/serializer
 ---
 
 Serializers

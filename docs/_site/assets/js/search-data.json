@@ -29,7 +29,7 @@
   },"4": {
     "doc": "API",
     "title": "API",
-    "content": " ",
+    "content": "Defines the different API calls used in the app, as well as the general properties of Axios, the HTTP client used in the app to make the API requests. An implementation to monitor the progress of the API calls and notify the global state about the progress of the API call. ",
     "url": "/docs/frontend/utils/api",
     
     "relUrl": "/docs/frontend/utils/api"
@@ -98,197 +98,232 @@
     "relUrl": "/docs/backend"
   },"14": {
     "doc": "Components",
+    "title": "Website elements build up",
+    "content": "The website is build up of different components that utilizes non-component elements for the build up. Components build up ",
+    "url": "/docs/frontend/components#website-elements-build-up",
+    
+    "relUrl": "/docs/frontend/components#website-elements-build-up"
+  },"15": {
+    "doc": "Components",
     "title": "Components",
-    "content": " ",
+    "content": ". | App: main wrapper for the app to reroute according to url (currently, there is only one route to Dashboard component, but it is still recommended to have the App wrapper) | Dashboard: main component that combines and defines the layout for all the other components | Progress: progress bar depending on the global state | About: information section about the digital lab team | Help: rows of items with question/title and dropdown answers/details (Generally, just view of the data in the FAQ table) | NavTop: navigation bar that includes logo and login/logout methods | TableView: shows data in table format | Details: shows details of items in the table | GeneralForm: builds the form for adding/editing records | Alertbox: confirmation alert when performing an action (e.g delete an element) | SelectSearch: a form element to select from a dropdown list with option of searching in the list, with optional add button next to it depending on the logged in user and the passed in list | InputFileUpload: a form element to upload files, with the option of previewing files such as images or videos small in size | PasswordInput: a form element for passwords, with option to show/hide entered password | . ",
     "url": "/docs/frontend/components",
     
     "relUrl": "/docs/frontend/components"
-  },"15": {
+  },"16": {
+    "doc": "Components",
+    "title": "Non-component elements",
+    "content": ". | config: file in the parent directory that includes some variables to customize the app behavior, including: . | tables_order: optional variable to decide the order of appearance of the tables in the main page (tables in the variable appear first according to their order in the variable and then the rest of the tables) | admin_tables: tables that should be only available to admin users | img_ext, vid_ext: images and videos extensions that the form file upload element use to recognize images and videos from other files and then preview them (currently common extensions are added but more can be added without any extra configurations needed) | . | html2canvas, jsPDF: two libraries used to create pdf from the table element | helper functions to build the table component: . | col_func: depending on the logged in user, current table and columns options received from the API option request method, and the data received from the API get request method, it defines the columns for the table | sort_cols: defines the sorting functions for the different columns | search_row_builder: creates the search elements for the different columns | modifiy_nodes: filters the data according to the search values | . | . ",
+    "url": "/docs/frontend/components#non-component-elements",
+    
+    "relUrl": "/docs/frontend/components#non-component-elements"
+  },"17": {
+    "doc": "Components",
+    "title": "Data Pathway",
+    "content": "The process by which API requests are called and the returned data are used can be summarized in the following illustration: . ",
+    "url": "/docs/frontend/components#data-pathway",
+    
+    "relUrl": "/docs/frontend/components#data-pathway"
+  },"18": {
+    "doc": "Deployment",
+    "title": "Deploying the app to production",
+    "content": " ",
+    "url": "/docs/deployment#deploying-the-app-to-production",
+    
+    "relUrl": "/docs/deployment#deploying-the-app-to-production"
+  },"19": {
+    "doc": "Deployment",
+    "title": "Pre-deployment",
+    "content": "lines of code to change . | frontend/src/utils/api.js: . let fetchingURL = 'http://localhost:8000/api/' . to . let fetchingURL = '/api/' . | backend/project/settings.py: . MEDIA_URL = 'http://localhost/' . to . MEDIA_URL = 'https//indecx.indecol.no/' . Docker container . The app is wrappend in a docker container that combines multiple containers to serve the app, which include: . | backend container: that serves the backend through gunicorn | frontend container: that serves the static version of the frontend | nginx container: that uses the previous two containers to serve the final app through nginx server | . ",
+    "url": "/docs/deployment#pre-deployment",
+    
+    "relUrl": "/docs/deployment#pre-deployment"
+  },"20": {
+    "doc": "Deployment",
+    "title": "On the host",
+    "content": "[managed by IEDL staff] . The app joined a traefik manager’s docker service (/traefikmaster/rproxy-setup.yaml) running at misc4iedl VM of IEDL’s stack.it.ntnu.no (access details @ wiki). A DNS record indecx.indecol.no with A-record pointing at the VM’s IP and the TXT record with ACME challege is public. A TLS certificate is created and set for autorenewal in /etc/letsencrypt/live/indecx.indecol.no/. updating the app: . | ssh into the VM | find the app’s repo in /traefikmaster/db_project_db/ | fetch the changes from git | if ./docker-compose.yaml has updates - update the docker service indecx.indecol.no in /traefikmaster/rproxy-setup.yaml accordingly | restart/rebuild the traefik manager and other running docker services: docker compose -f /traefikmaster/rproxy-setup.yaml up -d # restarts the services docker compose -f /traefikmaster/rproxy-setup.yaml up -d --no-deps --build # rebuilds the containers and restarts the services . | . database backup . The routines for backing up ./data/db/ live in a separate project. ",
+    "url": "/docs/deployment#on-the-host",
+    
+    "relUrl": "/docs/deployment#on-the-host"
+  },"21": {
+    "doc": "Deployment",
+    "title": "Deployment",
+    "content": " ",
+    "url": "/docs/deployment",
+    
+    "relUrl": "/docs/deployment"
+  },"22": {
     "doc": "Frontend",
     "title": "Frontend (React)",
     "content": "The frontend is built using React framework, a javascript framework for web development, utilizing some tools like: redux, Material UI, React Bootstrap, and regular bootstrap. ",
     "url": "/docs/frontend#frontend-react",
     
     "relUrl": "/docs/frontend#frontend-react"
-  },"16": {
+  },"23": {
     "doc": "Frontend",
     "title": "React",
     "content": "Javascript framework for web development providing an extra level of abstraction summarized as follows: Web pages are composed of components and each component has it’s own state. States are monitored so when they are changed, components are checked if they should be changed and then change accordingly without reloading the whole page. States can affect their components and their child components. The states should only be changed using specific tools to detect the change in states, a convenient tool for that which were used extensively in the app is React hooks. Two of the most used hooks in the app are: . | useState: to define a new state and the function to change it | useEffect: define functions to run when the page is done loading and when specified variables values are changed. | . React is built on top of NodeJs as development server, therefore NodeJs and NPM should be installed. In addition as mentioned above, react is an abstarction level over regular Html, CSS, JS. Thus, a set of pre- and post- processors are used to convert the react code. There are many different combinations of these processors available in the market. For this project, the app is initialized using Vite, which provides convenient processors and settings with no need for further modification. ",
     "url": "/docs/frontend#react",
     
     "relUrl": "/docs/frontend#react"
-  },"17": {
+  },"24": {
     "doc": "Frontend",
     "title": "Redux",
     "content": "A state manager tool to provide and manage a global state shared by all components. ",
     "url": "/docs/frontend#redux",
     
     "relUrl": "/docs/frontend#redux"
-  },"18": {
+  },"25": {
     "doc": "Frontend",
     "title": "Material UI/React Bootstrap",
     "content": "These provide components with predefined set of CSS styles and JS functions for convenience . ",
     "url": "/docs/frontend#material-uireact-bootstrap",
     
     "relUrl": "/docs/frontend#material-uireact-bootstrap"
-  },"19": {
+  },"26": {
     "doc": "Frontend",
     "title": "Bootstrap",
     "content": "These provide Html classes with predefined set of CSS styles and JS functions which can be added to any element. ",
     "url": "/docs/frontend#bootstrap",
     
     "relUrl": "/docs/frontend#bootstrap"
-  },"20": {
+  },"27": {
     "doc": "Frontend",
     "title": "General structure",
-    "content": "The structure of the frontend folder: . ├───node_modules ├───public │ └───assets │ ├───images │ │ └───1x │ └───styles └───src ├───components │ ├───elements │ └───utils ├───reducers └───utils . | public: includes static files (styles, images, js files, …) | src/reducers: includes the code for redux state manager | src/utils: includes helper functions and configurations for API methods (get, post, patch, delete, options) | . ",
+    "content": "The structure of the frontend folder: . ├───node_modules ├───public │ └───assets │ ├───images │ │ └───1x │ └───styles └───src ├───components │ ├───elements │ └───utils ├───reducers └───utils . | public: includes static files (styles, images, js files, …) | src/reducers: includes the code for redux state manager | src/utils: includes helper functions and configurations for API methods (get, post, patch, delete, options) | src/components: where the website components reside | . General website process . | APIs get data from the backend &gt; data are sent to reducers &gt; reducers update the global state &gt; components use the data from the global state to build the website. | . General process ",
     "url": "/docs/frontend#general-structure",
     
     "relUrl": "/docs/frontend#general-structure"
-  },"21": {
+  },"28": {
     "doc": "Frontend",
     "title": "Frontend",
     "content": " ",
     "url": "/docs/frontend",
     
     "relUrl": "/docs/frontend"
-  },"22": {
+  },"29": {
     "doc": "Helpers",
     "title": "Helpers",
-    "content": " ",
+    "content": "Some helper functions used in the app, include: . | truncateText: to limit the text length | capitalizeFirstLetter: to capitalize the first letter of a string | order_dict: convert a dict to a list and give it a general reordering | . ",
     "url": "/docs/frontend/utils/helpers",
     
     "relUrl": "/docs/frontend/utils/helpers"
-  },"23": {
+  },"30": {
     "doc": "Overview",
     "title": "IndEcx Documentation",
     "content": "These documentation provides details and description of the code used for building the IndEcx web app as well as instructions on how to edit and achieve certain editing goals. View the website View it on GitHub . ",
     "url": "/#indecx-documentation",
     
     "relUrl": "/#indecx-documentation"
-  },"24": {
+  },"31": {
     "doc": "Overview",
     "title": "IndEcX",
     "content": "Industrial Ecology Projects Database : Aimed to facilitate storage, access, and retrieval of the different projects created by the Industrial Ecology Group at NTNU. ",
     "url": "/#indecx",
     
     "relUrl": "/#indecx"
-  },"25": {
+  },"32": {
     "doc": "Overview",
     "title": "Basic Structure",
-    "content": "The code for the IndEcX is divided into: . | backend: responsible for creating the database and serving it as an API | data: where the database file, and uploaded files are stored | frontend: responsible for creating the website where the database is accessed from | production files (no specific folder for them): these are the files responsible for creating the servers to serve the previous parts and combining them into a docker container | . ########## . Just the Docs is a theme for generating static websites with Jekyll. You can write source files for your web pages using Markdown, the Liquid templating language, and HTML.1 Jekyll builds your site by converting all files that have front matter to HTML. Your Jekyll configuration file determines which theme to use, and sets general parameters for your site, such as the URL of its home page. Jekyll builds this Just the Docs theme docs website using the theme itself. These web pages show how your web pages will look by default when you use this theme. But you can easily [customize] the theme to make them look completely different! . Browse the docs to learn more about how to use this theme. ",
+    "content": "The code for the IndEcX is divided into: . | backend: responsible for creating the database and serving it as an API | data: where the database file, and uploaded files are stored | frontend: responsible for creating the website where the database is accessed from | production files (no specific folder for them): these are the files responsible for creating the servers to serve the previous parts and combining them into a docker container | . ",
     "url": "/#basic-structure",
     
     "relUrl": "/#basic-structure"
-  },"26": {
-    "doc": "Overview",
-    "title": "Getting started",
-    "content": "The Just the Docs Template provides the simplest, quickest, and easiest way to create a new website that uses the Just the Docs theme. To get started with creating a site, just click “use the template”! . To use the theme, you do not need to clone or fork the [Just the Docs repo]! You should do that only if you intend to browse the theme docs locally, contribute to the development of the theme, or develop a new theme based on Just the Docs. You can easily set the site created by the template to be published on GitHub Pages – the template README file explains how to do that, along with other details. If Jekyll is installed on your computer, you can also build and preview the created site locally. This lets you test changes before committing them, and avoids waiting for GitHub Pages.2 And you will be able to deploy your local build to a different platform than GitHub Pages. More specifically, the created site: . | uses a gem-based approach, i.e. uses a Gemfile and loads the just-the-docs gem | uses the GitHub Pages / Actions workflow to build and publish the site on GitHub Pages | . Other than that, you’re free to customize sites that you create with the template, however you like. You can easily change the versions of just-the-docs and Jekyll it uses, as well as adding further plugins. See the theme README for how to use the theme as a gem without creating a new site. ",
-    "url": "/#getting-started",
-    
-    "relUrl": "/#getting-started"
-  },"27": {
-    "doc": "Overview",
-    "title": "About the project",
-    "content": "Just the Docs is © 2017-2024 by Patrick Marsceill. License . Just the Docs is distributed by an MIT license. Contributing . When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change. Read more about becoming a contributor in our GitHub repo. Thank you to the contributors of Just the Docs! . Code of Conduct . Just the Docs is committed to fostering a welcoming community. View our Code of Conduct on our GitHub repository. | The source file for this page uses all three markup languages. &#8617; . | It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub. &#8617; . | . ",
-    "url": "/#about-the-project",
-    
-    "relUrl": "/#about-the-project"
-  },"28": {
+  },"33": {
     "doc": "Overview",
     "title": "Overview",
     "content": " ",
     "url": "/",
     
     "relUrl": "/"
-  },"29": {
+  },"34": {
     "doc": "Models",
     "title": "Database Tables",
-    "content": "This is where the database tables are defined. Currently, the defined tables are: . | ",
+    "content": "This is where the database tables are defined. Currently, the defined tables are: . Database structure . | ",
     "url": "/docs/backend/app_indecol/models#database-tables",
     
     "relUrl": "/docs/backend/app_indecol/models#database-tables"
-  },"30": {
+  },"35": {
     "doc": "Models",
     "title": "Admin tables",
     "content": ". | Faq: items for the help section | Team: digital lab memebers to be viewed in the about section | ",
     "url": "/docs/backend/app_indecol/models#admin-tables",
     
     "relUrl": "/docs/backend/app_indecol/models#admin-tables"
-  },"31": {
+  },"36": {
     "doc": "Models",
     "title": "Structural tables",
     "content": ". | User: this is the table used for users authentication | Category: records for the different tables available in the app | FieldOption: stores the available options for fields in the other tables that require a predefined list of options | . | . | ",
     "url": "/docs/backend/app_indecol/models#structural-tables",
     
     "relUrl": "/docs/backend/app_indecol/models#structural-tables"
-  },"32": {
+  },"37": {
     "doc": "Models",
     "title": "Public tables",
     "content": ". | Person: people associated to projects | Group: indecol groups | Partner: External partenrs who contributed to projects | Resource: stores projects’ resources. It utilizes a custom function to store uploaded files in seperate folders following the structure \"files/&lt;name of the resource&gt;/&lt;creation date&gt;/&lt;filename&gt;\", so when the the files are modified, they are saved in new folders while keeping the old files. | Project: stores the project records | . | . ",
     "url": "/docs/backend/app_indecol/models#public-tables",
     
     "relUrl": "/docs/backend/app_indecol/models#public-tables"
-  },"33": {
+  },"38": {
     "doc": "Models",
     "title": "Models",
     "content": " ",
     "url": "/docs/backend/app_indecol/models",
     
     "relUrl": "/docs/backend/app_indecol/models"
-  },"34": {
+  },"39": {
     "doc": "Reducers",
     "title": "Reducers",
-    "content": " ",
+    "content": "The reducers are built on top of redux and redux-toolkit, it follows the instructions of createSlice method of redux-toolkit without special modifications to update the global state (store) according to different API calls. ",
     "url": "/docs/frontend/reducers",
     
     "relUrl": "/docs/frontend/reducers"
-  },"35": {
+  },"40": {
     "doc": "Serilaizers",
     "title": "Serializers",
     "content": "In django process, this is a required middle man between the database and API, to validate how the tables fields should be represented. No special options are defined for this project, except for: . | UserSerializer: some function were modified to account for the ability to manually create users | UserLoginSerializer: this is a step needed to authenticate users | . ",
     "url": "/docs/backend/app_indecol/serializer#serializers",
     
     "relUrl": "/docs/backend/app_indecol/serializer#serializers"
-  },"36": {
+  },"41": {
     "doc": "Serilaizers",
     "title": "Serilaizers",
     "content": " ",
     "url": "/docs/backend/app_indecol/serializer",
     
     "relUrl": "/docs/backend/app_indecol/serializer"
-  },"37": {
+  },"42": {
     "doc": "General Configurations",
     "title": "Structure",
     "content": "The general configuration of the backend are saved inside the /project directory, like so: . ├───project │ │ asgi.py │ │ settings.py │ │ urls.py │ │ wsgi.py │ │ __init__.py │ │ │ ├───utils │ │ │ ldap_search.py . | asgi.py, wsgi.py, init.py: they contain some settings for django server, they are created automatically with django project and they were not modified for this project. | urls.py: they contain the endpoints of the project, any endpoints created in the apps should be pointed to in this file. | settings.py: contain the settings of the project, further details downward. | . ",
     "url": "/docs/backend/settings#structure",
     
     "relUrl": "/docs/backend/settings#structure"
-  },"38": {
+  },"43": {
     "doc": "General Configurations",
     "title": "Settings",
     "content": "Django settings works by defining a set of variables to modify different properties, the variables modified in this project are as follows: . | ALLOWED_HOSTS CORS_ORIGIN_ALLOW_ALL CORS_ALLOW_CREDENTIALS SESSION_ENGINE CSRF_TRUSTED_ORIGINS . These are used to define which hosts are allowed access to the backend endpoints. | INSTALLED_APPS . To specify additional apps or tools used in the project, for this project in addition to the default apps these are added: . | \"app_indecol.apps.AppIndecolConfig\", \"rest_framework\", \"corsheaders\", 'django_python3_ldap', 'django_extensions', . | “rest_framework”, “corsheaders”, “django_extensions”: are django tools used in the project | “app_indecol”: is the app we created in the project | “django_python3_ldap”: a third party app used to implement authentication using LDAP | . | . | MIDDLEWARE . Just added \"corsheaders.middleware.CorsMiddleware\" which is required by django corsheader tool: . | DATABASES . Specified that the type of database used is sqlite3 and added the path to the sql file. | STATIC_URL STATIC_ROOT MEDIA_URL MEDIA_ROOT . To specify the path to where static and media (uploaded) files are stored and the endpoints to reach them, in production the endpoints should be prefixed by the host url “/static\" and \"/\" for the media endpoint as django adds `media/` by default at the end of media endpoint. | . The remaining settings are for authentication using LDAP see Authentication (LDAP) for more details. ",
     "url": "/docs/backend/settings#settings",
     
     "relUrl": "/docs/backend/settings#settings"
-  },"39": {
+  },"44": {
     "doc": "General Configurations",
     "title": "General Configurations",
     "content": " ",
     "url": "/docs/backend/settings",
     
     "relUrl": "/docs/backend/settings"
-  },"40": {
+  },"45": {
     "doc": "URLs",
     "title": "URLs",
     "content": "This is where the urls’ routes for the app are defined. No special modification are done for this project. ",
     "url": "/docs/backend/app_indecol/urls",
     
     "relUrl": "/docs/backend/app_indecol/urls"
-  },"41": {
+  },"46": {
     "doc": "Utilities",
     "title": "Utilities",
-    "content": " ",
+    "content": "These include: . | api.js: which defines the different API calls used in the app | helper.js: some helper functions used in the app | . ",
     "url": "/docs/frontend/utils",
     
     "relUrl": "/docs/frontend/utils"

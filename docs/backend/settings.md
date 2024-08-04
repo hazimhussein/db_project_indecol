@@ -3,7 +3,7 @@ layout: default
 title: General Configurations
 nav_order: 1
 parent: Backend
-permalink: docs/backend/settings
+permalink: backend/settings
 ---
 
 Structure

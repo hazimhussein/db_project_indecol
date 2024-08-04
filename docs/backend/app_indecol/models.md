@@ -4,13 +4,19 @@ title: Models
 nav_order: 1
 parent: app_indecol
 grand_parent: Backend
-permalink: docs/backend/app_indecol/models
+permalink: backend/app_indecol/models
 ---
 
 Database Tables
 =====
 
 This is where the database tables are defined. Currently, the defined tables are:
+
+<figure width="100%" style="text-align: center;">
+<img src="/docs/images/app_indecol.png" width="75%" 
+        alt="Database structure">
+<figcaption>Database structure</figcaption>
+</figure>
 
 - ## Admin tables
   - `Faq`: items for the help section

@@ -3,7 +3,7 @@ layout: default
 title: Authentication
 nav_order: 2
 parent: Backend
-permalink: /docs/backend/auth
+permalink: backend/auth
 ---
 
 Authentication (LDAP)
