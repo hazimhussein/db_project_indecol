@@ -12,7 +12,7 @@ Website elements build up
 The website is build up of different components that utilizes non-component elements for the build up.  
   
 <figure width="100%" style="text-align: center;">
-<img src="./docs/images/docs_frontend_comp.png" width="75%" 
+<img src="/docs/images/docs_frontend_comp.png" width="75%" 
         alt="Components build up">
 <figcaption>Components build up</figcaption>
 </figure>
@@ -47,7 +47,7 @@ The website is build up of different components that utilizes non-component elem
 # Data Pathway
 The process by which API requests are called and the returned data are used can be summarized in the following illustration:  
 
-![Data Pathway](./docs/images/docs_frontend_api.png "data pathway")
+![Data Pathway](/docs/images/docs_frontend_api.png "data pathway")
 
 
 

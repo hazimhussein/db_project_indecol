@@ -1,10 +1,11 @@
 title: IndEcX Documentation
 description: Documentation and description for the development details of the IndEcX project
 theme: just-the-docs
-logo: "/docs/images/logo.png"
-favicon_ico: "/docs/images/logo.png"
+logo: "/images/logo.png"
+favicon_ico: "/images/logo.png"
+baseurl: /docs
 
-url: https://hazimhussein.github.io/db_project_indecol/
+url: "https://indecx.indecol.no/"
 
 aux_links:
   Repository: https://github.com/NTNU-IndEcol/IndEcX

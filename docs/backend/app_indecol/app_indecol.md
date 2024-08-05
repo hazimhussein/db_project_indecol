@@ -1,10 +1,10 @@
 ---
 layout: default
-title: app_indecol
+title: "app_indecol"
 nav_order: 3
 has_children: true
 parent: Backend
-permalink: backend/app_indecol
+permalink: "backend/app_indecol"
 ---
 
 app_indecol

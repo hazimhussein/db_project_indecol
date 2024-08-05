@@ -29,6 +29,13 @@ permalink: deployment
   ```
   MEDIA_URL = 'https//indecx.indecol.no/'
   ```
+### Docs updating
+If the docs were updated, the following should be done before deployment:
+
+- Install [Ruby][ruby] on your device
+- Install bundler and jekyll using `gem install bundler jekyll`
+- Inside `/docs` folder run `bundle exec jekyll build`
+  
 ### Docker container
 The app is wrappend in a docker container that combines multiple containers to serve the app, which include:
 - backend container: that serves the backend through gunicorn
